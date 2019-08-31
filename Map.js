@@ -11,20 +11,18 @@ function Map(w,h,s){
   }
 }
 
+Map.prototype.copyDates = function (matrix){
+  this.cell = JSON.parse(JSON.stringify(matrix)); //Copia matriz
+}
+
 Map.prototype.desenhar = function (ctx) {
   ctx.lineWidth = 2;
   for (var l = 0; l < this.h; l++) {
     for (var c = 0; c < this.w; c++) {
       if(this.cell[l][c] === 0){                  //Vazio
-        //ctx.fillStyle = "black";
-        //ctx.strokeStyle = "grey";
         imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
-        //ctx.fillRect(c*this.s, l*this.s, this.s, this.s);
-        //ctx.strokeRect(c*this.s, l*this.s, this.s, this.s);
       } else if(this.cell[l][c] === 1){          //Bloqueado
-        //ctx.strokeStyle = "grey";
         imageLibrary.drawSize(ctx, "brickRed", c*this.s, l*this.s, this.s, this.s);
-        //ctx.strokeRect(c*this.s, l*this.s, this.s, this.s);
       } else if(this.cell[l][c] === 2){           //Local de saida
 
         ctx.strokeStyle = "darkBlue";
@@ -32,12 +30,6 @@ Map.prototype.desenhar = function (ctx) {
         ctx.linewidth = 10;
         ctx.fillRect(c*this.s, l*this.s, this.s, this.s);
         ctx.strokeRect(c*this.s, l*this.s, this.s, this.s);
-
-        //imageLibrary.drawClipSize(ctx, "sandBlock", 0, 0, 80, 80, c*this.s, l*this.s, this.s, this.s);
-        /*ctx.fillStyle = "lightBlue";
-        ctx.strokeStyle = "grey";
-        ctx.fillRect(c*this.s, l*this.s, this.s, this.s);
-        ctx.strokeRect(c*this.s, l*this.s, this.s, this.s);*/
       } else if(this.cell[l][c] === 3){          //local de chegada
         ctx.strokeStyle = "Yellow";
         ctx.fillStyle = "orange";
@@ -48,16 +40,6 @@ Map.prototype.desenhar = function (ctx) {
         ctx.fillRect(c*this.s, l*this.s, this.s, this.s);
         ctx.strokeRect(c*this.s, l*this.s, this.s, this.s);
         ctx.restore();
-        //imageLibrary.drawClipSize(ctx, "sandBlock", 0, 0, 80, 80, c*this.s, l*this.s, this.s, this.s);
-        /*ctx.fillStyle = "darkgrey";
-        ctx.strokeStyle = "grey";
-        ctx.fillRect(c*this.s + this.s/3, l*this.s + this.s/3, this.s/3, this.s/3);
-        ctx.strokeRect(c*this.s + this.s/3, l*this.s + this.s/3, this.s/3, this.s/3);
-        ctx.fillStyle = "lightBlue";
-        ctx.strokeStyle = "grey";
-        ctx.fillRect(c*this.s, l*this.s, this.s, this.s);
-        ctx.strokeRect(c*this.s, l*this.s, this.s, this.s);*/
-        //imageLibrary.drawClipSize(ctx, "sandBlock", 0, 0, 80, 80, c*this.s, l*this.s, this.s, this.s);
       } else if(this.cell[l][c] === 4){           //Tesouro a pegar
         imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
         ctx.fillStyle = "yellow";
@@ -103,16 +85,3 @@ Map.prototype.desenhar = function (ctx) {
     }
   }
 };
-
-/*var MAPA1 = [
-  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-  [1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1],
-  [1,1,1,1,1,1,1,1,0,1,0,0,0,1,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1],
-  [1,0,1,1,1,0,0,0,0,1,0,0,0,1,0,0,0,1,1],
-  [1,0,0,0,0,0,0,0,1,1,1,0,0,1,1,1,0,1,1],
-  [1,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,1],
-  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-];*/
