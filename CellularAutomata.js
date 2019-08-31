@@ -10,13 +10,10 @@ function CellularAutomata(HS, WS, MOORE = 1, r = 0.5, totalRock = 5, floorIndex 
     this.wallIndex = wallIndex;
     this.map = this.initMap(HS, WS, this.floorIndex);
     this.map2 = this.initMap(HS, WS, this.floorIndex);
-    console.log("\n\nFOI CONSTRUTOR DO CELLULAR AUTOMATA\n\n");
 }
 
 CellularAutomata.prototype.fullstep = function(steps = 2){
-    this.scenarioRandomWall();
     while(steps > 0){
-        console.log("\n\nFOI FULLSTEP\n\n");
         this.gameOfWallRulesAutomata();
         this.toggleMaps();
         steps--;

@@ -255,9 +255,9 @@
               if(audioLibrary.isPlaying("BGM")==false){
                 //audioLibrary.play("BGM");
               }
-              //player.mover(dt);
+              player.mover(dt);
         			levelAtual.desenhar(ctx);
-        			//player.desenhar(ctx);
+        			player.desenhar(ctx);
               //tempoRectExt.desenharTempo(ctx);
               //tempoRectInt.desenharTempo(ctx);
               ctx.font = "15px Arial Black";
@@ -600,14 +600,16 @@
       return nM;
   }
 
-  function teste(){
-    geraFase = new CellularAutomata(heightMap, widthMap, 1, 0.5, 5, 0, 5, 1);//new CellularAutomata(heightMap, widthMap, 2, 0.5, 13, 0, 5, 1);
-    geraFase.scenarioRandomWall();
-    geraFase.fullstep(2);
-    //geraFase.copyDates(levelAtual.mapa.cell);
+  function aplicaAutomato(){
+    
+    geraFase.fullstep(3);
     levelAtual.setMatrixMap(geraFase.map);
-    //geraFase.copyDates(levelAtual.mapa.cell);
-    console.log(levelAtual.mapa.cell);
+  }
+  
+  function randomizaMapa(){
+    geraFase = new CellularAutomata(heightMap, widthMap, 1, 0.5, 4, 0, 5, 1);//new CellularAutomata(heightMap, widthMap, 2, 0.5, 13, 0, 5, 1);
+    geraFase.scenarioRandomWall();
+    levelAtual.setMatrixMap(geraFase.map);
   }
     </script>
   </body>

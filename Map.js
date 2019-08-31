@@ -16,6 +16,9 @@ Map.prototype.copyDates = function (matrix){
 }
 
 Map.prototype.desenhar = function (ctx) {
+  ctx.save();
+  ctx.scale(2, 2);  //Modifica a escala
+
   ctx.lineWidth = 2;
   for (var l = 0; l < this.h; l++) {
     for (var c = 0; c < this.w; c++) {
@@ -84,4 +87,5 @@ Map.prototype.desenhar = function (ctx) {
       }
     }
   }
+  ctx.restore();
 };
