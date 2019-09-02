@@ -31,6 +31,7 @@ Sprite.prototype.teste = function(){
 Sprite.prototype.mover = function (dt) {
   this.gx = Math.floor(this.x/this.map.s);
   this.gy = Math.floor(this.y/this.map.s);
+  //console.log(this.gx + " -> gx, " + this.gy + " -> gy");
 
   /****************************************************************
   * Outro meio de andar nesse caso é utilizando a propria grade***
@@ -41,18 +42,53 @@ Sprite.prototype.mover = function (dt) {
     this.y = this.gy*this.map.s + this.s;
   */
 
-  if(this.vx < 0 && this.map.cell[this.gy][this.gx-1]===1){
-    var limite = (this.gx)*this.map.s;
-    var maxDx = limite-(this.x-this.s/2);
-    var Dx = this.vx*dt;
-    this.x += Math.max(Dx, maxDx);
-  } else if( this.vx > 0 && this.map.cell[this.gy][this.gx+1]===1){
-    var limite = (this.gx+1)*this.map.s;
-    var maxDx = limite-(this.x+this.s/2);
-    var Dx = this.vx*dt;
-    this.x += Math.min(Dx, maxDx);
-  }else {
-    this.x += this.vx*dt;
+  if(this.gx === 0 || this.gx === (this.map.w - 1))  //Trata casos extremos do mapa =>{gx <= 0, gx >= gxMapa}
+  {
+    if(this.gx === 0){
+      if(this.vx < 0){
+        var limite = (this.gx)*this.map.s;
+        var maxDx = limite-(this.x-this.s/2);
+        var Dx = this.vx*dt;
+        this.x += Math.max(Dx, maxDx);
+      } else if( this.vx > 0 && this.map.cell[this.gy][this.gx+1]===1){
+        var limite = (this.gx+1)*this.map.s;
+        var maxDx = limite-(this.x+this.s/2);
+        var Dx = this.vx*dt;
+        this.x += Math.min(Dx, maxDx);
+      }else {
+        this.x += this.vx*dt;
+      }
+    }
+    else{
+      if(this.vx < 0 && this.map.cell[this.gy][this.gx-1]===1){
+        var limite = (this.gx)*this.map.s;
+        var maxDx = limite-(this.x-this.s/2);
+        var Dx = this.vx*dt;
+        this.x += Math.max(Dx, maxDx);
+      } else if( this.vx > 0){
+        var limite = (this.gx+1)*this.map.s;
+        var maxDx = limite-(this.x+this.s/2);
+        var Dx = this.vx*dt;
+        this.x += Math.min(Dx, maxDx);
+      }else {
+        this.x += this.vx*dt;
+      }
+    }
+  }
+  else{
+    if(this.vx < 0 && this.map.cell[this.gy][this.gx-1]===1){
+      var limite = (this.gx)*this.map.s;
+      var maxDx = limite-(this.x-this.s/2);
+      var Dx = this.vx*dt;
+      this.x += Math.max(Dx, maxDx);
+    } else if( this.vx > 0 && this.map.cell[this.gy][this.gx+1]===1){
+      var limite = (this.gx+1)*this.map.s;
+      var maxDx = limite-(this.x+this.s/2);
+      var Dx = this.vx*dt;
+      this.x += Math.min(Dx, maxDx);
+    }else {
+      this.x += this.vx*dt;
+    }
   }
 
   /*if(this.vx === 0 && this.map.cell[this.gy][this.gx+1]!==0 && (this.x*this.s > (this.gx)*this.map.s)){
@@ -66,18 +102,55 @@ Sprite.prototype.mover = function (dt) {
   //Ponto central do sprite é o meio, logo compara com metade somente
   //Tem alguns bugs em entrar parte nos blocos não permitidos
 
-  if((this.vy)<0 && this.map.cell[this.gy-1][this.gx]===1){
-    var limite = (this.gy)*this.map.s;
-    var maxDy = limite-(this.y-this.s/2);
-    var Dy = (this.vy)*dt;
-    this.y += Math.max(Dy, maxDy);
-  } else if((this.vy) >0 && this.map.cell[this.gy+1][this.gx]===1){
-    var limite = (this.gy+1)*this.map.s;
-    var maxDy = limite-(this.y+this.s/2);
-    var Dy = (this.vy)*dt;
-    this.y += Math.min(Dy, maxDy);
-  }else {
-    this.y += (this.vy)*dt;
+  
+
+  if(this.gy === 0 || this.gy === (this.map.h - 1))  //Trata casos extremos do mapa =>{gy <= 0, gy >= gyMapa}
+  {
+    if(this.gy === 0){
+      if(this.vy < 0){
+        var limite = (this.gy)*this.map.s;
+        var maxDy = limite-(this.y-this.s/2);
+        var Dy = (this.vy)*dt;
+        this.y += Math.max(Dy, maxDy);
+      } else if((this.vy) >0 && this.map.cell[this.gy+1][this.gx]===1){
+        var limite = (this.gy+1)*this.map.s;
+        var maxDy = limite-(this.y+this.s/2);
+        var Dy = (this.vy)*dt;
+        this.y += Math.min(Dy, maxDy);
+      }else {
+        this.y += (this.vy)*dt;
+      }
+    }
+    else{
+      if((this.vy)<0 && this.map.cell[this.gy-1][this.gx]===1){
+        var limite = (this.gy)*this.map.s;
+        var maxDy = limite-(this.y-this.s/2);
+        var Dy = (this.vy)*dt;
+        this.y += Math.max(Dy, maxDy);
+      } else if((this.vy) > 0){
+        var limite = (this.gy+1)*this.map.s;
+        var maxDy = limite-(this.y+this.s/2);
+        var Dy = (this.vy)*dt;
+        this.y += Math.min(Dy, maxDy);
+      }else {
+        this.y += (this.vy)*dt;
+      }
+    }
+  }
+  else{
+    if((this.vy)<0 && this.map.cell[this.gy-1][this.gx]===1){
+      var limite = (this.gy)*this.map.s;
+      var maxDy = limite-(this.y-this.s/2);
+      var Dy = (this.vy)*dt;
+      this.y += Math.max(Dy, maxDy);
+    } else if((this.vy) >0 && this.map.cell[this.gy+1][this.gx]===1){
+      var limite = (this.gy+1)*this.map.s;
+      var maxDy = limite-(this.y+this.s/2);
+      var Dy = (this.vy)*dt;
+      this.y += Math.min(Dy, maxDy);
+    }else {
+      this.y += (this.vy)*dt;
+    }
   }
 
   /*if((this.vx === 0 && this.map.cell[this.gy][this.gx+1]!==0 && (this.x+this.s/2 > (this.gx+1)*this.map.s))
@@ -104,7 +177,7 @@ Sprite.prototype.desenhar = function (ctx) {
   ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
   ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
   ctx.restore();
-  //this.desenharCell(ctx);         //Debug mode Grid
+  this.desenharCell(ctx);         //Debug mode Grid
 };
 
 Sprite.prototype.desenharCell = function(ctx){
@@ -137,6 +210,12 @@ Sprite.prototype.impoeLimites = function(x, y, w, h){
     this.y = y + h - this.h;
     this.vy = 0;
   }
+};
+
+Sprite.prototype.desenharCell = function(ctx){
+  ctx.strokeStyle = "white";
+  ctx.lineWidth = 1;
+  ctx.strokeRect(this.gx*this.map.s, this.gy*this.map.s, this.map.s, this.map.s)
 };
 
 Sprite.prototype.colidiuCom = function (alvo) {
