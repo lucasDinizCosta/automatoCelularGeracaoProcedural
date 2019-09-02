@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8">
     <title>Trabalho de conclusão de curso: geração procedural</title>
-    <script src="Map.js"></script>
-    <script src="Level.js"></script>
-    <script src="Player.js"></script>
-    <script src="Sprite.js"></script>
-    <script src="Teleporter.js"></script>
-  	<script src="ImageLibrary.js" charset="utf-8"></script>
-    <script src="AudioLibrary.js" charset="utf-8"></script>
-    <script src="CellularAutomata.js" charset="utf-8"></script>
+    <script src="Classes/Map.js"></script>
+    <script src="Classes/Level.js"></script>
+    <script src="Classes/Player.js"></script>
+    <script src="Classes/Sprite.js"></script>
+    <script src="Classes/Teleporter.js"></script>
+  	<script src="Classes/ImageLibrary.js" charset="utf-8"></script>
+    <script src="Classes/AudioLibrary.js" charset="utf-8"></script>
+    <script src="Classes/CellularAutomata.js" charset="utf-8"></script>
     <style> body {padding: 20px; margin: 0;} canvas {vertical-align: top;} </style>
 
     <style>
@@ -149,16 +149,16 @@
     	  switch (estado) {
             case 0:
               limparTela();
-              if(audioLibrary.isPlaying("BGM")==false){
-                //audioLibrary.play("BGM");
-              }
+              /*if(audioLibrary.isPlaying("BGM")==false){
+                audioLibrary.play("BGM");
+              }*/
               player.mover(dt);
-              //ctx.save();
-              //ctx.scale(2,2);
-              //ctx.translate(-player.sprite.x + canvas.width/4, -player.sprite.y+ canvas.height/4);
+              ctx.save();
+              ctx.scale(2,2);
+              ctx.translate(-player.sprite.x + canvas.width/4, -player.sprite.y+ canvas.height/4);
               levelAtual.desenhar(ctx);
               player.desenhar(ctx);
-              //ctx.restore();
+              ctx.restore();
               //tempoRectExt.desenharTempo(ctx);
               //tempoRectInt.desenharTempo(ctx);
               ctx.font = "15px Arial Black";
