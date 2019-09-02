@@ -33,9 +33,9 @@
 	  tela.style.border = '2px solid #000';                       //Colocando borda no canvas
     var ctx = tela.getContext("2d");
     var player = new Player();
-    var widthMap = 19;
-    var heightMap = 11;
-    var sizeMap = 32;
+    var widthMap = 100;//19;
+    var heightMap = 100;//11;
+    var sizeMap = 32;//32;
     
     var levelAtual = new Level(widthMap, heightMap, sizeMap);
     var levels = [];
@@ -48,26 +48,13 @@
     //levels[0].mapa = new Map(19, 11, 32);
     //console.log(levels[0].mapa);
     var geraFase = new CellularAutomata(heightMap, widthMap, 1, 0.5, 4, 0, 5, 1);//new CellularAutomata(heightMap, widthMap, 2, 0.5, 13, 0, 5, 1);
-    //geraFase.scenarioRandomWall();
+    geraFase.scenarioRandomWall();
+    geraFase.fullstep(2);
     geraFase.fullstep(2);
     levels[0].setMatrixMap(geraFase.map);
-    
-    /*levels[0].mapa.cell = [       //Fase 1
-      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-      [1,1,1,1,1,1,1,1,1,4,1,1,1,1,1,1,1,1,1],
-      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-      [1,1,1,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-      [1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-      [1,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1],
-      [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-    ];*/
     levels[0].startX = 32 + player.sprite.s;
     levels[0].startGX = 0;
-    levels[0].startY = 4*levelAtual.mapa.s + player.sprite.s;
+    levels[0].startY = 4 * levelAtual.mapa.s + player.sprite.s;
     levels[0].startGY = 0;
     levels[0].tesouros = 3;
     levels[0].finishGX = 17;
@@ -154,8 +141,8 @@
               }*/
               player.mover(dt);
               ctx.save();
-              ctx.scale(2,2);
-              ctx.translate(-player.sprite.x + canvas.width/4, -player.sprite.y+ canvas.height/4);
+              ctx.scale(0.2,0.2);
+              ctx.translate(-player.sprite.x + canvas.width/2, -player.sprite.y+ canvas.height/2);
               levelAtual.desenhar(ctx);
               player.desenhar(ctx);
               ctx.restore();

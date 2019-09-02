@@ -42,6 +42,7 @@ CellularAutomata.prototype.countAdjacentsMoore = function(mapx, y, x, tp, d=1){ 
 }
 
 CellularAutomata.prototype.toggleMaps = function(){
+    //console.log(JSON.stringify(this.map2));
     this.map = JSON.parse(JSON.stringify(this.map2)); //Copia matriz
 }
 
