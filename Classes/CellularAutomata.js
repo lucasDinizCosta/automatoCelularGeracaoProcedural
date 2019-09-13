@@ -8,8 +8,8 @@ function CellularAutomata(HS, WS, MOORE = 1, r = 0.5, totalRock = 5, floorIndex 
     this.floorIndex = floorIndex;
     this.rockIndex = rockIndex;
     this.wallIndex = wallIndex;
-    this.map = this.initMap(HS, WS, this.floorIndex);
-    this.map2 = this.initMap(HS, WS, this.floorIndex);
+    this.map = this.initMap(this.HS, this.WS, this.floorIndex);
+    this.map2 = this.initMap(this.HS, this.WS, this.floorIndex);
 }
 
 CellularAutomata.prototype.fullstep = function(steps = 2){
@@ -20,9 +20,77 @@ CellularAutomata.prototype.fullstep = function(steps = 2){
     }
     this.gameOfWallRulesAutomataFinalStep();
     this.toggleMaps();
+    /*while(this.gameOfWallRulesAutomataFinalStepCleanWalls() !== 0){ //Limpa as paredes espaçadas
+        this.toggleMaps();
+    }*/
+    
+    this.gameOfWallRulesAutomataFinalStepCleanWalls();
+    this.toggleMaps();
 }
 
-CellularAutomata.prototype.countAdjacentsMoore = function(mapx, y, x, tp, d=1){ //Conta as células de um tipo específico ao redor da célula (x,y)
+CellularAutomata.prototype.countRooms = function(){
+    let auxMatrix = this.initMap(this.HS, this.WS, -1);
+    let room = 1;
+    for(let i = 0; i < this.HS; i++){
+        for(let j = 0; j < this.WS; j++){
+            if(this.map[i][j] !== this.floorIndex){
+                auxMatrix[i][j] = -2;   //Cave area
+            }
+        }
+    }
+    for(let i = 0; i < this.HS; i++){
+        for(let j = 0; j < this.WS; j++){
+            if(auxMatrix[i][j] === -1){
+                //auxMatrix[i][j] = -2;   //Cave area
+                this.visitCells(auxMatrix, this.map, i, j, this.floorIndex, 1, room);
+                room++;
+            }
+        }
+    }
+    console.log("Number of rooms: " + room);
+    let text = "";
+    for(let i = 0; i < this.HS; i++){
+        text = text + "auxMatrix ["+i+"]: {";
+        for(let j = 0; j < this.WS; j++){
+            text = text + " " + auxMatrix[i][j] + "("+j+"), ";
+        }
+        text = text + " }\n"
+    }
+    console.log(text);
+}
+
+/*function visit(cell) {
+    if cell.marked return;
+    cell.marked = true;
+    foreach neighbor in cell.neighbors {
+        if cell.color == neighbor.color {
+            visit(neighbor)
+        }
+    }
+}*/
+
+CellularAutomata.prototype.visitCells = function(auxMatrix, mapx, y, x, tp, d = 1, indexArea){   //Conta as células de um tipo específico ao redor da célula (x,y)
+    if(auxMatrix[y][x] === indexArea){  //Cell is visited??
+        return;
+    }
+    auxMatrix[y][x] = indexArea;    //Set cell is visited
+    const mL = Math.max(y - d, 0);
+    const ML = Math.min(y + d, mapx.length-1);
+    const mC = Math.max(x - d, 0);
+    const MC = Math.min(x + d, mapx[0].length-1);
+    for (let l = mL; l <= ML; l++) {
+        for (let c = mC; c <= MC; c++) {
+            if(l !== y && c !== x){
+                if (mapx[l][c] === tp) {
+                    auxMatrix[l][c] = indexArea;
+                    this.visitCells(auxMatrix, mapx, l, c, tp, d, indexArea);
+                }
+            }
+        }
+    }
+}
+
+CellularAutomata.prototype.countAdjacentsMoore = function(mapx, y, x, tp, d = 1){   //Conta as células de um tipo específico ao redor da célula (x,y)
     let total = 0;
     const mL = Math.max(y - d, 0);
     const ML = Math.min(y + d, mapx.length-1);
@@ -101,6 +169,40 @@ CellularAutomata.prototype.gameOfWallRulesAutomataFinalStep = function (){
     }
 }
 
+CellularAutomata.prototype.gameOfWallRulesAutomataFinalStepCleanWalls = function (){
+    /**
+    * Types:
+    *   0 => floor;
+    *   1 => rock;
+    *   2 => wall;
+    */
+    let count = 0;
+    for (let l = 0; l < this.map2.length; l++) {
+        for (let c = 0; c < this.map2[0].length; c++) {
+            this.map2[l][c] = this.map[l][c];
+            switch (this.map[l][c]) {
+                case this.floorIndex: //Floor
+                    break;
+                case this.rockIndex: //Rock
+                    break;
+                case this.wallIndex: //Wall
+                    if (this.countAdjacentsMoore(this.map, l, c, this.floorIndex, 1) >= 4 && this.countAdjacentsMoore(this.map, l, c, this.rockIndex, 1) === 0) {
+                        this.map2[l][c] = this.floorIndex;
+                        count++;
+                    }
+                    else{
+                        if(this.countAdjacentsMoore(this.map, l, c, this.rockIndex, 1) === 0){
+                            this.map2[l][c] = this.floorIndex;
+                            count++;
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+    return count;
+}
+
 CellularAutomata.prototype.scenarioReset = function (tp){
     this.map  = this.initMap(this.HS, this.WS, tp);
     this.map2 = this.initMap(this.HS, this.WS, tp);
@@ -122,5 +224,3 @@ CellularAutomata.prototype.scenarioRandomWall = function (){
       matrix.splice(matrixIndexRandom, 1);
     }
 }
-
-

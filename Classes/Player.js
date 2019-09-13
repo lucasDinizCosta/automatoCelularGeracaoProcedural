@@ -9,6 +9,8 @@ function Player() {
   this.down = false;
   this.right = false;
   this.left = false;
+  this.ctrl = false;
+  this.space = false;
 }
 
 Player.prototype.mover = function(dt){

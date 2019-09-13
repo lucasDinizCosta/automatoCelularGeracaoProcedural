@@ -30,13 +30,18 @@
 
     <script>
     var tela = document.getElementById("canvas");
-	  tela.style.border = '2px solid #000';                       //Colocando borda no canvas
+    tela.style.border = '2px solid #000';                       //Colocando borda no canvas
     var ctx = tela.getContext("2d");
-    var player = new Player();
+    
+    var anterior = dt = 0;
+    var estado = 1;
+
+    //Proporções do mapa
     var widthMap = 100;//19;
     var heightMap = 100;//11;
     var sizeMap = 32;//32;
-    
+      
+    var player = new Player();
     var levelAtual = new Level(widthMap, heightMap, sizeMap);
     var levels = [];
     levels.push(new Level(widthMap, heightMap, sizeMap));
@@ -45,12 +50,11 @@
     levels[0].setTempo(15,125);
     levels[1].setTempo(60,125);
     levels[2].setTempo(30,125);
-    //levels[0].mapa = new Map(19, 11, 32);
-    //console.log(levels[0].mapa);
-    var geraFase = new CellularAutomata(heightMap, widthMap, 1, 0.5, 4, 0, 5, 1);//new CellularAutomata(heightMap, widthMap, 2, 0.5, 13, 0, 5, 1);
+    var geraFase = new CellularAutomata(heightMap, widthMap, 1, 0.50, 4, 0, 5, 1);//new CellularAutomata(heightMap, widthMap, 2, 0.5, 13, 0, 5, 1);
     geraFase.scenarioRandomWall();
-    geraFase.fullstep(2);
-    geraFase.fullstep(2);
+    geraFase.fullstep(2); 
+    geraFase.fullstep(6);
+    geraFase.countRooms();
     levels[0].setMatrixMap(geraFase.map);
     levels[0].startX = 32 + player.sprite.s;
     levels[0].startGX = 0;
@@ -60,12 +64,11 @@
     levels[0].finishGX = 17;
     levels[0].finishGY = 9;
     
-    var anterior = dt = 0;
 	  var tempoGameOver = 2;
     var tempoTransicaoFase = 1;     //Tempo que decai um pouco da barra
+    var playerVel = 400; //150
 
-    var estado = 1;
-    var playerVel = 150;
+    var escala = 0.1;
 
     levelAtual.clonarLevel(levels[0]);
     player.sprite.map = levelAtual.mapa;
@@ -79,15 +82,8 @@
     imageLibrary.load("sandGround", "Imagens/SandGround.png");
     imageLibrary.load("sandBlock", "Imagens/Minecraft/Sand.PNG");
     imageLibrary.load("tijoloEspinho", "Imagens/tijolo-espinho.png");
-    imageLibrary.load("BG", "Imagens/BG.jpg");
 
     var audioLibrary = new AudioLibrary();
-    audioLibrary.load("hurt", "Audios/classic_hurt.ogg");
-    audioLibrary.load("explode", "Audios/explode1.ogg");
-    audioLibrary.load("teleporte", "Audios/TELEPORT.WAV");
-    audioLibrary.load("sandWalk", "Audios/sand1.ogg");
-    audioLibrary.load("treasureCollect", "Audios/treasureCollect.ogg");
-    audioLibrary.load("BGM", "Audios/Maze_Runner-Theme.mp3");
 
     //Tempo
     var tempoRectExt = new Sprite();
@@ -141,8 +137,8 @@
               }*/
               player.mover(dt);
               ctx.save();
-              ctx.scale(0.2,0.2);
-              ctx.translate(-player.sprite.x + canvas.width/2, -player.sprite.y+ canvas.height/2);
+              ctx.scale(escala,escala);
+              ctx.translate(-player.sprite.x + canvas.width/4, -player.sprite.y+ canvas.height/2);
               levelAtual.desenhar(ctx);
               player.desenhar(ctx);
               ctx.restore();
@@ -162,52 +158,14 @@
               ctx.strokeText("Level: "+ player.levelNumber, 545, 20);
               ctx.fillText("Level: "+ player.levelNumber, 545, 20);
 
-              /*if(tempoTransicaoFase <= 0){
-                tempoTransicaoFase = 1;
-                tempoRectInt.w = tempoRectInt.w - levelAtual.taxaDiminuicaoTempo;
-                if(tempoRectInt.w <= 0){
-                  tempoRectInt.w = 0;
-                }
-              }
-              else if(tempoTransicaoFase > 0 && tempoRectInt.w > 0){
-                  tempoTransicaoFase = tempoTransicaoFase - dt;
-              }
-              if(levelAtual.mapa.cell[player.sprite.gy][player.sprite.gx]===4){
-                teasuresCollected++;
-                audioLibrary.play("treasureCollect");
-                levelAtual.mapa.cell[player.sprite.gy][player.sprite.gx] = 0;
-              }
-              if(tempoRectInt.w===0||levelAtual.mapa.cell[player.sprite.gy][player.sprite.gx]===6){
-                if(audioLibrary.isPlaying("BGM")){
-                  audioLibrary.stop("BGM");
-                }
-                if(levelAtual.mapa.cell[player.sprite.gy][player.sprite.gx]===6){
-                  audioLibrary.play("hurt");
-                  audioLibrary.play("explode");
-                  levelAtual.mapa.cell[player.sprite.gy][player.sprite.gx] = 0;
-                  player.vidas = player.vidas - 1;
-                }
-                if(tempoRectInt.w===0){
-                  tempoRectInt.w = 125;
-                  player.vidas = player.vidas - 1;
-                }
-                if(player.vidas === 0){   //GameOver
-                  estado = 2;
-                }
-                player.sprite.x = levelAtual.startX;
-                player.sprite.y = levelAtual.startY;
-              }
-              if(teasuresCollected===levelAtual.tesouros &&(player.sprite.gx===levelAtual.finishGX)&&(player.sprite.gy===levelAtual.finishGY)){
-                estado = 4;
-              }*/
-
               break;
             case 1:         //Main menu
               limparTela();
-              imageLibrary.drawSize(ctx, "BG", 0, 0, tela.width, tela.height); // Imagem do fundo
-              if(audioLibrary.isPlaying("BGM")==false){
+              //imageLibrary.drawSize(ctx, "BG", 0, 0, tela.width, tela.height); // Imagem do fundo
+              //if(audioLibrary.isPlaying("BGM")==false){
                 //audioLibrary.play("BGM");
-              }
+              //}
+              limparTela();
               ctx.fillStyle = wordsColor;
               ctx.textAlign = alignMainMenu;
               ctx.lineWidth = 2;
@@ -237,7 +195,7 @@
               break;
             case 2:
               limparTela();
-              audioLibrary.stop("BGM");
+              //audioLibrary.stop("BGM");
               ctx.fillStyle = "white";
               ctx.textAlign = alignMainMenu;
               ctx.font = "40px Arial Black";
@@ -311,18 +269,18 @@
       if (estado == 0) {
         switch (e.keyCode) {
           case 37:
-            if(player.up === false && player.down === false && player.right === false){
+            //if(player.up === false && player.down === false && player.right === false){
               player.sprite.vx = -playerVel;
               //player.sprite.gx = player.sprite.gx - 1;
               player.left = true;
-            }
+            //}
             break;
           case 39:
-            if(player.up === false && player.down === false && player.left === false){
+            //if(player.up === false && player.down === false && player.left === false){
               player.sprite.vx = +playerVel;
               //player.sprite.gx = player.sprite.gx + 1;
               player.right = true;
-            }
+            //}
 
             break;
           case 32:  //Espaco  -- Ativa teleporte
@@ -338,18 +296,18 @@
             }
             break;
           case 38:
-            if(player.left === false && player.down === false && player.right === false){
+            //if(player.left === false && player.down === false && player.right === false){
               player.sprite.vy = -playerVel;
               //player.sprite.gy = player.sprite.gy - 1;
               player.up = true;
-            }
+            //}
             break;
           case 40:
-            if(player.left === false && player.up === false && player.right === false){
+            //if(player.left === false && player.up === false && player.right === false){
               player.sprite.vy = +playerVel;
               //player.sprite.gy = player.sprite.gy + 1;
               player.down = true;
-            }
+            //}
             break;
           case 27:      //Pressionar o Esq
             stateMainMenu = 0;
