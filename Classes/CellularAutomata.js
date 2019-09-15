@@ -30,25 +30,39 @@ CellularAutomata.prototype.fullstep = function(steps = 2){
 
 CellularAutomata.prototype.countRooms = function(){
     let auxMatrix = this.initMap(this.HS, this.WS, -1);
-    let room = 1;
+    let auxMatrixVisited = [];
+    let room = 0;
+    let roomFloors = 0;
+    let caveArea = 0;
     for(let i = 0; i < this.HS; i++){
+        auxMatrixVisited[i] = [];
         for(let j = 0; j < this.WS; j++){
+            auxMatrixVisited[i][j] = false;
             if(this.map[i][j] !== this.floorIndex){
                 auxMatrix[i][j] = -2;   //Cave area
+                caveArea++;
+            }
+            else{
+                auxMatrix[i][j] = -1;   //rooms area
+                roomFloors++;
             }
         }
     }
+    //this.visitCells(auxMatrix,  this.map, 0, 0, this.floorIndex, 1, room);
     for(let i = 0; i < this.HS; i++){
         for(let j = 0; j < this.WS; j++){
             if(auxMatrix[i][j] === -1){
                 //auxMatrix[i][j] = -2;   //Cave area
-                this.visitCells(auxMatrix, this.map, i, j, this.floorIndex, 1, room);
                 room++;
+                this.visitCells(auxMatrix, this.map, i, j, this.floorIndex, 1, room);
             }
         }
     }
     console.log("Number of rooms: " + room);
-    let text = "";
+    console.log("Number of roomFloors: " + roomFloors);
+    console.log("Number of caveArea: " + caveArea);
+    console.log("Total blocks: " + this.HS*this.WS);
+    /*let text = "";
     for(let i = 0; i < this.HS; i++){
         text = text + "auxMatrix ["+i+"]: {";
         for(let j = 0; j < this.WS; j++){
@@ -56,7 +70,7 @@ CellularAutomata.prototype.countRooms = function(){
         }
         text = text + " }\n"
     }
-    console.log(text);
+    console.log(text);*/
 }
 
 /*function visit(cell) {
@@ -69,24 +83,34 @@ CellularAutomata.prototype.countRooms = function(){
     }
 }*/
 
-CellularAutomata.prototype.visitCells = function(auxMatrix, mapx, y, x, tp, d = 1, indexArea){   //Conta as células de um tipo específico ao redor da célula (x,y)
-    if(auxMatrix[y][x] === indexArea){  //Cell is visited??
+CellularAutomata.prototype.visitCells = function(auxMatrix, mapx, y, x, tp, d = 1, indexArea){   //visita as celulas visinhas de maneira recursiva e atribui o código da sala correspondente 
+    /*********************************************
+     * 
+     * Algoritmo Flood fill:
+     * https://en.wikipedia.org/wiki/Flood_fill
+     * 
+    ***********************************************/
+    
+    if(auxMatrix[y][x] === indexArea){  //Célula com a "cor" ou "indice da sala" correspondente ao indexArea
         return;
     }
-    auxMatrix[y][x] = indexArea;    //Set cell is visited
-    const mL = Math.max(y - d, 0);
-    const ML = Math.min(y + d, mapx.length-1);
-    const mC = Math.max(x - d, 0);
-    const MC = Math.min(x + d, mapx[0].length-1);
-    for (let l = mL; l <= ML; l++) {
-        for (let c = mC; c <= MC; c++) {
-            if(l !== y && c !== x){
-                if (mapx[l][c] === tp) {
-                    auxMatrix[l][c] = indexArea;
-                    this.visitCells(auxMatrix, mapx, l, c, tp, d, indexArea);
-                }
-            }
-        }
+    if(auxMatrix[y][x] === -1){         //Não mapeado ainda
+        auxMatrix[y][x] = indexArea;    //Set cell is visited
+    }
+    else{                               //Ou foi mapeado ou a celula é Wall/Rock
+        return;
+    }
+    if(y - 1 >= 0){
+        this.visitCells(auxMatrix, mapx, y - 1, x, tp, d, indexArea);
+    }
+    if(y + 1 < this.HS){
+        this.visitCells(auxMatrix, mapx, y + 1, x, tp, d, indexArea);
+    }
+    if(x - 1 >= 0){
+        this.visitCells(auxMatrix, mapx, y, x - 1, tp, d, indexArea);
+    }
+    if(x + 1 < this.WS){
+        this.visitCells(auxMatrix, mapx, y, x + 1, tp, d, indexArea);
     }
 }
 

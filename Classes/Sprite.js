@@ -24,10 +24,6 @@ function Sprite() {
   this.borderSize = 1;
 };
 
-Sprite.prototype.teste = function(){
-  console.log("Teste");
-}
-
 Sprite.prototype.mover = function (dt) {
   this.gx = Math.floor(this.x/this.map.s);
   this.gy = Math.floor(this.y/this.map.s);
@@ -42,54 +38,55 @@ Sprite.prototype.mover = function (dt) {
     this.y = this.gy*this.map.s + this.s;
   */
 
-  if(this.gx === 0 || this.gx === (this.map.w - 1))  //Trata casos extremos do mapa =>{gx <= 0, gx >= gxMapa}
-  {
-    if(this.gx === 0){
-      if(this.vx < 0){
-        var limite = (this.gx)*this.map.s;
-        var maxDx = limite-(this.x-this.s/2);
-        var Dx = this.vx*dt;
-        this.x += Math.max(Dx, maxDx);
-      } else if( this.vx > 0 && this.map.cell[this.gy][this.gx+1]===1){
-        var limite = (this.gx+1)*this.map.s;
-        var maxDx = limite-(this.x+this.s/2);
-        var Dx = this.vx*dt;
-        this.x += Math.min(Dx, maxDx);
-      }else {
-        this.x += this.vx*dt;
-      }
-    }
-    else{
-      if(this.vx < 0 && this.map.cell[this.gy][this.gx-1]===1){
-        var limite = (this.gx)*this.map.s;
-        var maxDx = limite-(this.x-this.s/2);
-        var Dx = this.vx*dt;
-        this.x += Math.max(Dx, maxDx);
-      } else if( this.vx > 0){
-        var limite = (this.gx+1)*this.map.s;
-        var maxDx = limite-(this.x+this.s/2);
-        var Dx = this.vx*dt;
-        this.x += Math.min(Dx, maxDx);
-      }else {
-        this.x += this.vx*dt;
-      }
-    }
-  }
-  else{
-    if(this.vx < 0 && this.map.cell[this.gy][this.gx-1]===1){
-      var limite = (this.gx)*this.map.s;
-      var maxDx = limite-(this.x-this.s/2);
-      var Dx = this.vx*dt;
-      this.x += Math.max(Dx, maxDx);
-    } else if( this.vx > 0 && this.map.cell[this.gy][this.gx+1]===1){
-      var limite = (this.gx+1)*this.map.s;
-      var maxDx = limite-(this.x+this.s/2);
-      var Dx = this.vx*dt;
-      this.x += Math.min(Dx, maxDx);
-    }else {
-      this.x += this.vx*dt;
-    }
-  }
+ if(this.gx === 0 || this.gx === (this.map.w - 1))  //Trata casos extremos do mapa =>{gx <= 0, gx >= gxMapa}
+ {
+   if(this.gx === 0){
+     if(this.vx < 0){
+       var limite = (this.gx)*this.map.s;
+       var maxDx = limite-(this.x-this.s/2);
+       var Dx = this.vx*dt;
+       this.x += Math.max(Dx, maxDx);
+     } else if( this.vx > 0 && this.map.cell[this.gy][this.gx+1]===1){
+       var limite = (this.gx+1)*this.map.s;
+       var maxDx = limite-(this.x+this.s/2);
+       var Dx = this.vx*dt;
+       this.x += Math.min(Dx, maxDx);
+     }else {
+       this.x += this.vx*dt;
+     }
+   }
+   else{
+     if(this.vx < 0 && this.map.cell[this.gy][this.gx-1]===1){
+       var limite = (this.gx)*this.map.s;
+       var maxDx = limite-(this.x-this.s/2);
+       var Dx = this.vx*dt;
+       this.x += Math.max(Dx, maxDx);
+     } else if( this.vx > 0){
+       var limite = (this.gx+1)*this.map.s;
+       var maxDx = limite-(this.x+this.s/2);
+       var Dx = this.vx*dt;
+       this.x += Math.min(Dx, maxDx);
+     }else {
+       this.x += this.vx*dt;
+     }
+   }
+ }
+ else{
+   if(this.vx < 0 && this.map.cell[this.gy][this.gx-1]===1){
+     var limite = (this.gx)*this.map.s;
+     var maxDx = limite-(this.x-this.s/2);
+     var Dx = this.vx*dt;
+     this.x += Math.max(Dx, maxDx);
+   } else if( this.vx > 0 && this.map.cell[this.gy][this.gx+1]===1){
+     var limite = (this.gx+1)*this.map.s;
+     var maxDx = limite-(this.x+this.s/2);
+     var Dx = this.vx*dt;
+     this.x += Math.min(Dx, maxDx);
+   }else {
+     this.x += this.vx*dt;
+   }
+ }
+
 
   /*if(this.vx === 0 && this.map.cell[this.gy][this.gx+1]!==0 && (this.x*this.s > (this.gx)*this.map.s)){
     console.log("FOI");
@@ -161,9 +158,10 @@ Sprite.prototype.mover = function (dt) {
     var Dx = this.vx*dt;
     this.x += Math.min(Dx, maxDx);
   }*/
+  /*
   if(this.map.cell[this.gy][this.gx] === 5){    //Substitui o cenário já descoberto
     this.map.cell[this.gy][this.gx] = 0;
-  }
+  }*/
 
 
 

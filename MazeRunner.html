@@ -40,6 +40,8 @@
     var widthMap = 100;//19;
     var heightMap = 100;//11;
     var sizeMap = 32;//32;
+
+    var escala = 0.10;
       
     var player = new Player();
     var levelAtual = new Level(widthMap, heightMap, sizeMap);
@@ -68,7 +70,6 @@
     var tempoTransicaoFase = 1;     //Tempo que decai um pouco da barra
     var playerVel = 400; //150
 
-    var escala = 0.1;
 
     levelAtual.clonarLevel(levels[0]);
     player.sprite.map = levelAtual.mapa;
@@ -157,7 +158,6 @@
               ctx.fillText("Tesouros: "+ teasuresCollected, 430, 20);
               ctx.strokeText("Level: "+ player.levelNumber, 545, 20);
               ctx.fillText("Level: "+ player.levelNumber, 545, 20);
-
               break;
             case 1:         //Main menu
               limparTela();
@@ -265,7 +265,7 @@
    }
 
     addEventListener("keydown", function(e){
-      console.log(e.keyCode);
+      //console.log(e.keyCode);
       if (estado == 0) {
         switch (e.keyCode) {
           case 37:
