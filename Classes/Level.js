@@ -26,6 +26,9 @@ Level.prototype.setTempo = function(tempo, larguraBarra){
 Level.prototype.setMatrixMap = function(matrix){
   this.mapa.copyDates(matrix);
 };
+Level.prototype.setMatrixMap2 = function(matrix, L,  C){
+  this.mapa.copyDataInto(matrix, L, C);
+};
 
 Level.prototype.clonarLevel= function(level){
   this.mapa.w = level.mapa.w;

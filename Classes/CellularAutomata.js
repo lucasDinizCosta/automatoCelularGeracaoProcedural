@@ -27,6 +27,12 @@ CellularAutomata.prototype.fullstep = function(steps = 2){
     this.gameOfWallRulesAutomataFinalStepCleanWalls();
     this.toggleMaps();
 }
+CellularAutomata.prototype.bla = function(){
+    this.gameOfWallRulesAutomataFinalStep();
+    this.toggleMaps();    
+    this.gameOfWallRulesAutomataFinalStepCleanWalls();
+    this.toggleMaps();
+}
 
 CellularAutomata.prototype.countRooms = function(){
     let auxMatrix = this.initMap(this.HS, this.WS, -1);

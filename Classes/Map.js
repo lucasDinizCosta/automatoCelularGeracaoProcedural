@@ -15,12 +15,26 @@ Map.prototype.copyDates = function (matrix){
   this.cell = JSON.parse(JSON.stringify(matrix)); //Copia matriz
 }
 
+Map.prototype.copyDataInto = function (matrix, L, C){
+  
+  console.log(matrix);
+  //if(!this.cell) this.cell = [];
+  for(var l = 0; l<matrix.length-1; l++){
+    //this.cell[l] = [];
+    for(var c = 0; c<matrix[0].length-1; c++){
+      this.cell[l+L][c+C] = 
+      matrix[l][c];
+    }
+  }
+}
+
+
 Map.prototype.desenhar = function (ctx) {
   ctx.lineWidth = 2;
-  for (var l = 0; l < this.h; l++) {
-    for (var c = 0; c < this.w; c++) {
+  for (var l = Math.max(0,player.sprite.gy-MAPARAEA); l < Math.min(this.h, player.sprite.gy+MAPARAEA); l++) {
+    for (var c = Math.max(0,player.sprite.gx-MAPARAEA); c < Math.min(this.w, player.sprite.gx+MAPARAEA); c++) {
       if(this.cell[l][c] === 0){                  //Vazio
-        imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
+        imageLibrary.drawSize(ctx, "sandBlock", c*this.s, l*this.s, this.s, this.s);
       } else if(this.cell[l][c] === 1){          //Bloqueado
         imageLibrary.drawSize(ctx, "brickRed", c*this.s, l*this.s, this.s, this.s);
       } else if(this.cell[l][c] === 2){           //Local de saida
@@ -48,7 +62,7 @@ Map.prototype.desenhar = function (ctx) {
         ctx.strokeRect(c*this.s + this.s/3, l*this.s + this.s/3, this.s/3, this.s/3);
       } else if(this.cell[l][c] === 5){             //Terreno vazio
         imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
-        imageLibrary.drawClipSize(ctx, "sandBlock", 0, 0, 80, 80, c*this.s, l*this.s, this.s, this.s);
+        imageLibrary.drawClipSize(ctx, "sandGround", 0, 0, 80, 80, c*this.s, l*this.s, this.s, this.s);
       } else if(this.cell[l][c] === 6){             //Terreno com mina
         imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
         imageLibrary.drawClipSize(ctx, "sandBlock", 0, 0, 80, 80, c*this.s, l*this.s, this.s, this.s);
