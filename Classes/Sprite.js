@@ -37,58 +37,58 @@ Sprite.prototype.mover = function (dt) {
     this.x = this.gx*this.map.s + this.s;       //Andando por grade
     this.y = this.gy*this.map.s + this.s;
   */
+  if(debugMode === 0){
+    if(this.gx === 0 || this.gx === (this.map.w - 1))  //Trata casos extremos do mapa =>{gx <= 0, gx >= gxMapa}
+    {
+      if(this.gx === 0){
+        if(this.vx < 0){
+          var limite = (this.gx)*this.map.s;
+          var maxDx = limite-(this.x-this.s/2);
+          var Dx = this.vx*dt;
+          this.x += Math.max(Dx, maxDx);
+        } else if( this.vx > 0 && this.map.cell[this.gy][this.gx+1]===1){
+          var limite = (this.gx+1)*this.map.s;
+          var maxDx = limite-(this.x+this.s/2);
+          var Dx = this.vx*dt;
+          this.x += Math.min(Dx, maxDx);
+        }else {
+          this.x += this.vx*dt;
+        }
+      }
+      else{
+        if(this.vx < 0 && this.map.cell[this.gy][this.gx-1]===1){
+          var limite = (this.gx)*this.map.s;
+          var maxDx = limite-(this.x-this.s/2);
+          var Dx = this.vx*dt;
+          this.x += Math.max(Dx, maxDx);
+        } else if( this.vx > 0){
+          var limite = (this.gx+1)*this.map.s;
+          var maxDx = limite-(this.x+this.s/2);
+          var Dx = this.vx*dt;
+          this.x += Math.min(Dx, maxDx);
+        }else {
+          this.x += this.vx*dt;
+        }
+      }
+    }
+    else{
+      if(this.vx < 0 && this.map.cell[this.gy][this.gx-1]===1){
+        var limite = (this.gx)*this.map.s;
+        var maxDx = limite-(this.x-this.s/2);
+        var Dx = this.vx*dt;
+        this.x += Math.max(Dx, maxDx);
+      } else if( this.vx > 0 && this.map.cell[this.gy][this.gx+1]===1){
+        var limite = (this.gx+1)*this.map.s;
+        var maxDx = limite-(this.x+this.s/2);
+        var Dx = this.vx*dt;
+        this.x += Math.min(Dx, maxDx);
+      }else {
+        this.x += this.vx*dt;
+      }
+    }
 
- if(this.gx === 0 || this.gx === (this.map.w - 1))  //Trata casos extremos do mapa =>{gx <= 0, gx >= gxMapa}
- {
-   if(this.gx === 0){
-     if(this.vx < 0){
-       var limite = (this.gx)*this.map.s;
-       var maxDx = limite-(this.x-this.s/2);
-       var Dx = this.vx*dt;
-       this.x += Math.max(Dx, maxDx);
-     } else if( this.vx > 0 && this.map.cell[this.gy][this.gx+1]===1){
-       var limite = (this.gx+1)*this.map.s;
-       var maxDx = limite-(this.x+this.s/2);
-       var Dx = this.vx*dt;
-       this.x += Math.min(Dx, maxDx);
-     }else {
-       this.x += this.vx*dt;
-     }
-   }
-   else{
-     if(this.vx < 0 && this.map.cell[this.gy][this.gx-1]===1){
-       var limite = (this.gx)*this.map.s;
-       var maxDx = limite-(this.x-this.s/2);
-       var Dx = this.vx*dt;
-       this.x += Math.max(Dx, maxDx);
-     } else if( this.vx > 0){
-       var limite = (this.gx+1)*this.map.s;
-       var maxDx = limite-(this.x+this.s/2);
-       var Dx = this.vx*dt;
-       this.x += Math.min(Dx, maxDx);
-     }else {
-       this.x += this.vx*dt;
-     }
-   }
- }
- else{
-   if(this.vx < 0 && this.map.cell[this.gy][this.gx-1]===1){
-     var limite = (this.gx)*this.map.s;
-     var maxDx = limite-(this.x-this.s/2);
-     var Dx = this.vx*dt;
-     this.x += Math.max(Dx, maxDx);
-   } else if( this.vx > 0 && this.map.cell[this.gy][this.gx+1]===1){
-     var limite = (this.gx+1)*this.map.s;
-     var maxDx = limite-(this.x+this.s/2);
-     var Dx = this.vx*dt;
-     this.x += Math.min(Dx, maxDx);
-   }else {
-     this.x += this.vx*dt;
-   }
- }
 
-
-  /*if(this.vx === 0 && this.map.cell[this.gy][this.gx+1]!==0 && (this.x*this.s > (this.gx)*this.map.s)){
+    /*if(this.vx === 0 && this.map.cell[this.gy][this.gx+1]!==0 && (this.x*this.s > (this.gx)*this.map.s)){
     console.log("FOI");
     var limite = (this.gx+1)*this.map.s;
     var maxDx = limite-(this.x+this.s/2);
@@ -101,10 +101,41 @@ Sprite.prototype.mover = function (dt) {
 
   
 
-  if(this.gy === 0 || this.gy === (this.map.h - 1))  //Trata casos extremos do mapa =>{gy <= 0, gy >= gyMapa}
-  {
-    if(this.gy === 0){
-      if(this.vy < 0){
+    if(this.gy === 0 || this.gy === (this.map.h - 1))  //Trata casos extremos do mapa =>{gy <= 0, gy >= gyMapa}
+    {
+      if(this.gy === 0){
+        if(this.vy < 0){
+          var limite = (this.gy)*this.map.s;
+          var maxDy = limite-(this.y-this.s/2);
+          var Dy = (this.vy)*dt;
+          this.y += Math.max(Dy, maxDy);
+        } else if((this.vy) >0 && this.map.cell[this.gy+1][this.gx]===1){
+          var limite = (this.gy+1)*this.map.s;
+          var maxDy = limite-(this.y+this.s/2);
+          var Dy = (this.vy)*dt;
+          this.y += Math.min(Dy, maxDy);
+        }else {
+          this.y += (this.vy)*dt;
+        }
+      }
+      else{
+        if((this.vy)<0 && this.map.cell[this.gy-1][this.gx]===1){
+          var limite = (this.gy)*this.map.s;
+          var maxDy = limite-(this.y-this.s/2);
+          var Dy = (this.vy)*dt;
+          this.y += Math.max(Dy, maxDy);
+        } else if((this.vy) > 0){
+          var limite = (this.gy+1)*this.map.s;
+          var maxDy = limite-(this.y+this.s/2);
+          var Dy = (this.vy)*dt;
+          this.y += Math.min(Dy, maxDy);
+        }else {
+          this.y += (this.vy)*dt;
+        }
+      }
+    }
+    else{
+      if((this.vy)<0 && this.map.cell[this.gy-1][this.gx]===1){
         var limite = (this.gy)*this.map.s;
         var maxDy = limite-(this.y-this.s/2);
         var Dy = (this.vy)*dt;
@@ -118,37 +149,15 @@ Sprite.prototype.mover = function (dt) {
         this.y += (this.vy)*dt;
       }
     }
-    else{
-      if((this.vy)<0 && this.map.cell[this.gy-1][this.gx]===1){
-        var limite = (this.gy)*this.map.s;
-        var maxDy = limite-(this.y-this.s/2);
-        var Dy = (this.vy)*dt;
-        this.y += Math.max(Dy, maxDy);
-      } else if((this.vy) > 0){
-        var limite = (this.gy+1)*this.map.s;
-        var maxDy = limite-(this.y+this.s/2);
-        var Dy = (this.vy)*dt;
-        this.y += Math.min(Dy, maxDy);
-      }else {
-        this.y += (this.vy)*dt;
-      }
-    }
   }
-  else{
-    if((this.vy)<0 && this.map.cell[this.gy-1][this.gx]===1){
-      var limite = (this.gy)*this.map.s;
-      var maxDy = limite-(this.y-this.s/2);
-      var Dy = (this.vy)*dt;
-      this.y += Math.max(Dy, maxDy);
-    } else if((this.vy) >0 && this.map.cell[this.gy+1][this.gx]===1){
-      var limite = (this.gy+1)*this.map.s;
-      var maxDy = limite-(this.y+this.s/2);
-      var Dy = (this.vy)*dt;
-      this.y += Math.min(Dy, maxDy);
-    }else {
-      this.y += (this.vy)*dt;
-    }
+  else{ //Debug mode => Colision is not detected
+    this.x += (this.vx)*dt;
+    this.y += (this.vy)*dt;
   }
+ 
+
+
+  
 
   /*if((this.vx === 0 && this.map.cell[this.gy][this.gx+1]!==0 && (this.x+this.s/2 > (this.gx+1)*this.map.s))
     ||(this.vx === 0 && this.map.cell[this.gy][this.gx+1]!==0 && (this.x+this.s/2 > (this.gx+1)*this.map.s))){ //Lado esquerdo

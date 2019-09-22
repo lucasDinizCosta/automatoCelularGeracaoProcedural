@@ -5,11 +5,12 @@
   <meta charset="utf-8">
   <title>Trabalho de conclusão de curso: geração procedural</title>
   <script src="Classes/Map.js"></script>
+  <script src="Classes/Room.js"></script>
   <script src="Classes/Level.js"></script>
   <script src="Classes/Player.js"></script>
   <script src="Classes/Sprite.js"></script>
   <script src="Classes/Teleporter.js"></script>
-  <script src="Classes/ImageLibrary.js" charset="utf-8"></script>
+  <script src="Classes/ImageLibrary.js"></script>
   <script src="Classes/AudioLibrary.js" charset="utf-8"></script>
   <script src="Classes/CellularAutomata.js" charset="utf-8"></script>
   <style>
@@ -54,6 +55,7 @@
     var MAPA_AREA = 160;
     var escala = 0.10;
     var K = 1;
+    var debugMode = 1;  //  0 => Colision is detected, 1 => colision is free
 
     var player = new Player();
     var levelAtual = new Level(widthMap, heightMap, sizeMap);
@@ -71,10 +73,11 @@
     for(var k = 0; k<K; k++){
       geraFase.scenarioRandomWall();
       geraFase.fullstep(2);
-      geraFase.fullstep(6);
+      //geraFase.fullstep(6);
       levels[0].setMatrixMap2(geraFase.map, Math.floor(k/3)*40, (k%3)*40);
     }
     geraFase.countRooms();
+    //geraFase.filterRooms();
 
 
     levels[0].startX = 32 + player.sprite.s;

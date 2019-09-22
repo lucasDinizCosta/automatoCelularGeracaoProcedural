@@ -20,13 +20,16 @@ CellularAutomata.prototype.fullstep = function(steps = 2){
     }
     this.gameOfWallRulesAutomataFinalStep();
     this.toggleMaps();
-    /*while(this.gameOfWallRulesAutomataFinalStepCleanWalls() !== 0){ //Limpa as paredes espaçadas
+    while(this.gameOfWallRulesAutomataFinalStepCleanWalls() !== 0){ //Limpa as paredes espaçadas
         this.toggleMaps();
-    }*/
+    }
     
-    this.gameOfWallRulesAutomataFinalStepCleanWalls();
+    //this.gameOfWallRulesAutomataFinalStepCleanWalls();
+    //this.toggleMaps();
+    this.gameOfWallRulesAutomataFinalStep();
     this.toggleMaps();
 }
+
 CellularAutomata.prototype.bla = function(){
     this.gameOfWallRulesAutomataFinalStep();
     this.toggleMaps();    
@@ -65,19 +68,25 @@ CellularAutomata.prototype.countRooms = function(){
         }
     }
     room = room - 1;        //Corrige o ultimo acrescimo desnecessário
-    sizeRooms = [room];
-    for(let i = 0; i < this.HS; i++){
+    for(let i = 0; i < room; i++){       //Limpa os contadores
+        sizeRooms.push(0);
+    }
+    console.log(sizeRooms.length + " -- sizeRooms");
+
+    for(let i = 0; i < this.HS; i++){               //Incrementa os contadores
         for(let j = 0; j < this.WS; j++){
             if(auxMatrix[i][j] > 0){
-                sizeRooms[auxMatrix[i][j] - 1];
+                sizeRooms[auxMatrix[i][j] - 1] = sizeRooms[auxMatrix[i][j] - 1] + 1;
             }
         }
     }
-    console.log(sizeRooms);
-    let text = "Size of rooms: {";
-    for(let i = 0; i < room; i++){
 
+    let text = "Size of rooms: {";
+    for(let i = 0; i < sizeRooms.length; i++){
+        text += "("+ i + " , " + sizeRooms[i] + " ) ; ";
     }
+    text += "}"
+    console.log(text);
     console.log("Number of rooms: " + room);
     console.log("Number of roomFloors: " + roomFloors);
     console.log("Number of caveArea: " + caveArea);
@@ -192,7 +201,13 @@ CellularAutomata.prototype.gameOfWallRulesAutomataFinalStep = function (){
                 case this.floorIndex: //Floor
                     break;
                 case this.rockIndex: //Rock
-                    if (this.countAdjacentsMoore(this.map, l, c, this.floorIndex, 1) >= 1) {  //Celulas rock com 1 vizinho chão ou mais 
+                    if((l > 0 && l < this.map2.length - 1) && (c > 0 && c < this.map2[0].length - 1)){ //Certifica que walls nas laterais não serão removidos
+                        if (this.countAdjacentsMoore(this.map, l, c, this.floorIndex, 1) >= 1) {  //Celulas rock com 1 vizinho chão ou mais 
+                            this.map2[l][c] = this.wallIndex;
+                        }
+                        
+                    }
+                    else{
                         this.map2[l][c] = this.wallIndex;
                     }
                     break;
@@ -214,23 +229,39 @@ CellularAutomata.prototype.gameOfWallRulesAutomataFinalStepCleanWalls = function
     for (let l = 0; l < this.map2.length; l++) {
         for (let c = 0; c < this.map2[0].length; c++) {
             this.map2[l][c] = this.map[l][c];
-            switch (this.map[l][c]) {
-                case this.floorIndex: //Floor
-                    break;
-                case this.rockIndex: //Rock
-                    break;
-                case this.wallIndex: //Wall
-                    if (this.countAdjacentsMoore(this.map, l, c, this.floorIndex, 1) >= 4 && this.countAdjacentsMoore(this.map, l, c, this.rockIndex, 1) === 0) {
-                        this.map2[l][c] = this.floorIndex;
-                        count++;
-                    }
-                    else{
-                        if(this.countAdjacentsMoore(this.map, l, c, this.rockIndex, 1) === 0){
+            if((l > 0 && l < this.map2.length - 1) && (c > 0 && c < this.map2[0].length - 1)){ //Certifica que walls nas laterais não serão removidos
+                switch (this.map[l][c]) {
+                    case this.floorIndex: //Floor
+                        break;
+                    case this.rockIndex: //Rock
+                        break;
+                    case this.wallIndex: //Wall
+                        if (this.countAdjacentsMoore(this.map, l, c, this.floorIndex, 1) >= 4 && this.countAdjacentsMoore(this.map, l, c, this.rockIndex, 1) === 0) {
                             this.map2[l][c] = this.floorIndex;
                             count++;
                         }
-                    }
-                    break;
+                        else{
+                            if(this.countAdjacentsMoore(this.map, l, c, this.rockIndex, 1) === 0){
+                                this.map2[l][c] = this.floorIndex;
+                                count++;
+                            }
+                        }
+                        break;
+                }
+            }
+            else{
+                switch (this.map[l][c]) {
+                    case this.floorIndex: //Floor
+                        break;
+                    case this.rockIndex: //Rock
+                        break;
+                    case this.wallIndex: //Wall
+                        if (this.countAdjacentsMoore(this.map, l, c, this.wallIndex, 1) >= 3) {
+                            this.map2[l][c] = this.floorIndex;
+                            count++;
+                        }
+                        break;
+                }
             }
         }
     }

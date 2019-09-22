@@ -1,5 +1,6 @@
 function Level(w,h,s) {
   this.mapa = new Map(w,h,s);
+  this.salas = new Room();
   this.tesouros = 0;
   this.minas = 0;
   this.startX = 0;
