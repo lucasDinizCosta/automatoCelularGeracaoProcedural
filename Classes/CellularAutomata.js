@@ -27,10 +27,17 @@ CellularAutomata.prototype.fullstep = function(steps = 2){
     this.gameOfWallRulesAutomataFinalStepCleanWalls();
     this.toggleMaps();
 }
+CellularAutomata.prototype.bla = function(){
+    this.gameOfWallRulesAutomataFinalStep();
+    this.toggleMaps();    
+    this.gameOfWallRulesAutomataFinalStepCleanWalls();
+    this.toggleMaps();
+}
 
 CellularAutomata.prototype.countRooms = function(){
     let auxMatrix = this.initMap(this.HS, this.WS, -1);
     let auxMatrixVisited = [];
+    let sizeRooms = [];
     let room = 0;
     let roomFloors = 0;
     let caveArea = 0;
@@ -52,11 +59,24 @@ CellularAutomata.prototype.countRooms = function(){
     for(let i = 0; i < this.HS; i++){
         for(let j = 0; j < this.WS; j++){
             if(auxMatrix[i][j] === -1){
-                //auxMatrix[i][j] = -2;   //Cave area
                 room++;
                 this.visitCells(auxMatrix, this.map, i, j, this.floorIndex, 1, room);
             }
         }
+    }
+    room = room - 1;        //Corrige o ultimo acrescimo desnecessário
+    sizeRooms = [room];
+    for(let i = 0; i < this.HS; i++){
+        for(let j = 0; j < this.WS; j++){
+            if(auxMatrix[i][j] > 0){
+                sizeRooms[auxMatrix[i][j] - 1];
+            }
+        }
+    }
+    console.log(sizeRooms);
+    let text = "Size of rooms: {";
+    for(let i = 0; i < room; i++){
+
     }
     console.log("Number of rooms: " + room);
     console.log("Number of roomFloors: " + roomFloors);
@@ -72,16 +92,6 @@ CellularAutomata.prototype.countRooms = function(){
     }
     console.log(text);*/
 }
-
-/*function visit(cell) {
-    if cell.marked return;
-    cell.marked = true;
-    foreach neighbor in cell.neighbors {
-        if cell.color == neighbor.color {
-            visit(neighbor)
-        }
-    }
-}*/
 
 CellularAutomata.prototype.visitCells = function(auxMatrix, mapx, y, x, tp, d = 1, indexArea){   //visita as celulas visinhas de maneira recursiva e atribui o código da sala correspondente 
     /*********************************************
