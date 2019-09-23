@@ -11,8 +11,8 @@
   <script src="Classes/Sprite.js"></script>
   <script src="Classes/Teleporter.js"></script>
   <script src="Classes/ImageLibrary.js"></script>
-  <script src="Classes/AudioLibrary.js" charset="utf-8"></script>
-  <script src="Classes/CellularAutomata.js" charset="utf-8"></script>
+  <script src="Classes/AudioLibrary.js"></script>
+  <script src="Classes/CellularAutomata.js"></script>
   <style>
     body {
       padding: 20px;
@@ -57,7 +57,7 @@
     var K = 1;
     var debugMode = 1;  //  0 => Colision is detected, 1 => colision is free
 
-    var player = new Player();
+    var player = new Player(32);
     var levelAtual = new Level(widthMap, heightMap, sizeMap);
     var levels = [];
     levels.push(new Level(widthMap, heightMap, sizeMap));
@@ -77,7 +77,7 @@
       levels[0].setMatrixMap2(geraFase.map, Math.floor(k/3)*40, (k%3)*40);
     }
     geraFase.countRooms();
-    //geraFase.filterRooms();
+    geraFase.filterRooms();
 
 
     levels[0].startX = 32 + player.sprite.s;

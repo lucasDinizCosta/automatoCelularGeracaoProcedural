@@ -10,6 +10,7 @@ function CellularAutomata(HS, WS, MOORE = 1, r = 0.5, totalRock = 5, floorIndex 
     this.wallIndex = wallIndex;
     this.map = this.initMap(this.HS, this.WS, this.floorIndex);
     this.map2 = this.initMap(this.HS, this.WS, this.floorIndex);
+    this.rooms = [];
 }
 
 CellularAutomata.prototype.fullstep = function(steps = 2){
@@ -58,7 +59,7 @@ CellularAutomata.prototype.countRooms = function(){
             }
         }
     }
-    //this.visitCells(auxMatrix,  this.map, 0, 0, this.floorIndex, 1, room);
+
     for(let i = 0; i < this.HS; i++){
         for(let j = 0; j < this.WS; j++){
             if(auxMatrix[i][j] === -1){
@@ -67,16 +68,22 @@ CellularAutomata.prototype.countRooms = function(){
             }
         }
     }
-    room = room - 1;        //Corrige o ultimo acrescimo desnecessário
+
     for(let i = 0; i < room; i++){       //Limpa os contadores
+        this.rooms.push(new Room(i+1));
         sizeRooms.push(0);
     }
+    
     console.log(sizeRooms.length + " -- sizeRooms");
 
     for(let i = 0; i < this.HS; i++){               //Incrementa os contadores
         for(let j = 0; j < this.WS; j++){
             if(auxMatrix[i][j] > 0){
                 sizeRooms[auxMatrix[i][j] - 1] = sizeRooms[auxMatrix[i][j] - 1] + 1;
+                let aux = [];
+                aux.push(i);
+                aux.push(j);
+                this.rooms[auxMatrix[i][j] - 1].addBlock(i, j);
             }
         }
     }
@@ -100,6 +107,17 @@ CellularAutomata.prototype.countRooms = function(){
         text = text + " }\n"
     }
     console.log(text);*/
+}
+
+CellularAutomata.prototype.filterRooms = function(sizeRooms){
+    for(let i = 0; i < this.rooms; i++){
+        if(this.rooms.blocks.size() < size){    //Remove as salas de tamanhos menores que a variavel
+            for(let k = 0; k < this.rooms[i].blocks.size(); k++){
+                this.map[this.rooms[i].blocks[k][0]][this.rooms[i].blocks[k][1]] = this.rockIndex;  //Atribui como rock
+            }
+            this.rooms.splice(i, 1);
+        }
+    }
 }
 
 CellularAutomata.prototype.visitCells = function(auxMatrix, mapx, y, x, tp, d = 1, indexArea){   //visita as celulas visinhas de maneira recursiva e atribui o código da sala correspondente 
@@ -168,6 +186,10 @@ CellularAutomata.prototype.initMap = function(L, C, v) {
     return mapx;
 }
 
+/**
+ * 1º - Padrão descrito no artigo
+ */
+
 CellularAutomata.prototype.gameOfWallRulesAutomata = function (){
     /**
     * Types:
@@ -187,6 +209,11 @@ CellularAutomata.prototype.gameOfWallRulesAutomata = function (){
     }
 }
 
+/**
+ * 2º - Padrão descrito no artigo
+ * Posiciona os walls ao redor das cavernas
+ */
+
 CellularAutomata.prototype.gameOfWallRulesAutomataFinalStep = function (){
     /**
     * Types:
@@ -205,7 +232,6 @@ CellularAutomata.prototype.gameOfWallRulesAutomataFinalStep = function (){
                         if (this.countAdjacentsMoore(this.map, l, c, this.floorIndex, 1) >= 1) {  //Celulas rock com 1 vizinho chão ou mais 
                             this.map2[l][c] = this.wallIndex;
                         }
-                        
                     }
                     else{
                         this.map2[l][c] = this.wallIndex;
@@ -217,6 +243,10 @@ CellularAutomata.prototype.gameOfWallRulesAutomataFinalStep = function (){
         }
     }
 }
+
+/**
+ * Autômato visado para limpar as walls em posições incorretas
+ */
 
 CellularAutomata.prototype.gameOfWallRulesAutomataFinalStepCleanWalls = function (){
     /**
@@ -268,10 +298,19 @@ CellularAutomata.prototype.gameOfWallRulesAutomataFinalStepCleanWalls = function
     return count;
 }
 
+/**
+ * Volta as matrizes do automato para um tipo padrão
+ */
+
 CellularAutomata.prototype.scenarioReset = function (tp){
     this.map  = this.initMap(this.HS, this.WS, tp);
     this.map2 = this.initMap(this.HS, this.WS, tp);
 }
+
+/**
+ * Condição inicial do artigo: Randomiza walls em volta do mapa
+ * e depois aplica os automatos
+ */
 
 CellularAutomata.prototype.scenarioRandomWall = function (){
     this.scenarioReset(this.floorIndex);          //Init with floor completely

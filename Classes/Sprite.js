@@ -1,4 +1,4 @@
-function Sprite() {
+function Sprite(s = 16) {
   //Atibutos da Fisica
   this.x = 0;
   this.vx = 0;
@@ -10,7 +10,7 @@ function Sprite() {
   //Atributos de grade
   this.gx = 0;
   this.gy = 0;
-  this.s = 16;
+  this.s = s;
   this.map;
 
   //Atributos da imagem
@@ -179,17 +179,14 @@ Sprite.prototype.mover = function (dt) {
 Sprite.prototype.desenhar = function (ctx) {
   ctx.save();
   ctx.translate(this.x, this.y);
-  ctx.fillStyle = "white";
+  ctx.fillStyle = "blue";
   ctx.strokeStyle = "red";
   ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
   ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
   ctx.restore();
-  this.desenharCell(ctx);         //Debug mode Grid
-};
-
-Sprite.prototype.desenharCell = function(ctx){
-  ctx.strokeStyle = "white";
-  ctx.strokeRect(this.gx*this.map.s, this.gy*this.map.s, this.map.s, this.map.s)
+  if(debugMode === 1){
+    this.desenharCell(ctx);         //Debug mode Grid
+  }
 };
 
 Sprite.prototype.desenharTempo = function (ctx) {
@@ -221,7 +218,7 @@ Sprite.prototype.impoeLimites = function(x, y, w, h){
 
 Sprite.prototype.desenharCell = function(ctx){
   ctx.strokeStyle = "white";
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 3;
   ctx.strokeRect(this.gx*this.map.s, this.gy*this.map.s, this.map.s, this.map.s)
 };
 
