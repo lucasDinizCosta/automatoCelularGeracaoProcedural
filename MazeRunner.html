@@ -66,6 +66,12 @@
     //levels[0].setTempo(15, 125);
     //levels[1].setTempo(60, 125);
     //levels[2].setTempo(30, 125);
+
+    /**
+      METODO DE SUBMATRIZES
+    */
+    
+    /*
     var geraFase = new CellularAutomata(Math.floor(heightMap / K), Math.floor(widthMap / K), 1, 0.5, 4, 0, 5, 1);//new CellularAutomata(heightMap, widthMap, 2, 0.5, 13, 0, 5, 1);
     // 0 => floor
     // 5 => rock
@@ -77,7 +83,25 @@
       levels[0].setMatrixMap2(geraFase.map, Math.floor(k/3)*40, (k%3)*40);
     }
     geraFase.countRooms();
-    geraFase.filterRooms();
+    geraFase.filterRooms(15);
+    for(var k = 0; k<K; k++){
+      levels[0].setMatrixMap2(geraFase.map, Math.floor(k/3)*40, (k%3)*40);
+    }
+    */
+
+    /**
+      METODO DA MATRIZ TOTAL
+    */
+    var geraFase = new CellularAutomata(heightMap, widthMap, 1, 0.5, 4, 0, 5, 1);//new CellularAutomata(heightMap, widthMap, 2, 0.5, 13, 0, 5, 1);
+    // 0 => floor
+    // 5 => rock
+    // 1 => wall
+    geraFase.scenarioRandomWall();
+    geraFase.fullstep(2);
+    //geraFase.fullstep(6);
+    geraFase.countRooms();
+    geraFase.filterRooms(25);
+    levels[0].setMatrixMap(geraFase.map);
 
 
     levels[0].startX = 32 + player.sprite.s;

@@ -19,7 +19,7 @@ CellularAutomata.prototype.fullstep = function(steps = 2){
         this.toggleMaps();
         steps--;
     }
-    this.gameOfWallRulesAutomataFinalStep();
+    this.gameOfWallRulesAutomataPutWalls();
     this.toggleMaps();
     while(this.gameOfWallRulesAutomataFinalStepCleanWalls() !== 0){ //Limpa as paredes espaçadas
         this.toggleMaps();
@@ -27,7 +27,7 @@ CellularAutomata.prototype.fullstep = function(steps = 2){
     
     //this.gameOfWallRulesAutomataFinalStepCleanWalls();
     //this.toggleMaps();
-    this.gameOfWallRulesAutomataFinalStep();
+    this.gameOfWallRulesAutomataPutWalls();
     this.toggleMaps();
 }
 
@@ -69,28 +69,24 @@ CellularAutomata.prototype.countRooms = function(){
         }
     }
 
-    for(let i = 0; i < room; i++){       //Limpa os contadores
+    for(let i = 0; i < room; i++){                  //Cria o numero de salas correspondentes
         this.rooms.push(new Room(i+1));
-        sizeRooms.push(0);
     }
-    
-    console.log(sizeRooms.length + " -- sizeRooms");
 
     for(let i = 0; i < this.HS; i++){               //Incrementa os contadores
         for(let j = 0; j < this.WS; j++){
             if(auxMatrix[i][j] > 0){
-                sizeRooms[auxMatrix[i][j] - 1] = sizeRooms[auxMatrix[i][j] - 1] + 1;
-                let aux = [];
-                aux.push(i);
-                aux.push(j);
                 this.rooms[auxMatrix[i][j] - 1].addBlock(i, j);
             }
         }
     }
 
     let text = "Size of rooms: {";
-    for(let i = 0; i < sizeRooms.length; i++){
-        text += "("+ i + " , " + sizeRooms[i] + " ) ; ";
+    /*for(let i = 0; i < sizeRooms.length; i++){
+        text += "( R:"+ (i+1) + " , S:" + sizeRooms[i] + " ) ; ";
+    }*/
+    for(let i = 0; i < this.rooms.length; i++){
+        text += "( R:"+ (i+1) + " , S:" + this.rooms[i].blocks.length + " ) ; ";
     }
     text += "}"
     console.log(text);
@@ -109,15 +105,39 @@ CellularAutomata.prototype.countRooms = function(){
     console.log(text);*/
 }
 
-CellularAutomata.prototype.filterRooms = function(sizeRooms){
-    for(let i = 0; i < this.rooms; i++){
-        if(this.rooms.blocks.size() < size){    //Remove as salas de tamanhos menores que a variavel
-            for(let k = 0; k < this.rooms[i].blocks.size(); k++){
-                this.map[this.rooms[i].blocks[k][0]][this.rooms[i].blocks[k][1]] = this.rockIndex;  //Atribui como rock
+CellularAutomata.prototype.filterRooms = function(sizeRoomsMinimal = 10){
+    let count = 0;
+    while(true){
+        count = 0;
+        for(let i = 0; i < this.rooms.length; i++){
+            if(this.rooms[i].blocks.length <= sizeRoomsMinimal){    //Remove as salas de tamanhos menores que a variavel
+                for(let k = 0; k < this.rooms[i].blocks.length; k++){
+                    this.map2[this.rooms[i].blocks[k][0]][this.rooms[i].blocks[k][1]] = this.rockIndex;  //Atribui como rock
+                }
+                count++;
+                this.rooms.splice(i, 1);
             }
-            this.rooms.splice(i, 1);
+        }
+        console.log("rooms after removing: " + this.rooms.length);
+        this.toggleMaps();
+        if(count === 0){
+            break;
         }
     }
+    /*while(this.gameOfWallRulesAutomataFinalStepCleanWalls() !== 0){ //Limpa as paredes espaçadas
+        this.toggleMaps();
+    }*/
+    this.gameOfWallRulesAutomataRemoveWalls();
+    this.toggleMaps();
+    while(this.gameOfWallRulesAutomataFinalStepCleanWalls() !== 0){ //Limpa as paredes espaçadas
+        this.toggleMaps();
+    }
+    //this.gameOfWallRulesAutomataPutWalls();     //Coloca todas as paredes corretas de novo
+    //this.toggleMaps();
+    /*this.gameOfWallRulesAutomataRemoveWalls();  //Remove todas as paredes
+    this.toggleMaps();
+    this.gameOfWallRulesAutomataPutWalls();     //Coloca todas as paredes corretas de novo
+    this.toggleMaps();*/
 }
 
 CellularAutomata.prototype.visitCells = function(auxMatrix, mapx, y, x, tp, d = 1, indexArea){   //visita as celulas visinhas de maneira recursiva e atribui o código da sala correspondente 
@@ -188,6 +208,7 @@ CellularAutomata.prototype.initMap = function(L, C, v) {
 
 /**
  * 1º - Padrão descrito no artigo
+ * Observa quem está ao redor de rochas e posiciona rocha ou chão no automato
  */
 
 CellularAutomata.prototype.gameOfWallRulesAutomata = function (){
@@ -214,7 +235,7 @@ CellularAutomata.prototype.gameOfWallRulesAutomata = function (){
  * Posiciona os walls ao redor das cavernas
  */
 
-CellularAutomata.prototype.gameOfWallRulesAutomataFinalStep = function (){
+CellularAutomata.prototype.gameOfWallRulesAutomataPutWalls = function (){
     /**
     * Types:
     *   0 => floor;
@@ -296,6 +317,36 @@ CellularAutomata.prototype.gameOfWallRulesAutomataFinalStepCleanWalls = function
         }
     }
     return count;
+}
+
+/**
+ *
+ * Remove as paredes em locais incorretos
+ */
+
+CellularAutomata.prototype.gameOfWallRulesAutomataRemoveWalls = function (){
+    /**
+    * Types:
+    *   0 => floor;
+    *   1 => rock;
+    *   2 => wall;
+    */
+    for (let l = 0; l < this.map2.length; l++) {
+        for (let c = 0; c < this.map2[0].length; c++) {
+            this.map2[l][c] = this.map[l][c];
+            switch (this.map[l][c]) {
+                case this.floorIndex: //Floor
+                    break;
+                case this.rockIndex: //Rock
+                    break;
+                case this.wallIndex: //Wall
+                    if (this.countAdjacentsMoore(this.map, l, c, this.rockIndex, 1) >= 3 && this.countAdjacentsMoore(this.map, l, c, this.floorIndex, 1) ===  0) {  //Celulas rock com 1 vizinho chão ou mais 
+                        this.map2[l][c] = this.rockIndex;
+                    }
+                    break;
+            }
+        }
+    }
 }
 
 /**
