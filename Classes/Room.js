@@ -1,9 +1,9 @@
 function Room(number){
     this.blocks = [];
     this.number;
-    this.teleporterInitial = [];      //(Inicio)Transição de uma sala pra outra
-    this.teleporterFinal = [];        //(Chegada)Transição de uma sala pra outra
-    this.endingLevel = [];            //Teleportador que termina a fase
+    this.teleporterInitial = new Teleporter();      //(Inicio)Transição de uma sala pra outra
+    this.teleporterFinal = new Teleporter();        //(Chegada)Transição de uma sala pra outra
+    this.endingLevel;            //Teleportador que termina a fase
 }
 
 Room.prototype.addBlock = function(row, column){
@@ -18,10 +18,24 @@ Room.prototype.removeBlockByArrayIndex = function(index){
 }
 
 Room.prototype.removeBlockByMatrixIndex = function(row, column){
-    for(let i = 0; i < blocks.length; i++){
+    for(let i = 0; i < this.blocks.length; i++){
         if(this.blocks[i][0] === row && this.blocks[i][1] === column){
             this.blocks.splice(i, 1);
             break;
         }
+    }
+}
+
+Room.prototype.setTeleporter = function(mode, beginGX, beginGY, endGX, endGY){
+    let teleporter = new Teleporter();
+    teleporter.startGX = beginGX;
+    teleporter.startGY = beginGY;
+    teleporter.finishGX = endGX;
+    teleporter.finishGY = endGY;
+    if(mode = 0){   //Initial mode
+        teleporterInitial = teleporter;
+    }
+    else{
+        teleporterFinal = teleporter;
     }
 }

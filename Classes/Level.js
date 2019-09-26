@@ -1,6 +1,6 @@
 function Level(w,h,s) {
   this.mapa = new Map(w,h,s);
-  this.salas = new Room();
+  this.salas = [];
   this.tesouros = 0;
   this.minas = 0;
   this.startX = 0;
@@ -15,7 +15,8 @@ function Level(w,h,s) {
   this.taxaDiminuicaoTempo = 0;
   this.stateCollectedItens = false;
   this.inimigos = [];
-  this.teleportes = [];
+  this.teleporteInicio;
+  this.teleporteFinal;
   this.itens = [];
 };
 
@@ -27,6 +28,7 @@ Level.prototype.setTempo = function(tempo, larguraBarra){
 Level.prototype.setMatrixMap = function(matrix){
   this.mapa.copyDates(matrix);
 };
+
 Level.prototype.setMatrixMap2 = function(matrix, L,  C){
   this.mapa.copyDataInto(matrix, L, C);
 };
@@ -54,14 +56,14 @@ Level.prototype.clonarLevel= function(level){
   this.tempoFase = level.tempoFase;
   this.taxaDiminuicaoTempo = level.taxaDiminuicaoTempo;
   this.inimigos.length = 0;
-  this.teleportes.length = 0;
+  //this.teleportes.length = 0;
   this.itens.length = 0;
   for (var i = 0; i < level.inimigos.length; i++) {
     this.inimigos.push(level.inimigos[i]);
   }
-  for (var i = 0; i < level.teleportes.length; i++) {
+  /*for (var i = 0; i < level.teleportes.length; i++) {
     this.teleportes.push(level.teleportes[i]);
-  }
+  }*/
   for (var i = 0; i < level.itens.length; i++) {
     this.itens.push(level.itens[i]);
   }
