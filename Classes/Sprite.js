@@ -1,4 +1,4 @@
-function Sprite(s = 16) {
+function Sprite(s = 16, typ = 0) {
   //Atibutos da Fisica
   this.x = 0;
   this.vx = 0;
@@ -22,7 +22,11 @@ function Sprite(s = 16) {
   this.colorBG;
   this.colorBorder;
   this.borderSize = 1;
+  this.typeSprite = typ;
 };
+
+//Sprite.prototype = new Sprite();
+Sprite.prototype.constructor = Sprite;
 
 Sprite.prototype.mover = function (dt) {
   this.gx = Math.floor(this.x/this.map.s);
@@ -154,10 +158,6 @@ Sprite.prototype.mover = function (dt) {
     this.x += (this.vx)*dt;
     this.y += (this.vy)*dt;
   }
- 
-
-
-  
 
   /*if((this.vx === 0 && this.map.cell[this.gy][this.gx+1]!==0 && (this.x+this.s/2 > (this.gx+1)*this.map.s))
     ||(this.vx === 0 && this.map.cell[this.gy][this.gx+1]!==0 && (this.x+this.s/2 > (this.gx+1)*this.map.s))){ //Lado esquerdo
@@ -171,22 +171,74 @@ Sprite.prototype.mover = function (dt) {
   if(this.map.cell[this.gy][this.gx] === 5){    //Substitui o cenário já descoberto
     this.map.cell[this.gy][this.gx] = 0;
   }*/
-
-
-
 };
 
+Sprite.prototype.copy = function(sprite){
+  //Atibutos da Fisica
+  this.x = sprite.x;
+  this.vx = sprite.vx;
+  this.y = sprite.y;
+  this.vy = sprite.vy;
+  this.w = sprite.w;
+  this.h = sprite.h;
+
+  //Atributos de grade
+  this.gx = sprite.gx;
+  this.gy = sprite.gy;
+  this.s = sprite.s;
+  this.map = sprite.map;
+
+  //Atributos da imagem
+  this.wImagem = sprite.wImagem;
+  this.hImagem = sprite.hImagem;
+  this.sx = sprite.sx;
+  this.sy = sprite.sy;
+
+  this.colorBG = sprite.colorBG;
+  this.colorBorder = sprite.colorBorder;
+  this.borderSize = sprite.borderSize;
+  this.typeSprite = sprite.typeSprite;
+}
+
 Sprite.prototype.desenhar = function (ctx) {
-  ctx.save();
-  ctx.translate(this.x, this.y);
-  ctx.fillStyle = "blue";
-  ctx.strokeStyle = "red";
-  ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
-  ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
-  ctx.restore();
-  if(debugMode === 1){
-    this.desenharCell(ctx);         //Debug mode Grid
+  switch(this.typeSprite){
+    case 0:
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.fillStyle = "blue";
+      ctx.strokeStyle = "red";
+      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
+      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
+      ctx.restore();
+      if(debugMode === 1){
+        this.desenharCell(ctx);         //Debug mode Grid
+      }
+      break;
+    case 1:
+      ctx.fillStyle = "blue";
+      ctx.strokeStyle = "blue";
+      ctx.linewidth = 10;
+      ctx.save();
+      ctx.globalAlpha = 0.70;         //Transparência
+      ctx.fillRect(this.gy*this.s, this.gx*this.s, this.s, this.s);
+      ctx.strokeRect(this.gy*this.s, this.gx*this.s, this.s, this.s);
+      ctx.restore();
+    case 2:
+      ctx.strokeStyle = "Yellow";
+      ctx.fillStyle = "orange";
+      ctx.linewidth = 10;
+     // imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
+      ctx.save();
+      ctx.globalAlpha = 0.40;         //Transparência
+      ctx.fillRect(this.gy*this.s, this.gx*this.s, this.s, this.s);
+      ctx.strokeRect(this.gy*this.s, this.gx*this.s, this.s, this.s);
+      ctx.restore();
+      break;
+    default:
+      console.log("Sprite type is incorrect!!!");
+      break;
   }
+  
 };
 
 Sprite.prototype.desenharTempo = function (ctx) {

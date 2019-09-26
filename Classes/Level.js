@@ -20,6 +20,9 @@ function Level(w,h,s) {
   this.itens = [];
 };
 
+//Level.prototype = new Level();
+Level.prototype.constructor = Level;
+
 Level.prototype.setTempo = function(tempo, larguraBarra){
   this.tempoFase = tempo;
   this.taxaDiminuicaoTempo = Math.floor(larguraBarra/tempo);
@@ -55,8 +58,7 @@ Level.prototype.clonarLevel= function(level){
   this.stateCollectedItens = level.stateCollectedItens;
   this.tempoFase = level.tempoFase;
   this.taxaDiminuicaoTempo = level.taxaDiminuicaoTempo;
-  this.inimigos.length = 0;
-  //this.teleportes.length = 0;
+  this.inimigos.length = 0;  
   this.itens.length = 0;
   for (var i = 0; i < level.inimigos.length; i++) {
     this.inimigos.push(level.inimigos[i]);
@@ -67,8 +69,29 @@ Level.prototype.clonarLevel= function(level){
   for (var i = 0; i < level.itens.length; i++) {
     this.itens.push(level.itens[i]);
   }
+  this.copiaSalas(level.salas);
+  /*for (var i = 0; i < level.salas.length; i++) {
+    this.salas.push(level.salas[i]);
+  }*/
+}
+
+/*Level.prototype.toggleLevel = function(l){
+  this = JSON.parse(JSON.stringify(l));  //Copia matriz
+
+}*/
+
+Level.prototype.copiaSalas = function(rooms){
+  //this.salas = JSON.parse(JSON.stringify(rooms));  //Copia matriz
+  for(let i = 0; i < rooms.length; i++){
+     this.salas.push(new Room(0));
+     this.salas[this.salas.length - 1].copy(rooms[i]);
+  }
+
 }
 
 Level.prototype.desenhar = function(ctx) {
   this.mapa.desenhar(ctx);
+  for(let i = 0; i < this.salas.length; i++){
+    this.salas[i].draw(ctx);
+  }
 };

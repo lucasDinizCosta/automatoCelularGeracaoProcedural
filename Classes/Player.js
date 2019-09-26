@@ -1,5 +1,5 @@
 function Player() {
-  this.sprite = new Sprite(16);
+  this.sprite = new Sprite(16, 0);
   this.timeWalkSound = 0.5;
   this.levelNumber = 1;
   this.vidas = 3;

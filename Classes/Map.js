@@ -11,6 +11,9 @@ function Map(w,h,s){
   }
 }
 
+//Map.prototype = new Map();
+Map.prototype.constructor = Map;
+
 Map.prototype.copyDates = function (matrix){
   this.cell = JSON.parse(JSON.stringify(matrix)); //Copia matriz
 }
@@ -32,7 +35,7 @@ Map.prototype.desenhar = function (ctx) {
     for (var c = Math.max(0,player.sprite.gx-MAPA_AREA); c < Math.min(this.w, player.sprite.gx+MAPA_AREA); c++) {
       switch(this.cell[l][c]){
         case 0:   //Vazio
-          imageLibrary.drawSize(ctx, "sandBlock", c*this.s, l*this.s, this.s, this.s);
+          imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
           break;
         case 1:   //Bloqueado
           imageLibrary.drawSize(ctx, "brickRed", c*this.s, l*this.s, this.s, this.s);

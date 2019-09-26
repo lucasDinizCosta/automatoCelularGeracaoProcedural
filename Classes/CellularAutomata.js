@@ -12,6 +12,8 @@ function CellularAutomata(HS, WS, MOORE = 1, r = 0.5, totalRock = 5, floorIndex 
     this.map2 = this.initMap(this.HS, this.WS, this.floorIndex);
     this.rooms = [];
 }
+//CellularAutomata.prototype = new CellularAutomata();
+CellularAutomata.prototype.constructor = CellularAutomata;
 
 CellularAutomata.prototype.fullstep = function(steps = 2){
     while(steps > 0){
@@ -122,7 +124,7 @@ CellularAutomata.prototype.filterRooms = function(sizeRoomsMinimal = 10){
                 this.rooms.splice(i, 1);
             }
         }
-        console.log("rooms after removing: " + this.rooms.length);
+        //console.log("rooms after removing: " + this.rooms.length);
         this.toggleMaps();
         if(count === 0){
             break;
@@ -166,14 +168,14 @@ CellularAutomata.prototype.setTeleporters = function(){
         while(sortPosition === blocksSorted[0]){
             sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1));
         }
-        this.rooms[i].teleporterInitial.setStart(this.rooms[i].number, this.rooms[i].blocks[sortPosition][0], this.rooms[i].blocks[sortPosition][1]);
+        this.rooms[i].teleporterInitial.setStart(1, this.rooms[i].number, this.rooms[i].blocks[sortPosition][0], this.rooms[i].blocks[sortPosition][1]);
         blocksSorted[0] = sortPosition;
         sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1))
         while(sortPosition === blocksSorted[1]){
             sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1))
         }
         blocksSorted[1] = sortPosition;
-        this.rooms[i].teleporterFinal.setStart(this.rooms[i].number, this.rooms[i].blocks[sortPosition][0], this.rooms[i].blocks[sortPosition][1]);
+        this.rooms[i].teleporterFinal.setStart(2, this.rooms[i].number, this.rooms[i].blocks[sortPosition][0], this.rooms[i].blocks[sortPosition][1]);
         roomsAvaliable.push(this.rooms[i].number);
     }
 

@@ -103,7 +103,7 @@
     geraFase.filterRooms(25);
     geraFase.setTeleporters();
     levels[0].setMatrixMap(geraFase.map);
-    geraFase.toggleRooms(levels[0].salas);
+    levels[0].copiaSalas(geraFase.rooms);
 
 
     levels[0].startX = 32 + player.sprite.s;
@@ -380,6 +380,7 @@
             case 13:    //Enter
               if (estado != 2) {
                 if (stateMainMenu == 0) {
+                  levelAtual = new Level(widthMap, heightMap, sizeMap);
                   levelAtual.clonarLevel(levels[0]);
                   player = new Player();
                   player.sprite.map = levelAtual.mapa;
@@ -395,6 +396,7 @@
             case 32:         //Space bar
               if (estado != 2) {
                 if (stateMainMenu == 0) {
+                  levelAtual = new Level(widthMap, heightMap, sizeMap);
                   levelAtual.clonarLevel(levels[0]);
                   player = new Player();
                   player.sprite.map = levelAtual.mapa;
