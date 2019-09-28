@@ -1,43 +1,29 @@
 function Teleporter(type){
-  this.startGX = -1;
-  this.startGY = -1;
-  this.startIDRoom = -1;
-  this.finishIDRoom = -1;
-  this.finishGX = -1;
-  this.finishGY = -1;
-  this.portal = new Sprite(32, 1);
+  this.proximoTeleporte = null;
+  this.portal = new Sprite(32, type);
 }
 //Teleporter.prototype = new Teleporter();
 Teleporter.prototype.constructor = Teleporter;
 
-Teleporter.prototype.setStart = function(type, sIDRoom, bGX, bGY){
-  this.startIDRoom = sIDRoom;
-  this.startGX = bGX;
-  this.startGY = bGY;
-  this.portal.gx = this.startGX;
-  this.portal.gy = this.startGY;
-  this.portal.typeSprite = type;
-}
+/**
+ * GX => Coluna;
+ * GY => Linha
+ */
+
+ Teleporter.prototype.setPosition = function(linha, coluna){
+   this.portal.x = coluna * this.portal.s;
+   this.portal.y = linha * this.portal.s;
+   this.portal.gx = coluna;
+   this.portal.gy = linha;
+ }
 
 Teleporter.prototype.copy = function(teleporter){
-  this.startGX = teleporter.startGX;
-  this.startGY = teleporter.startGY;
-  this.startIDRoom = teleporter.startIDRoom;
-  this.finishIDRoom = teleporter.finishIDRoom;
-  this.finishGX = teleporter.finishGX;
-  this.finishGY = teleporter.finishGY;
+  this.proximoTeleporte = teleporter.proximoTeleporte;
   this.portal.copy(teleporter.portal);
-}
-
-Teleporter.prototype.setFinish = function(fIDRoom, fGX, fGY){
-  this.finishGX = fGX;
-  this.finishGY = fGY;
-  this.finishIDRoom = fIDRoom;
 }
 
 Teleporter.prototype.teleportar = function(player){
   //Executar um som
-  player.sprite.x = this.finishGX*levelAtual.mapa.s + player.sprite.s;
-  player.sprite.y = this.finishGY*levelAtual.mapa.s + player.sprite.s;
-  //console.log("FOI");
+  player.sprite.x = this.portal.x;
+  player.sprite.y = this.portal.y;
 }

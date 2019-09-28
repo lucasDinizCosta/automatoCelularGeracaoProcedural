@@ -15,6 +15,12 @@ function CellularAutomata(HS, WS, MOORE = 1, r = 0.5, totalRock = 5, floorIndex 
 //CellularAutomata.prototype = new CellularAutomata();
 CellularAutomata.prototype.constructor = CellularAutomata;
 
+
+/**
+ * GX => COLUNA
+ * GY => LINHA
+ */
+
 CellularAutomata.prototype.fullstep = function(steps = 2){
     while(steps > 0){
         this.gameOfWallRulesAutomata();
@@ -30,13 +36,6 @@ CellularAutomata.prototype.fullstep = function(steps = 2){
     //this.gameOfWallRulesAutomataFinalStepCleanWalls();
     //this.toggleMaps();
     this.gameOfWallRulesAutomataPutWalls();
-    this.toggleMaps();
-}
-
-CellularAutomata.prototype.bla = function(){
-    this.gameOfWallRulesAutomataFinalStep();
-    this.toggleMaps();    
-    this.gameOfWallRulesAutomataFinalStepCleanWalls();
     this.toggleMaps();
 }
 
@@ -131,7 +130,7 @@ CellularAutomata.prototype.filterRooms = function(sizeRoomsMinimal = 10){
         }
     }
     for(let i = 0; i < this.rooms.length; i++){                         //Reorder the numbers of the rooms
-        this.rooms[i].number = i+1;
+        this.rooms[i].number = i + 1;                                   //Initiate with number 1
     }
     this.gameOfWallRulesAutomataRemoveWalls();
     this.toggleMaps();
@@ -156,8 +155,6 @@ CellularAutomata.prototype.setTeleporters = function(){
     let blocksSorted = [];
     blocksSorted.push(-1);              //Initial Teleporter
     blocksSorted.push(-1);              //Final teleporter
-    let teleportersRoomInitial = [];    //Rooms that have initial teleporter without finish point yet
-    let teleportersRoomFinal = [];
     let roomsAvaliable = [];            //Rooms avaliable to choose initial teleporter 
     let roomsClosed = [];               //Rooms that the initial teleporter is connected
     let sortPosition;
@@ -168,28 +165,34 @@ CellularAutomata.prototype.setTeleporters = function(){
         while(sortPosition === blocksSorted[0]){
             sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1));
         }
-        this.rooms[i].teleporterInitial.setStart(1, this.rooms[i].number, this.rooms[i].blocks[sortPosition][0], this.rooms[i].blocks[sortPosition][1]);
+        //this.rooms[i].teleporterInitial.setStart(1, this.rooms[i].number, this.rooms[i].blocks[sortPosition][1], );
+        this.rooms[i].teleporterInitial.setPosition(this.rooms[i].blocks[sortPosition][0], this.rooms[i].blocks[sortPosition][1]);
         blocksSorted[0] = sortPosition;
         sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1))
         while(sortPosition === blocksSorted[1]){
             sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1))
         }
         blocksSorted[1] = sortPosition;
-        this.rooms[i].teleporterFinal.setStart(2, this.rooms[i].number, this.rooms[i].blocks[sortPosition][0], this.rooms[i].blocks[sortPosition][1]);
+        this.rooms[i].teleporterFinal.setPosition(this.rooms[i].blocks[sortPosition][0], this.rooms[i].blocks[sortPosition][1]);
+        //this.rooms[i].teleporterFinal.setStart(2, this.rooms[i].number, this.rooms[i].blocks[sortPosition][1], this.rooms[i].blocks[sortPosition][0]);
         roomsAvaliable.push(this.rooms[i].number);
     }
+    //GX => COLUNA, GY => LINHA
 
     //Connecting first rooms manually
 
-    indAvaliableRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));                 //Begin teleporter room
+    /*indAvaliableRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));                 //Begin teleporter room
     indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
     while(indAvaliableRoom  ===  indFinishRoom){
         indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
     }
     let currentRoom = this.rooms[roomsAvaliable[indFinishRoom] - 1].number;
+    
     this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial.setFinish(this.rooms[roomsAvaliable[indFinishRoom] - 1].number, this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal.startGX, this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal.startGY);
+
     this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal.setFinish(this.rooms[roomsAvaliable[indAvaliableRoom] - 1].number, this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial.startGX, this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial.startGY);
-    roomsClosed.push(this.rooms[roomsAvaliable[indAvaliableRoom] - 1].number);
+
+    roomsClosed.push(roomsAvaliable[indAvaliableRoom]);//roomsClosed.push(this.rooms[roomsAvaliable[indAvaliableRoom] - 1].number);
     roomsAvaliable.splice(indAvaliableRoom, 1);
 
     while(roomsAvaliable.length > 1){
@@ -214,10 +217,10 @@ CellularAutomata.prototype.setTeleporters = function(){
                     indFinishRoom = 1;
                 }
                 else
-                    indFinishRoom = 0
+                    indFinishRoom = 0;
             }
         }
-        currentRoom = this.rooms[roomsAvaliable[indFinishRoom] - 1].number;
+        currentRoom = roomsAvaliable[indFinishRoom];//this.rooms[roomsAvaliable[indFinishRoom] - 1].number;
 
         this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial.setFinish(this.rooms[roomsAvaliable[indFinishRoom] - 1].number, this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal.startGX, this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal.startGY);
         
@@ -231,24 +234,12 @@ CellularAutomata.prototype.setTeleporters = function(){
     //Connecting last room => to create a cycle on the rooms connections
 
     this.rooms[roomsAvaliable[0] - 1].teleporterInitial.setFinish(this.rooms[roomsClosed[0] - 1].number, this.rooms[roomsClosed[0] - 1].teleporterFinal.startGX, this.rooms[roomsClosed[0] - 1].teleporterFinal.startGY);
+
     this.rooms[roomsClosed[0] - 1].teleporterFinal.setFinish(this.rooms[roomsAvaliable[0] - 1].number, this.rooms[roomsAvaliable[0] - 1].teleporterInitial.startGX, this.rooms[roomsAvaliable[0] - 1].teleporterInitial.startGY);
+
     roomsClosed.push(this.rooms[roomsAvaliable[0] - 1].number);
     roomsAvaliable.splice(indAvaliableRoom, 1);
 
-    console.log("Link between rooms by teleporters:");
-    /*let t = 0;
-    for(let i = 0; i < this.rooms.length; i++){
-        if((this.rooms[i].teleporterInitial.startIDRoom  === this.rooms[i].teleporterFinal.finishIDRoom )
-        && (this.rooms[i].teleporterInitial.finishIDRoom === this.rooms[i].teleporterFinal.startIDRoom )){
-            
-        }
-        else{
-            t++;
-        }
-    }
-    if(t > 0){
-        console.log("Rooms are Unified");
-    }*/
     console.log("\nINITIAL\nA -> B:");
     for(let i = 0; i < this.rooms.length; i++){
         console.log("A( "+ this.rooms[i].teleporterInitial.startIDRoom +" ) -> B( " + this.rooms[i].teleporterInitial.finishIDRoom  + " )");
@@ -256,11 +247,7 @@ CellularAutomata.prototype.setTeleporters = function(){
     console.log("\nFINAL\nB -> A:");
     for(let i = 0; i < this.rooms.length; i++){
         console.log("B( "+ this.rooms[i].teleporterFinal.startIDRoom +" ) -> A( " + this.rooms[i].teleporterFinal.finishIDRoom  + " )");
-    }
-    /*console.log(roomsAvaliable);
-    console.log(roomsClosed);
-    console.log("Foi");*/
-    
+    }*/
 }
 
 CellularAutomata.prototype.visitCells = function(auxMatrix, mapx, y, x, tp, d = 1, indexArea){   //visita as celulas visinhas de maneira recursiva e atribui o código da sala correspondente 

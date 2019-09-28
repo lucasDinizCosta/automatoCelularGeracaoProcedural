@@ -53,7 +53,7 @@
     var heightMap = 120;//11;
     var sizeMap = 32;//32;
     var MAPA_AREA = 160;
-    var escala = 0.10;
+    var escala = 0.35;
     var K = 1;
     var debugMode = 1;  //  0 => Colision is detected, 1 => colision is free
 
@@ -101,9 +101,11 @@
     //geraFase.fullstep(6);
     geraFase.countRooms();
     geraFase.filterRooms(25);
-    geraFase.setTeleporters();
+    //geraFase.setTeleporters();
     levels[0].setMatrixMap(geraFase.map);
     levels[0].copiaSalas(geraFase.rooms);
+    levels[0].updateGradeSalas();
+    levels[0].setTeleporters();
 
 
     levels[0].startX = 32 + player.sprite.s;
@@ -134,6 +136,7 @@
     imageLibrary.load("tijoloEspinho", "Imagens/tijolo-espinho.png");
 
     var audioLibrary = new AudioLibrary();
+    audioLibrary.load("teleporte", "Audios/TELEPORT.WAV");
 
     //Tempo
     var tempoRectExt = new Sprite();
@@ -332,7 +335,27 @@
 
             break;
           case 32:  //Espaco  -- Ativa teleporte
-            if (levelAtual.mapa.cell[player.sprite.gy][player.sprite.gx] === 7) {
+              let roomPlayerCode = levelAtual.gradeSalas[player.sprite.gy][player.sprite.gx];
+              console.log("player GX: " + player.sprite.gx + " -- player GY: " + player.sprite.gy);
+              console.log(roomPlayerCode);
+              if(roomPlayerCode >= 1){
+                let roomPlayerPosition = levelAtual.salas[roomPlayerCode - 1];
+                let teleporterInitialRoom = roomPlayerPosition.teleporterInitial;
+                let teleporterFinalRoom = roomPlayerPosition.teleporterFinal;
+                console.log("teleporterInitialRoom GX: " + teleporterInitialRoom.startGX + " -- teleporterInitialRoom GY: " + teleporterInitialRoom.startGY);
+                console.log("teleporterFinalRoom GX: " + teleporterFinalRoom.startGX + " -- teleporterFinalRoom GY: " + teleporterFinalRoom.startGY);
+                if((teleporterInitialRoom.startGX === player.sprite.gx) && (teleporterInitialRoom.startGY === player.sprite.gy)){
+                  teleporterInitialRoom.teleportar(player);
+                  //audioLibrary.play("teleporte");
+                }
+                else{
+                  if((teleporterFinalRoom.startGX === player.sprite.gx) && (teleporterFinalRoom.startGY === player.sprite.gy)){
+                    teleporterFinalRoom.teleportar(player);
+                    //audioLibrary.play("teleporte");
+                  }
+                }
+              }
+            /*if (levelAtual.mapa.cell[player.sprite.gx][player.sprite.gy] === 7) {
               for (var i = 0; i < levelAtual.teleportes.length; i++) {
                 if (levelAtual.teleportes[i].startGX === player.sprite.gx && levelAtual.teleportes[i].startGY === player.sprite.gy) {
                   //console.log("Foi");
@@ -341,7 +364,7 @@
                   break;
                 }
               }
-            }
+            }*/
             break;
           case 38:
             //if(player.left === false && player.down === false && player.right === false){

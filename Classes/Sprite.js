@@ -31,7 +31,7 @@ Sprite.prototype.constructor = Sprite;
 Sprite.prototype.mover = function (dt) {
   this.gx = Math.floor(this.x/this.map.s);
   this.gy = Math.floor(this.y/this.map.s);
-  //console.log(this.gx + " -> gx, " + this.gy + " -> gy");
+  console.log(this.gx + " -> gx, " + this.gy + " -> gy");
 
   /****************************************************************
   * Outro meio de andar nesse caso é utilizando a propria grade***
@@ -220,8 +220,8 @@ Sprite.prototype.desenhar = function (ctx) {
       ctx.linewidth = 10;
       ctx.save();
       ctx.globalAlpha = 0.70;         //Transparência
-      ctx.fillRect(this.gy*this.s, this.gx*this.s, this.s, this.s);
-      ctx.strokeRect(this.gy*this.s, this.gx*this.s, this.s, this.s);
+      ctx.fillRect(this.gx*this.s, this.gy*this.s, this.s, this.s);
+      ctx.strokeRect(this.gx*this.s, this.gy*this.s, this.s, this.s);
       ctx.restore();
     case 2:
       ctx.strokeStyle = "Yellow";
@@ -230,8 +230,8 @@ Sprite.prototype.desenhar = function (ctx) {
      // imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
       ctx.save();
       ctx.globalAlpha = 0.40;         //Transparência
-      ctx.fillRect(this.gy*this.s, this.gx*this.s, this.s, this.s);
-      ctx.strokeRect(this.gy*this.s, this.gx*this.s, this.s, this.s);
+      ctx.fillRect(this.gx*this.s, this.gy*this.s, this.s, this.s);
+      ctx.strokeRect(this.gx*this.s, this.gy*this.s, this.s, this.s);
       ctx.restore();
       break;
     default:
