@@ -23,6 +23,7 @@ Teleporter.prototype.copy = function(teleporter){
 
 Teleporter.prototype.teleportar = function(player){
   if(this.proximoTeleporte !== null){
+    audioLibrary.play("teleporte");
     player.sprite.x = this.proximoTeleporte.portal.x;
     player.sprite.y = this.proximoTeleporte.portal.y;
   }

@@ -98,7 +98,7 @@
     // 1 => wall
     geraFase.scenarioRandomWall();
     geraFase.fullstep(2);
-    geraFase.fullstep(5);
+    //geraFase.fullstep(5);
     geraFase.countRooms();
     geraFase.filterRooms(25);
     levels[0].setMatrixMap(geraFase.map);
@@ -135,7 +135,7 @@
     imageLibrary.load("tijoloEspinho", "Imagens/tijolo-espinho.png");
 
     var audioLibrary = new AudioLibrary();
-    audioLibrary.load("teleporte", "Audios/TELEPORT.WAV");
+    audioLibrary.load("teleporte", "Audios/Teleport.wav");
 
     //Tempo
     var tempoRectExt = new Sprite();
