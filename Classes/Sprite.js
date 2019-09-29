@@ -293,9 +293,9 @@ Sprite.prototype.colidiuCom = function (alvo) {
 */
 
 Sprite.prototype.colidiuCom2 = function (alvo) {
-  if(alvo.x + alvo.s/2 < this.x) return false;
+  if(alvo.x + alvo.s/2 < this.x - this.s/2) return false;
   if(alvo.x > this.x + this.s/2) return false;
-  if(alvo.y + alvo.s/2 < this.y) return false;
+  if(alvo.y + alvo.s/2 < this.y - this.s/2) return false;
   if(alvo.y > this.y + this.s/2) return false;
   return true;
 };

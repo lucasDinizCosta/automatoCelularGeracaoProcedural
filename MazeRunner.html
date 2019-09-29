@@ -98,10 +98,9 @@
     // 1 => wall
     geraFase.scenarioRandomWall();
     geraFase.fullstep(2);
-    //geraFase.fullstep(6);
+    geraFase.fullstep(5);
     geraFase.countRooms();
     geraFase.filterRooms(25);
-    //geraFase.setTeleporters();
     levels[0].setMatrixMap(geraFase.map);
     levels[0].copiaSalas(geraFase.rooms);
     levels[0].updateGradeSalas();

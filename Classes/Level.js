@@ -105,97 +105,107 @@ Level.prototype.getRandomInt = function(min, max){
 }
 
 Level.prototype.setTeleporters = function(){
-  let indAvaliableRoom;
-  let indFinishRoom;
-  let blocksSorted = [];
-  blocksSorted.push(-1);              //Initial Teleporter
-  blocksSorted.push(-1);              //Final teleporter
-  let roomsAvaliable = [];            //Rooms avaliable to choose initial teleporter 
-  let roomsClosed = [];               //Rooms that the initial teleporter is connected
-  let sortPosition;
+  if(this.rooms.length > 1){          //Only will have teleporters if that are more than one room
+    let indAvaliableRoom;
+    let indFinishRoom;
+    let blocksSorted = [];
+    blocksSorted.push(-1);              //Initial Teleporter
+    blocksSorted.push(-1);              //Final teleporter
+    let roomsAvaliable = [];            //Rooms avaliable to choose initial teleporter 
+    let roomsClosed = [];               //Rooms that the initial teleporter is connected
+    let sortPosition;
 
-  //Setting position of teleporters into the rooms
+    //Setting position of teleporters into the rooms
 
-  for(let i = 0; i < this.rooms.length; i++){                 //Setting teleports into the room
+    for(let i = 0; i < this.rooms.length; i++){                 //Setting teleports into the room
 
-      sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1));
-      while(sortPosition === blocksSorted[0]){
-          sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1));
-      }
-      this.rooms[i].teleporterInitial.setPosition(this.rooms[i].blocks[sortPosition][0], this.rooms[i].blocks[sortPosition][1]);
-      blocksSorted[0] = sortPosition;
-      sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1))
-      while(sortPosition === blocksSorted[1]){
-          sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1))
-      }
-      blocksSorted[1] = sortPosition;
-      this.rooms[i].teleporterFinal.setPosition(this.rooms[i].blocks[sortPosition][0], this.rooms[i].blocks[sortPosition][1]);
-      roomsAvaliable.push(this.rooms[i].number);
-  }
-  //GX => COLUNA, GY => LINHA
+        sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1));
+        while(sortPosition === blocksSorted[0]){
+            sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1));
+        }
+        this.rooms[i].teleporterInitial.setPosition(this.rooms[i].blocks[sortPosition][0], this.rooms[i].blocks[sortPosition][1]);
+        blocksSorted[0] = sortPosition;
+        sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1))
+        while(sortPosition === blocksSorted[1]){
+            sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1))
+        }
+        blocksSorted[1] = sortPosition;
+        this.rooms[i].teleporterFinal.setPosition(this.rooms[i].blocks[sortPosition][0], this.rooms[i].blocks[sortPosition][1]);
+        roomsAvaliable.push(this.rooms[i].number);
+        this.rooms[i].teleporterInitial.roomNumber = this.rooms[i].number;
+        this.rooms[i].teleporterFinal.roomNumber = this.rooms[i].number;
+    }
+    //GX => COLUNA, GY => LINHA
 
-  //Connecting first rooms manually
+    //Connecting first rooms manually
 
-  indAvaliableRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));                 //Begin teleporter room
-  indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
-  while(indAvaliableRoom  ===  indFinishRoom){
-      indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
-  }
-  let currentRoom = this.rooms[roomsAvaliable[indFinishRoom] - 1].number;
-  
-  this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial.proximoTeleporte = this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal;
-  this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal.proximoTeleporte = this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial;
+    indAvaliableRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));                 //Begin teleporter room
+    indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
+    while(indAvaliableRoom  ===  indFinishRoom){
+        indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
+    }
+    let currentRoom = this.rooms[roomsAvaliable[indFinishRoom] - 1].number;
+    
+    this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial.proximoTeleporte = this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal;
+    this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal.proximoTeleporte = this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial;
 
-  roomsClosed.push(roomsAvaliable[indAvaliableRoom]);//roomsClosed.push(this.rooms[roomsAvaliable[indAvaliableRoom] - 1].number);
-  roomsAvaliable.splice(indAvaliableRoom, 1);
+    roomsClosed.push(roomsAvaliable[indAvaliableRoom]);//roomsClosed.push(this.rooms[roomsAvaliable[indAvaliableRoom] - 1].number);
+    roomsAvaliable.splice(indAvaliableRoom, 1);
 
-  while(roomsAvaliable.length > 1){
-      //currentRoom = this.rooms[roomsAvaliable[indFinishRoom] - 1].number;
-      //console.log(roomsAvaliable.length);
-      for(let i = 0; i < this.rooms.length; i++){
-          if(roomsAvaliable[i] === currentRoom){                       //Room's number was finded
-              indAvaliableRoom = i;
-              break;
-          }
-      }
+    while(roomsAvaliable.length > 1){
+        //currentRoom = this.rooms[roomsAvaliable[indFinishRoom] - 1].number;
+        //console.log(roomsAvaliable.length);
+        for(let i = 0; i < this.rooms.length; i++){
+            if(roomsAvaliable[i] === currentRoom){                       //Room's number was finded
+                indAvaliableRoom = i;
+                break;
+            }
+        }
 
-      indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
-      while(indAvaliableRoom  ===  indFinishRoom){
-          indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
-          if(roomsAvaliable.length === 2){
-              if(indAvaliableRoom === 0){
-                  indFinishRoom = 1;
-              }
-              else
+        indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
+        while(indAvaliableRoom  ===  indFinishRoom){
+            indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
+            if(roomsAvaliable.length === 2){
+                if(indAvaliableRoom === 0){
+                    indFinishRoom = 1;
+                    break;
+                }
+                else{
                   indFinishRoom = 0;
-          }
-      }
-      currentRoom = roomsAvaliable[indFinishRoom];//this.rooms[roomsAvaliable[indFinishRoom] - 1].number;
+                  break;
+                }
+            }
+        }
+        currentRoom = roomsAvaliable[indFinishRoom];//this.rooms[roomsAvaliable[indFinishRoom] - 1].number;
 
-      this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial.proximoTeleporte = this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal;
-      this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal.proximoTeleporte = this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial;
+        this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial.proximoTeleporte = this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal;
+        this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal.proximoTeleporte = this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial;
 
-      roomsClosed.push(this.rooms[roomsAvaliable[indAvaliableRoom] - 1].number);
-      roomsAvaliable.splice(indAvaliableRoom, 1);
+        roomsClosed.push(this.rooms[roomsAvaliable[indAvaliableRoom] - 1].number);
+        roomsAvaliable.splice(indAvaliableRoom, 1);
+    }
+
+
+    //Connecting last room => to create a cycle on the rooms connections
+
+    this.rooms[roomsAvaliable[0] - 1].teleporterInitial.proximoTeleporte = this.rooms[roomsClosed[0] - 1].teleporterFinal;
+    this.rooms[roomsClosed[0] - 1].teleporterFinal.proximoTeleporte = this.rooms[roomsAvaliable[0] - 1].teleporterInitial;
+
+    roomsClosed.push(this.rooms[roomsAvaliable[0] - 1].number);
+    roomsAvaliable.splice(indAvaliableRoom, 1);
+
+    console.log("\nINITIAL\nA -> B:");
+    for(let i = 0; i < this.rooms.length; i++){
+        console.log("A( "+ this.rooms[i].teleporterInitial.roomNumber +" ) -> B( " + this.rooms[i].teleporterInitial.proximoTeleporte.roomNumber+ " )");
+    }
+    console.log("\nFINAL\nB -> A:");
+    for(let i = 0; i < this.rooms.length; i++){
+        console.log("B( "+ this.rooms[i].teleporterFinal.roomNumber +" ) -> A( " + this.rooms[i].teleporterFinal.proximoTeleporte.roomNumber  + " )");
+    }
   }
-
-
-  //Connecting last room => to create a cycle on the rooms connections
-
-  this.rooms[roomsAvaliable[0] - 1].teleporterInitial.proximoTeleporte = this.rooms[roomsClosed[0] - 1].teleporterFinal;
-  this.rooms[roomsClosed[0] - 1].teleporterFinal.proximoTeleporte = this.rooms[roomsAvaliable[0] - 1].teleporterInitial;
-
-  roomsClosed.push(this.rooms[roomsAvaliable[0] - 1].number);
-  roomsAvaliable.splice(indAvaliableRoom, 1);
-
-  /*console.log("\nINITIAL\nA -> B:");
-  for(let i = 0; i < this.rooms.length; i++){
-      console.log("A( "+ this.rooms[i].teleporterInitial.startIDRoom +" ) -> B( " + this.rooms[i].teleporterInitial.finishIDRoom  + " )");
+  else{
+    console.log("Level with only one room !!!");
   }
-  console.log("\nFINAL\nB -> A:");
-  for(let i = 0; i < this.rooms.length; i++){
-      console.log("B( "+ this.rooms[i].teleporterFinal.startIDRoom +" ) -> A( " + this.rooms[i].teleporterFinal.finishIDRoom  + " )");
-  }*/
 }
 
 /*Level.prototype.toggleLevel = function(l){

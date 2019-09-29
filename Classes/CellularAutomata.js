@@ -146,10 +146,6 @@ CellularAutomata.prototype.getRandomInt = function(min, max){
 }
 
 CellularAutomata.prototype.setTeleporters = function(){
-    /*let roomChoices = [];
-    for(let i = 0; i < this.rooms.length; i++){
-        roomChoices.push(thisrooms[i].number);
-    }*/
     let indAvaliableRoom;
     let indFinishRoom;
     let blocksSorted = [];

@@ -1,6 +1,7 @@
 function Teleporter(type){
   this.proximoTeleporte = null;
   this.portal = new Sprite(32, type);
+  this.roomNumber = -1;
 }
 //Teleporter.prototype = new Teleporter();
 Teleporter.prototype.constructor = Teleporter;
