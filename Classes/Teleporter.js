@@ -11,10 +11,8 @@ Teleporter.prototype.constructor = Teleporter;
  */
 
  Teleporter.prototype.setPosition = function(linha, coluna){
-   this.portal.x = coluna * this.portal.s;
-   this.portal.y = linha * this.portal.s;
-   this.portal.gx = coluna;
-   this.portal.gy = linha;
+   this.portal.x = coluna * this.portal.s + this.portal.s/2;
+   this.portal.y = linha * this.portal.s  + this.portal.s/2;
  }
 
 Teleporter.prototype.copy = function(teleporter){
@@ -23,7 +21,11 @@ Teleporter.prototype.copy = function(teleporter){
 }
 
 Teleporter.prototype.teleportar = function(player){
-  //Executar um som
-  player.sprite.x = this.portal.x;
-  player.sprite.y = this.portal.y;
+  if(this.proximoTeleporte !== null){
+    player.sprite.x = this.proximoTeleporte.portal.x;
+    player.sprite.y = this.proximoTeleporte.portal.y;
+  }
+  else{
+    console.log("prximoTeleporte eh null !!!");
+  }
 }

@@ -220,8 +220,9 @@ Sprite.prototype.desenhar = function (ctx) {
       ctx.linewidth = 10;
       ctx.save();
       ctx.globalAlpha = 0.70;         //Transparência
-      ctx.fillRect(this.gx*this.s, this.gy*this.s, this.s, this.s);
-      ctx.strokeRect(this.gx*this.s, this.gy*this.s, this.s, this.s);
+      ctx.translate(this.x, this.y);
+      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
+      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
       ctx.restore();
     case 2:
       ctx.strokeStyle = "Yellow";
@@ -230,8 +231,9 @@ Sprite.prototype.desenhar = function (ctx) {
      // imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
       ctx.save();
       ctx.globalAlpha = 0.40;         //Transparência
-      ctx.fillRect(this.gx*this.s, this.gy*this.s, this.s, this.s);
-      ctx.strokeRect(this.gx*this.s, this.gy*this.s, this.s, this.s);
+      ctx.translate(this.x, this.y);
+      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
+      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
       ctx.restore();
       break;
     default:
@@ -274,10 +276,26 @@ Sprite.prototype.desenharCell = function(ctx){
   ctx.strokeRect(this.gx*this.map.s, this.gy*this.map.s, this.map.s, this.map.s)
 };
 
+/** 
+ * ColidiuCom possui o ponto central do sprite no canto superior esquerdo
+*/
+
 Sprite.prototype.colidiuCom = function (alvo) {
-  if(alvo.x+alvo.w < this.x) return false;
-  if(alvo.x > this.x+this.w) return false;
-  if(alvo.y+alvo.h < this.y) return false;
-  if(alvo.y > this.y+this.h) return false;
+  if(alvo.x + alvo.w < this.x) return false;
+  if(alvo.x > this.x + this.w) return false;
+  if(alvo.y + alvo.h < this.y) return false;
+  if(alvo.y > this.y + this.h) return false;
+  return true;
+};
+
+/** 
+ * ColidiuCom possui o ponto central do sprite no centro
+*/
+
+Sprite.prototype.colidiuCom2 = function (alvo) {
+  if(alvo.x + alvo.s/2 < this.x) return false;
+  if(alvo.x > this.x + this.s/2) return false;
+  if(alvo.y + alvo.s/2 < this.y) return false;
+  if(alvo.y > this.y + this.s/2) return false;
   return true;
 };
