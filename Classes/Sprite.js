@@ -31,7 +31,7 @@ Sprite.prototype.constructor = Sprite;
 Sprite.prototype.mover = function (dt) {
   this.gx = Math.floor(this.x/this.map.s);
   this.gy = Math.floor(this.y/this.map.s);
-  console.log(this.gx + " -> gx, " + this.gy + " -> gy");
+  //console.log(this.gx + " -> gx, " + this.gy + " -> gy");
 
   /****************************************************************
   * Outro meio de andar nesse caso é utilizando a propria grade***
