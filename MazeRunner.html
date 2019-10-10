@@ -44,20 +44,34 @@
     var tela = document.getElementById("canvas");
     tela.style.border = '2px solid #000';                       //Colocando borda no canvas
     var ctx = tela.getContext("2d");
-
     var anterior = dt = 0;
     var estado = 1;
 
+    //Carregamento de arquivos
+    
+    var imageLibrary = new ImageLibrary();
+    imageLibrary.load("brick_gray", "Imagens/brick_gray.png");
+    imageLibrary.load("brick_dark_Tp_0", "Imagens/brick_dark0.png");
+    imageLibrary.load("floor_sand", "Imagens/floor_sand_stone0.png");
+    imageLibrary.load("rockBlock", "Imagens/rock.png");
+    imageLibrary.load("grass_full", "Imagens/grass_full.png");
+    imageLibrary.load("player", "Imagens/player-sprite.png");    
+
+    var audioLibrary = new AudioLibrary();
+    audioLibrary.load("teleporte", "Audios/Teleport.wav");
+
     //Proporções do mapa
+    
     var widthMap = 120;   //19;
     var heightMap = 120;  //11;
     var sizeMap = 32;     //32;
     var MAPA_AREA = 20;   //160
-    var escala = 0.5;
+    var escala = 1.8;
     var K = 1;
     var debugMode = 0;  //  0 => Colision is detected, 1 => colision is free
 
-    var player = new Player(32);
+    var player = new Player(16, "player");
+
     var levelAtual = new Level(widthMap, heightMap, sizeMap);
     var levels = [];
     levels.push(new Level(widthMap, heightMap, sizeMap));
@@ -119,20 +133,10 @@
 
     levelAtual.clonarLevel(levels[0]);
     player.sprite.map = levelAtual.mapa;
-    player.sprite.x = levelAtual.startX;
-    player.sprite.y = levelAtual.startY;
+    //player.sprite.x = tela.width/2;//levelAtual.startX;
+    //player.sprite.y = tela.height/2;//levelAtual.startY;
 
-    var teasuresCollected = 0;
-
-    var imageLibrary = new ImageLibrary();
-    imageLibrary.load("brick_gray", "Imagens/brick_gray.png");
-    imageLibrary.load("brick_dark_Tp_0", "Imagens/brick_dark0.png");
-    imageLibrary.load("floor_sand", "Imagens/floor_sand_stone0.png");
-    imageLibrary.load("rockBlock", "Imagens/rock.png");
-    imageLibrary.load("grass_full", "Imagens/grass_full.png");
-
-    var audioLibrary = new AudioLibrary();
-    audioLibrary.load("teleporte", "Audios/Teleport.wav");
+    var teasuresCollected = 0;    
 
     //Tempo
     var tempoRectExt = new Sprite();
@@ -187,7 +191,7 @@
             player.mover(dt);
             ctx.save();
             ctx.scale(escala, escala);
-            ctx.translate(-player.sprite.x + canvas.width/2 , - player.sprite.y + canvas.height/2);
+            ctx.translate(-player.sprite.x + canvas.width/4 , - player.sprite.y + canvas.height/4);
             levelAtual.desenhar(ctx);
             player.desenhar(ctx);
             ctx.restore();
@@ -413,28 +417,17 @@
         else {
           switch (e.keyCode) {
             case 13:    //Enter
+            case 32:    //Space bar
               if (estado != 2) {
                 if (stateMainMenu == 0) {
                   levelAtual = new Level(widthMap, heightMap, sizeMap);
                   levelAtual.clonarLevel(levels[0]);
-                  player = new Player();
+                  player = new Player(12, "player");
                   player.sprite.map = levelAtual.mapa;
-                  player.sprite.x = levelAtual.startX;
-                  player.sprite.y = levelAtual.startY;
-                  estado = 0;
-                }
-                else {
-                  estado = 3;
-                }
-              }
-              break;
-            case 32:         //Space bar
-              if (estado != 2) {
-                if (stateMainMenu == 0) {
-                  levelAtual = new Level(widthMap, heightMap, sizeMap);
-                  levelAtual.clonarLevel(levels[0]);
-                  player = new Player();
-                  player.sprite.map = levelAtual.mapa;
+                  //player.sprite.x = tela.width/2;
+                  //player.sprite.y = tela.height/2;
+                  //console.log(tela.width/2, tela.height/2);
+                  //console.log(player.sprite);
                   player.sprite.x = levelAtual.startX;
                   player.sprite.y = levelAtual.startY;
                   estado = 0;
