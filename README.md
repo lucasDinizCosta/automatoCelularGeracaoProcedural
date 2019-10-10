@@ -5,3 +5,5 @@ Link Github io: https://lucasdinizcosta.github.io/automatoCelularGeracaoProcedur
 Instruções:
 - Setas: Movimentação do personagem;
 - p : Ativa ou desativa o modo debug de modo que as colisões e detecção de grade não são verificadas;
+- + : Com o Debug mode ativado, este serve para aumentar o Zoom do mapa;
+- - : Com o Debug mode ativado, este serve para diminuir o Zoom do mapa;
