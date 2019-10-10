@@ -101,6 +101,7 @@
     //geraFase.fullstep(5);
     geraFase.countRooms();
     geraFase.filterRooms(25);
+
     levels[0].setMatrixMap(geraFase.map);
     levels[0].copiaSalas(geraFase.rooms);
     levels[0].updateGradeSalas();
@@ -186,7 +187,7 @@
             player.mover(dt);
             ctx.save();
             ctx.scale(escala, escala);
-            ctx.translate(-player.sprite.x + canvas.width / 4, -player.sprite.y + canvas.height / 2);
+            ctx.translate(- player.sprite.x + canvas.width / 4, - player.sprite.y + canvas.height / 2);
             levelAtual.desenhar(ctx);
             player.desenhar(ctx);
             ctx.restore();
@@ -311,7 +312,7 @@
     }
 
     addEventListener("keydown", function (e) {
-      //console.log(e.keyCode);
+      console.log(e.keyCode);
       if (estado == 0) {
         switch (e.keyCode) {
           case 37:
@@ -330,9 +331,6 @@
 
             break;
           case 32:  //Espaco  -- Ativa teleporte
-              //let roomPlayerCode = levelAtual.gradeSalas[player.sprite.gy][player.sprite.gx];
-              //console.log("player GX: " + player.sprite.gx + " -- player GY: " + player.sprite.gy);
-              //console.log(roomPlayerCode);
               for(let i = 0; i < levelAtual.rooms.length; i++){
                 if(levelAtual.rooms[i].teleporterInitial.portal.colidiuCom2(player.sprite)){
                   levelAtual.rooms[i].teleporterInitial.teleportar(player);
@@ -364,8 +362,25 @@
             limparDados();
             estado = 1;
             break;
+          case 80:      //Pressionar a letra p
+            if(debugMode == 1){
+              debugMode = 0;
+            }
+            else{
+              debugMode = 1;
+            }
+            break;
+          case 187 || 107:      //+
+            if(debugMode == 1){
+              debugMode = 0;
+            }
+            else{
+              debugMode = 1;
+            }
+            break;
           default:
         }
+
       }
       else {
         if (estado == 2) {

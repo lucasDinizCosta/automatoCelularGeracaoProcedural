@@ -75,7 +75,7 @@ Map.prototype.geraGradeSalas = function(){
 }
 
 Map.prototype.visitCells = function(auxMatrix, mapx, y, x, tp, d = 1, indexArea){   //visita as celulas visinhas de maneira recursiva e atribui o código da sala correspondente 
-  /*********************************************
+  /**********************************************
    * 
    * Algoritmo Flood fill:
    * https://en.wikipedia.org/wiki/Flood_fill

@@ -184,8 +184,6 @@ Level.prototype.setTeleporters = function(){
         roomsClosed.push(this.rooms[roomsAvaliable[indAvaliableRoom] - 1].number);
         roomsAvaliable.splice(indAvaliableRoom, 1);
     }
-
-
     //Connecting last room => to create a cycle on the rooms connections
 
     this.rooms[roomsAvaliable[0] - 1].teleporterInitial.proximoTeleporte = this.rooms[roomsClosed[0] - 1].teleporterFinal;

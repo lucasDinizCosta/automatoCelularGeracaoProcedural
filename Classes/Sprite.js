@@ -113,7 +113,7 @@ Sprite.prototype.mover = function (dt) {
           var maxDy = limite-(this.y-this.s/2);
           var Dy = (this.vy)*dt;
           this.y += Math.max(Dy, maxDy);
-        } else if((this.vy) >0 && this.map.cell[this.gy+1][this.gx]===1){
+        } else if((this.vy) >0 && this.map.cell[this.gy+1][this.gx]!==0){
           var limite = (this.gy+1)*this.map.s;
           var maxDy = limite-(this.y+this.s/2);
           var Dy = (this.vy)*dt;
@@ -123,7 +123,7 @@ Sprite.prototype.mover = function (dt) {
         }
       }
       else{
-        if((this.vy)<0 && this.map.cell[this.gy-1][this.gx]===1){
+        if((this.vy)<0 && this.map.cell[this.gy-1][this.gx]!==0){
           var limite = (this.gy)*this.map.s;
           var maxDy = limite-(this.y-this.s/2);
           var Dy = (this.vy)*dt;
@@ -139,12 +139,12 @@ Sprite.prototype.mover = function (dt) {
       }
     }
     else{
-      if((this.vy)<0 && this.map.cell[this.gy-1][this.gx]===1){
+      if((this.vy)<0 && this.map.cell[this.gy-1][this.gx]!==0){
         var limite = (this.gy)*this.map.s;
         var maxDy = limite-(this.y-this.s/2);
         var Dy = (this.vy)*dt;
         this.y += Math.max(Dy, maxDy);
-      } else if((this.vy) >0 && this.map.cell[this.gy+1][this.gx]===1){
+      } else if((this.vy) >0 && this.map.cell[this.gy+1][this.gx]!==0){
         var limite = (this.gy+1)*this.map.s;
         var maxDy = limite-(this.y+this.s/2);
         var Dy = (this.vy)*dt;
