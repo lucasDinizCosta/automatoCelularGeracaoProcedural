@@ -208,6 +208,16 @@ Level.prototype.setTeleporters = function(){
   }
 }
 
+Level.prototype.posicionarPlayer = function(p){
+  //Blocos da sala 1 e posiciona o personagem
+  let posicao = this.rooms[0].blocks[this.getRandomInt(0, this.rooms[0].blocks.length - 1)];
+  console.log(posicao);
+  this.startGX = posicao[1];
+  this.startGY = posicao[0];
+  this.startX = this.mapa.s * this.startGX + p.sprite.s;
+  this.startY = this.mapa.s * this.startGY + p.sprite.s;
+}
+
 /*Level.prototype.toggleLevel = function(l){
   this = JSON.parse(JSON.stringify(l));  //Copia matriz
 

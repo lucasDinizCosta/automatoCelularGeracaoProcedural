@@ -53,9 +53,9 @@
     var heightMap = 120;//11;
     var sizeMap = 32;//32;
     var MAPA_AREA = 160;
-    var escala = 0.35;
+    var escala = 0.5;
     var K = 1;
-    var debugMode = 1;  //  0 => Colision is detected, 1 => colision is free
+    var debugMode = 0;  //  0 => Colision is detected, 1 => colision is free
 
     var player = new Player(32);
     var levelAtual = new Level(widthMap, heightMap, sizeMap);
@@ -105,12 +105,8 @@
     levels[0].copiaSalas(geraFase.rooms);
     levels[0].updateGradeSalas();
     levels[0].setTeleporters();
+    levels[0].posicionarPlayer(player);
 
-
-    levels[0].startX = 32 + player.sprite.s;
-    levels[0].startGX = 0;
-    levels[0].startY = 4 * levelAtual.mapa.s + player.sprite.s;
-    levels[0].startGY = 0;
     levels[0].tesouros = 3;
     levels[0].finishGX = 17;
     levels[0].finishGY = 9;
