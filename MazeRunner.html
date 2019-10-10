@@ -49,10 +49,10 @@
     var estado = 1;
 
     //Proporções do mapa
-    var widthMap = 120;//19;
-    var heightMap = 120;//11;
-    var sizeMap = 32;//32;
-    var MAPA_AREA = 160;
+    var widthMap = 120;   //19;
+    var heightMap = 120;  //11;
+    var sizeMap = 32;     //32;
+    var MAPA_AREA = 20;   //160
     var escala = 0.5;
     var K = 1;
     var debugMode = 0;  //  0 => Colision is detected, 1 => colision is free
@@ -187,7 +187,7 @@
             player.mover(dt);
             ctx.save();
             ctx.scale(escala, escala);
-            ctx.translate(- player.sprite.x + canvas.width / 4, - player.sprite.y + canvas.height / 2);
+            ctx.translate(-player.sprite.x + canvas.width/2 , - player.sprite.y + canvas.height/2);
             levelAtual.desenhar(ctx);
             player.desenhar(ctx);
             ctx.restore();
@@ -377,9 +377,11 @@
           case 80:      //Pressionar a letra p
             if(debugMode == 1){
               debugMode = 0;
+              MAPA_AREA = 20;
             }
             else{
               debugMode = 1;
+              MAPA_AREA = 160;
             }
             break;
           case 187:
