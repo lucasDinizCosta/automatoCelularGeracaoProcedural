@@ -139,7 +139,7 @@ Sprite.prototype.mover = function (dt) {
       }
     }
     else{
-      if((this.vy)<0 && this.map.cell[this.gy-1][this.gx]!==0){
+      if((this.vy) < 0 && this.map.cell[this.gy-1][this.gx]!==0){
         var limite = (this.gy)*this.map.s;
         var maxDy = limite-(this.y-this.s/2);
         var Dy = (this.vy)*dt;

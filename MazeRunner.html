@@ -193,19 +193,7 @@
             ctx.restore();
             //tempoRectExt.desenharTempo(ctx);
             //tempoRectInt.desenharTempo(ctx);
-            ctx.font = "15px Arial Black";
-            ctx.fillStyle = "white";
-            ctx.textAlign = alignMainMenu;
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = "black";
-            ctx.strokeText("Tempo: ", 55, 20);
-            ctx.fillText("Tempo: ", 55, 20);
-            ctx.strokeText("Vidas: " + player.vidas, 300, 20);
-            ctx.fillText("Vidas: " + player.vidas, 300, 20);
-            ctx.strokeText("Tesouros: " + teasuresCollected, 430, 20);
-            ctx.fillText("Tesouros: " + teasuresCollected, 430, 20);
-            ctx.strokeText("Level: " + player.levelNumber, 545, 20);
-            ctx.fillText("Level: " + player.levelNumber, 545, 20);
+            desenharHUD(ctx);
             break;
           case 1:         //Main menu
             limparTela();
@@ -280,6 +268,30 @@
       requestAnimationFrame(passo);
     }
 
+    function desenharHUD(){
+      ctx.font = "15px Arial Black";
+      ctx.fillStyle = "white";
+      ctx.textAlign = alignMainMenu;
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "black";
+      ctx.strokeText("Tempo: ", 55, 20);
+      ctx.fillText("Tempo: ", 55, 20);
+      ctx.strokeText("Vidas: " + player.vidas, 300, 20);
+      ctx.fillText("Vidas: " + player.vidas, 300, 20);
+      ctx.strokeText("Tesouros: " + teasuresCollected, 430, 20);
+      ctx.fillText("Tesouros: " + teasuresCollected, 430, 20);
+      ctx.strokeText("Level: " + player.levelNumber, 545, 20);
+      ctx.fillText("Level: " + player.levelNumber, 545, 20);
+      if(debugMode == 1){
+        ctx.font = "13px Arial Black";
+        ctx.fillStyle = "yellow";
+        ctx.strokeText("Debug mode ativado!!!", 110, 320);
+        ctx.fillText("Debug mode ativado!!!", 110, 320);
+        ctx.strokeText("Escala mapa: " + escala.toFixed(4), 500, 320);
+        ctx.fillText("Escala mapa: " + escala.toFixed(4), 500, 320);
+      }
+    }
+
     function limparDados() {
       player = null;
       tempoGameOver = 2;
@@ -312,7 +324,7 @@
     }
 
     addEventListener("keydown", function (e) {
-      console.log(e.keyCode);
+      //console.log(e.keyCode);
       if (estado == 0) {
         switch (e.keyCode) {
           case 37:
@@ -370,12 +382,16 @@
               debugMode = 1;
             }
             break;
-          case 187 || 107:      //+
+          case 187:
+          case 107:      //+
             if(debugMode == 1){
-              debugMode = 0;
+              escala = escala + 0.005;
             }
-            else{
-              debugMode = 1;
+            break;
+          case 189:
+          case 109:      //-
+            if(debugMode == 1){
+              escala = escala - 0.005;
             }
             break;
           default:
