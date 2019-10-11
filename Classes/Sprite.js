@@ -26,7 +26,7 @@ function Sprite(s = 16, typ = 0) {
   this.qtdAnimacoes = 0;
   this.animationState = 0;
   this.frameTimeAnimation = 12;
-  this.speedAnimation = 60;
+  this.speedAnimation = 160;
 
   this.colorBG;
   this.colorBorder;
