@@ -25,6 +25,8 @@ function Sprite(s = 16, typ = 0) {
   this.pose = 0;
   this.qtdAnimacoes = 0;
   this.animationState = 0;
+  this.frameTimeAnimation = 12;
+  this.speedAnimation = 60;
 
   this.colorBG;
   this.colorBorder;
@@ -172,8 +174,17 @@ Sprite.prototype.mover = function (dt) {
     this.map.cell[this.gy][this.gx] = 0;
   }*/
 
-
-  this.animationState += 1;
+  if(this.vx !== 0 || this.vy !== 0){
+    this.frameTimeAnimation = this.frameTimeAnimation - this.speedAnimation*dt;
+    if(this.frameTimeAnimation < 0){
+      this.frameTimeAnimation = 12;
+      this.animationState = this.animationState + 1;
+    }
+  }
+  else{
+    this.frameTimeAnimation = 12;
+    this.animationState = 0;
+  }
 };
 
 Sprite.prototype.copy = function(sprite){
@@ -217,9 +228,7 @@ Sprite.prototype.desenhar = function (ctx) {
 
       ctx.save();
       ctx.translate(this.x, this.y);
-      //imageLibrary.drawSize(ctx, this.nomeImagem, this.sx, this.sy, this.s, this.s);
-      //imageLibrary.drawClipSize(ctx, this.nomeImagem, this.sx, this.sy, this.sizeImagem, this.sizeImagem, -this.sizeImagem/2, -this.sizeImagem, this.sizeImagem, this.sizeImagem);
-      imageLibrary.drawClipSize(ctx, this.nomeImagem, this.sizeImagem * this.animationState, this.sizeImagem * this.pose, this.sizeImagem, this.sizeImagem, -this.sizeImagem/2, -this.sizeImagem, this.sizeImagem, this.sizeImagem);
+      imageLibrary.drawClipSize(ctx, this.nomeImagem, this.sizeImagem * (this.animationState % this.qtdAnimacoes), this.sizeImagem * this.pose, this.sizeImagem, this.sizeImagem, -this.sizeImagem/2, -this.sizeImagem, this.sizeImagem, this.sizeImagem);
       ctx.restore();
       if(debugMode === 1){
         this.desenharCell(ctx);         //Debug mode Grid

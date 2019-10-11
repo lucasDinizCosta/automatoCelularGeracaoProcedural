@@ -13,11 +13,8 @@ function Player(size, nomeImagem) {
   this.space = false;
 
   //AnimationStates
-  this.sentidoMovimento = true;     //true - Esquerda-direita false - direitaEsquerda
-  this.animationState = 0;
-  this.tempoAnimacao = 1;
-  this.estadoAnimacaoAtual = 0;
-  this.sentidoAnimacao = true;      //true - crescente, false - descrescente
+  this.sentidoMovimento = 0;          //0 => direita, 1 => baixo, 2 => esquerda, 3 => cima
+  this.estadoAnimacaoAtual = 3;
   this.poseAtual = 0;
   this.animation = [];
   this.animation.push(new Sprite());
@@ -27,74 +24,49 @@ function Player(size, nomeImagem) {
   this.animation.push(new Sprite());
   this.animation.push(new Sprite());
   this.animation.push(new Sprite());
-  this.animation[0].sx = 0;            //Parado
-  this.animation[0].sy = 0;
   this.animation[0].sizeImagem = 64;
-  this.animation[0].pose = 0;
-  this.animation[0].qtdAnimacoes = 6;
-  this.animation[1].sx = 0;            //Parado
-  this.animation[1].sy = 64;
+  this.animation[0].pose = 8;
+  this.animation[0].qtdAnimacoes = 8;
   this.animation[1].sizeImagem = 64;
-  this.animation[1].pose = 1;
-  this.animation[1].sx = 0;            //Parado
-  this.animation[1].sy = 128;
-  this.animation[1].sizeImagem = 64;
-  this.animation[1].pose = 2;
-  /*this.animation[0].sx = 0;            //Parado
-  this.animation[0].sy = 704;
-  this.animation[0].sizeImagem = 64;
-  this.animation[0].pose = 0;*/
-
+  this.animation[1].pose = 9;
+  this.animation[1].qtdAnimacoes = 8;
+  this.animation[2].sizeImagem = 64;
+  this.animation[2].pose = 10;
+  this.animation[2].qtdAnimacoes = 8;
+  this.animation[3].sizeImagem = 64;
+  this.animation[3].pose = 11;
+  this.animation[3].qtdAnimacoes = 8;
+  this.animation[4].sizeImagem = 64;
+  this.animation[4].pose = 12;
+  this.animation[4].qtdAnimacoes = 5;
   this.sprite.nomeImagem = nomeImagem;
-  this.sprite.sx = this.animation[this.estadoAnimacaoAtual].sx;
-  this.sprite.sy = this.animation[this.estadoAnimacaoAtual].sy;
-  this.sprite.sizeImagem = this.animation[this.estadoAnimacaoAtual].sizeImagem;
-  this.poseAtual = this.animation[this.estadoAnimacaoAtual].pose;
 }
 
 Player.prototype.mover = function(dt){
+  switch (this.sentidoMovimento) {
+    case 0:
+      this.estadoAnimacaoAtual = 3;
+      break;
+    case 1:
+      this.estadoAnimacaoAtual = 2;
+      break;
+    case 2:
+      this.estadoAnimacaoAtual = 1;
+      break;
+    case 3:
+      this.estadoAnimacaoAtual = 0;
+      break;
+    default:
+      break;
+  }
+  this.sprite.sizeImagem = this.animation[this.estadoAnimacaoAtual].sizeImagem;
+  this.sprite.qtdAnimacoes = this.animation[this.estadoAnimacaoAtual].qtdAnimacoes;
+  this.sprite.pose = this.animation[this.estadoAnimacaoAtual].pose;
+  this.poseAtual = this.animation[this.estadoAnimacaoAtual].pose;
   this.sprite.mover(dt);
-  this.timeWalkSound = this.timeWalkSound - dt;
-  /*if((this.sprite.vx != 0 || this.sprite.vy != 0) && (this.timeWalkSound <= 0)){
-    audioLibrary.play("sandWalk");
-    this.timeWalkSound = 0.5;
-  }*/
-
 }
+
 
 Player.prototype.desenhar = function(ctx){
-  //this.sprite.desenhar(ctx);
   this.sprite.desenhar(ctx);
 }
-
-Player.prototype.trocarAnimacaoCorrida = function () {
-  if(this.tempoAnimacao <= 0){
-    this.tempoAnimacao = 1;
-    if(this.estadoAnimacaoAtual >= 0 && this.estadoAnimacaoAtual < 4){
-      var proximoEstado;
-      if(this.sentidoAnimacao){
-        proximoEstado = this.estadoAnimacaoAtual + 1;
-        if(proximoEstado > 3){
-          this.sentidoAnimacao = false;                      //Inverte o sentido de animação
-          this.estadoAnimacaoAtual = this.estadoAnimacaoAtual - 1;
-        }
-        else{
-          this.estadoAnimacaoAtual = this.estadoAnimacaoAtual + 1;
-        }
-      }
-      else{
-        proximoEstado = this.estadoAnimacaoAtual - 1;
-        if(proximoEstado < 1){
-          this.sentidoAnimacao = true;                      //Inverte o sentido de animação
-          this.estadoAnimacaoAtual = this.estadoAnimacaoAtual + 1;
-        }
-        else{
-          this.estadoAnimacaoAtual = this.estadoAnimacaoAtual - 1;
-        }
-      }
-    }
-  }
-  this.sprite.sx = this.animation[this.estadoAnimacaoAtual].sx;
-  this.sprite.sy = this.animation[this.estadoAnimacaoAtual].sy;
-  //this.tempoAnimacao = this.tempoAnimacao - 12*dt;
-};
