@@ -19,7 +19,7 @@ Map.prototype.copyDates = function (matrix){
 }
 
 Map.prototype.copyDataInto = function (matrix, L, C){ 
-  console.log(matrix);
+  //console.log(matrix);
   //if(!this.cell) this.cell = [];
   for(var l = 0; l<matrix.length-1; l++){
     //this.cell[l] = [];

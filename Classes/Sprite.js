@@ -218,21 +218,25 @@ Sprite.prototype.desenhar = function (ctx) {
   switch(this.typeSprite){
     case 0:
       ctx.linewidth = 1;
-      ctx.fillStyle = "grey";
-      ctx.strokeStyle = "black";
+      ctx.fillStyle = "rgba(10,10,10,0.4)";
+      ctx.strokeStyle = "rgba(10,10,10,0.4)";
       ctx.save();
       ctx.translate(this.x, this.y);
-      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.restore();
-
-      ctx.save();
-      ctx.translate(this.x, this.y);
-      imageLibrary.drawClipSize(ctx, this.nomeImagem, this.sizeImagem * (this.animationState % this.qtdAnimacoes), this.sizeImagem * this.pose, this.sizeImagem, this.sizeImagem, -this.sizeImagem/2, -this.sizeImagem, this.sizeImagem, this.sizeImagem);
+      ctx.beginPath();
+      //ctx.ellipse(-this.s/2, -this.s/4, this.s, this.s/2, 0, 0, 2*Math.PI, false);
+      ctx.ellipse(this.s/2, this.s/4, this.s, this.s/2, 0, 0, 2*Math.PI, false);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      imageLibrary.drawClipSize(ctx, this.nomeImagem, 
+        this.sizeImagem * (this.animationState % this.qtdAnimacoes), this.sizeImagem * this.pose, this.sizeImagem, this.sizeImagem, 
+        -6-this.sizeImagem/2, 4-this.sizeImagem, this.sizeImagem, this.sizeImagem);
       ctx.restore();
       if(debugMode === 1){
         this.desenharCell(ctx);         //Debug mode Grid
+        this.desenharCentro(ctx);
       }
+      
       break;
     case 1:
       ctx.fillStyle = "blue";
@@ -257,11 +261,18 @@ Sprite.prototype.desenhar = function (ctx) {
       ctx.restore();
       break;
     default:
-      console.log("Sprite type is incorrect!!!");
+      console.log("Sprite type is wrong!!!");
       break;
   }
-  
 };
+
+Sprite.prototype.desenharCentro = function(ctx){
+  ctx.fillStyle = "red";
+  ctx.strokeStyle = "blue";
+  ctx.lineWidth = 1;
+  ctx.fillRect(this.x,this.y,1,1);
+  ctx.strokeRect(this.x-1, this.y-1, 2, 2);
+}
 
 Sprite.prototype.desenharTempo = function (ctx) {
   ctx.fillStyle = this.colorBG;
@@ -292,8 +303,8 @@ Sprite.prototype.impoeLimites = function(x, y, w, h){
 
 Sprite.prototype.desenharCell = function(ctx){
   ctx.strokeStyle = "white";
-  ctx.lineWidth = 3;
-  ctx.strokeRect(this.gx*this.map.s, this.gy*this.map.s, this.map.s, this.map.s)
+  ctx.lineWidth = 2;
+  ctx.strokeRect(this.gx*this.map.s, this.gy*this.map.s, this.map.s, this.map.s);
 };
 
 /** 

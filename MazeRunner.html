@@ -114,7 +114,9 @@
     geraFase.fullstep(2);
     //geraFase.fullstep(5);
     geraFase.countRooms();
+    console.log("Antes: "+geraFase.rooms.length);
     geraFase.filterRooms(25);
+    console.log("Depois: "+geraFase.rooms.length);
 
     levels[0].setMatrixMap(geraFase.map);
     levels[0].copiaSalas(geraFase.rooms);
@@ -293,6 +295,8 @@
         ctx.fillText("Debug mode ativado!!!", 110, 320);
         ctx.strokeText("Escala mapa: " + escala.toFixed(4), 500, 320);
         ctx.fillText("Escala mapa: " + escala.toFixed(4), 500, 320);
+        ctx.strokeText("Player: [" + (player.sprite.gy) + "][" + (player.sprite.gx) + "]", 500, 340);
+        ctx.fillText("Player: [" + (player.sprite.gy) + "][" + (player.sprite.gx) + "]", 500, 340);
       }
     }
 
@@ -395,13 +399,13 @@
           case 187:
           case 107:      //+
             if(debugMode == 1){
-              escala = escala + 0.005;
+              escala = escala + 0.025;
             }
             break;
           case 189:
           case 109:      //-
             if(debugMode == 1){
-              escala = escala - 0.005;
+              escala = escala - 0.025;
             }
             break;
           default:

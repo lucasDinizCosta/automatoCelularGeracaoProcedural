@@ -132,11 +132,14 @@ CellularAutomata.prototype.filterRooms = function(sizeRoomsMinimal = 10){
     for(let i = 0; i < this.rooms.length; i++){                         //Reorder the numbers of the rooms
         this.rooms[i].number = i + 1;                                   //Initiate with number 1
     }
+    this.gameOfWallRulesAutomataPutWalls();
+    this.gameOfWallRulesAutomataPutWalls();
     this.gameOfWallRulesAutomataRemoveWalls();
     this.toggleMaps();
-    while(this.gameOfWallRulesAutomataFinalStepCleanWalls() !== 0){ //Limpa as paredes espaçadas
+    this.gameOfWallRulesAutomataFinalStepCleanWalls();
+    /*while(this.gameOfWallRulesAutomataFinalStepCleanWalls() !== 0){ //Limpa as paredes espaçadas
         this.toggleMaps();
-    }
+    }*/
 }
 
 CellularAutomata.prototype.getRandomInt = function(min, max){
@@ -420,6 +423,12 @@ CellularAutomata.prototype.gameOfWallRulesAutomataFinalStepCleanWalls = function
                             this.map2[l][c] = this.floorIndex;
                             count++;
                         }
+                        /*else{
+                            if (this.countAdjacentsMoore(this.map, l, c, this.floorIndex, 1) === 0) {
+                                this.map2[l][c] = this.rockIndex;
+                                count++;
+                            }
+                        }*/
                         break;
                 }
             }

@@ -124,6 +124,8 @@ Level.prototype.setTeleporters = function(){
             sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1));
         }
         this.rooms[i].teleporterInitial.setPosition(this.rooms[i].blocks[sortPosition][0], this.rooms[i].blocks[sortPosition][1]);
+        this.rooms[i].teleporterInitial.roomNumber = this.rooms[i].number;
+        this.rooms[i].teleporterInitial.portal.map = this.mapa;
         blocksSorted[0] = sortPosition;
         sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1))
         while(sortPosition === blocksSorted[1]){
@@ -134,6 +136,7 @@ Level.prototype.setTeleporters = function(){
         roomsAvaliable.push(this.rooms[i].number);
         this.rooms[i].teleporterInitial.roomNumber = this.rooms[i].number;
         this.rooms[i].teleporterFinal.roomNumber = this.rooms[i].number;
+        this.rooms[i].teleporterFinal.portal.map = this.mapa;
     }
     //GX => COLUNA, GY => LINHA
 
@@ -203,6 +206,22 @@ Level.prototype.setTeleporters = function(){
   }
   else{
     console.log("Level with only one room !!!");
+  }
+}
+
+Level.prototype.dadosSalas = function(){
+  for(let i = 0; i < this.rooms.length; i++){
+    console.log("Sala " + this.rooms[i].number + " : ");
+    console.log("teleporterInitial: ["+
+      (this.rooms[i].teleporterInitial.portal.y - this.rooms[i].teleporterInitial.portal.s/2)/this.rooms[i].teleporterInitial.portal.map.s
+      +"]"+"["+
+      (this.rooms[i].teleporterInitial.portal.x - this.rooms[i].teleporterInitial.portal.s/2)/this.rooms[i].teleporterInitial.portal.map.s
+      +"]");
+    console.log("teleporterFinal: ["+
+      (this.rooms[i].teleporterFinal.portal.y - this.rooms[i].teleporterFinal.portal.s/2)/this.rooms[i].teleporterFinal.portal.map.s
+      +"]"+"["+
+      (this.rooms[i].teleporterFinal.portal.x - this.rooms[i].teleporterFinal.portal.s/2)/this.rooms[i].teleporterFinal.portal.map.s
+      +"]");
   }
 }
 

@@ -18,6 +18,7 @@ Teleporter.prototype.constructor = Teleporter;
 
 Teleporter.prototype.copy = function(teleporter){
   this.proximoTeleporte = teleporter.proximoTeleporte;
+  this.roomNumber = teleporter.roomNumber;
   this.portal.copy(teleporter.portal);
 }
 
