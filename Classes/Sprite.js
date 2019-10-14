@@ -34,7 +34,7 @@ function Sprite(s = 16, typ = 0) {
   this.typeSprite = typ;
 };
 
-//Sprite.prototype = new Sprite();
+Sprite.prototype = new Sprite();
 Sprite.prototype.constructor = Sprite;
 
 Sprite.prototype.mover = function (dt) {

@@ -17,13 +17,10 @@ function Player(size, nomeImagem) {
   this.estadoAnimacaoAtual = 3;
   this.poseAtual = 0;
   this.animation = [];
-  this.animation.push(new Sprite());
-  this.animation.push(new Sprite());
-  this.animation.push(new Sprite());
-  this.animation.push(new Sprite());
-  this.animation.push(new Sprite());
-  this.animation.push(new Sprite());
-  this.animation.push(new Sprite());
+  this.numAnimacoes = 7;
+  for(let i = 0; i < this.numAnimacoes; i++){
+    this.animation.push(new Sprite());
+  }
   this.animation[0].sizeImagem = 64;
   this.animation[0].pose = 8;
   this.animation[0].qtdAnimacoes = 8;
@@ -41,6 +38,9 @@ function Player(size, nomeImagem) {
   this.animation[4].qtdAnimacoes = 5;
   this.sprite.nomeImagem = nomeImagem;
 }
+
+//Player.prototype = new Player();
+//Player.prototype.constructor = Player;
 
 Player.prototype.mover = function(dt){
   switch (this.sentidoMovimento) {
