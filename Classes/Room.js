@@ -1,13 +1,13 @@
 function Room(number){
     this.blocks = [];
-    this.number;
+    this.number = number;
     this.teleporterInitial = new Teleporter(1);       //(Inicio)Transição de uma sala pra outra
     this.teleporterFinal = new Teleporter(2);        //(Chegada)Transição de uma sala pra outra
     this.endingLevel;            //Teleportador que termina a fase
 }
 
 //Room.prototype = new Room();
-Room.prototype.constructor = Room;
+//Room.prototype.constructor = Room;
 
 Room.prototype.addBlock = function(row, column){
     let aux = [];
@@ -35,6 +35,8 @@ Room.prototype.draw = function(ctx){
 }
 
 Room.prototype.copy = function(room){
+    //console.log("Copy -- Room: ");
+    //console.log(this.number + " (this.number)--(Room.number) " + room.number);
     this.number = room.number;
     this.teleporterInitial.copy(room.teleporterInitial);
     this.teleporterFinal.copy(room.teleporterFinal);

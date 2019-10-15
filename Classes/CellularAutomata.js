@@ -40,9 +40,9 @@ CellularAutomata.prototype.fullstep = function(steps = 2){
 }
 
 CellularAutomata.prototype.countRooms = function(){
+    this.rooms = [];
     let auxMatrix = this.initMap(this.HS, this.WS, -1);
     let auxMatrixVisited = [];
-    let sizeRooms = [];
     let room = 0;
     let roomFloors = 0;
     let caveArea = 0;
@@ -71,7 +71,8 @@ CellularAutomata.prototype.countRooms = function(){
     }
 
     for(let i = 0; i < room; i++){                  //Cria o numero de salas correspondentes
-        this.rooms.push(new Room(i+1));
+        let aux = new Room(i+1);
+        this.rooms.push(aux);
     }
 
     for(let i = 0; i < this.HS; i++){               //Incrementa os contadores
@@ -91,10 +92,11 @@ CellularAutomata.prototype.countRooms = function(){
     }
     text += "}"
     console.log(text);
-    console.log("Number of rooms: " + room);
+    console.log("Number of rooms: " + this.rooms.length);
     console.log("Number of roomFloors: " + roomFloors);
     console.log("Number of caveArea: " + caveArea);
-    console.log("Total blocks: " + this.HS*this.WS);
+    console.log("Total blocks: " + this.HS * this.WS);
+    //console.log(this.rooms);
     /*let text = "";
     for(let i = 0; i < this.HS; i++){
         text = text + "auxMatrix ["+i+"]: {";
@@ -133,13 +135,21 @@ CellularAutomata.prototype.filterRooms = function(sizeRoomsMinimal = 10){
         this.rooms[i].number = i + 1;                                   //Initiate with number 1
     }
     this.gameOfWallRulesAutomataPutWalls();
-    this.gameOfWallRulesAutomataPutWalls();
+    this.toggleMaps();
     this.gameOfWallRulesAutomataRemoveWalls();
     this.toggleMaps();
+    this.gameOfWallRulesAutomataPutWalls();
+    this.toggleMaps();
     this.gameOfWallRulesAutomataFinalStepCleanWalls();
-    /*while(this.gameOfWallRulesAutomataFinalStepCleanWalls() !== 0){ //Limpa as paredes espaçadas
+    this.toggleMaps();
+    while(this.gameOfWallRulesAutomataFinalStepCleanWalls() !== 0){ //Limpa as paredes espaçadas
         this.toggleMaps();
-    }*/
+        this.gameOfWallRulesAutomataPutWalls();
+        this.toggleMaps();
+        this.gameOfWallRulesAutomataRemoveWalls();
+        this.toggleMaps();
+    }
+    this.countRooms();
 }
 
 CellularAutomata.prototype.getRandomInt = function(min, max){
@@ -151,9 +161,6 @@ CellularAutomata.prototype.getRandomInt = function(min, max){
 CellularAutomata.prototype.setTeleporters = function(){
     let indAvaliableRoom;
     let indFinishRoom;
-    let blocksSorted = [];
-    blocksSorted.push(-1);              //Initial Teleporter
-    blocksSorted.push(-1);              //Final teleporter
     let roomsAvaliable = [];            //Rooms avaliable to choose initial teleporter 
     let roomsClosed = [];               //Rooms that the initial teleporter is connected
     let sortPosition;
@@ -180,7 +187,7 @@ CellularAutomata.prototype.setTeleporters = function(){
 
     //Connecting first rooms manually
 
-    /*indAvaliableRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));                 //Begin teleporter room
+    indAvaliableRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));                 //Begin teleporter room
     indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
     while(indAvaliableRoom  ===  indFinishRoom){
         indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
@@ -246,7 +253,7 @@ CellularAutomata.prototype.setTeleporters = function(){
     console.log("\nFINAL\nB -> A:");
     for(let i = 0; i < this.rooms.length; i++){
         console.log("B( "+ this.rooms[i].teleporterFinal.startIDRoom +" ) -> A( " + this.rooms[i].teleporterFinal.finishIDRoom  + " )");
-    }*/
+    }
 }
 
 CellularAutomata.prototype.visitCells = function(auxMatrix, mapx, y, x, tp, d = 1, indexArea){   //visita as celulas visinhas de maneira recursiva e atribui o código da sala correspondente 

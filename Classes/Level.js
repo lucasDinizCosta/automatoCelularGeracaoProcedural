@@ -102,9 +102,6 @@ Level.prototype.setTeleporters = function(){
   if(this.rooms.length > 1){          //Only will have teleporters if that are more than one room
     let indAvaliableRoom;
     let indFinishRoom;
-    let blocksSorted = [];
-    blocksSorted.push(-1);              //Initial Teleporter
-    blocksSorted.push(-1);              //Final teleporter
     let roomsAvaliable = [];            //Rooms avaliable to choose initial teleporter 
     let roomsClosed = [];               //Rooms that the initial teleporter is connected
     let sortPosition;
@@ -222,7 +219,6 @@ Level.prototype.dadosSalas = function(){
 Level.prototype.posicionarPlayer = function(p){
   //Blocos da sala 1 e posiciona o personagem
   let posicao = this.rooms[0].blocks[this.getRandomInt(0, this.rooms[0].blocks.length - 1)];
-  //console.log(posicao);
   this.startGX = posicao[1];
   this.startGY = posicao[0];
   this.startX = this.mapa.s * this.startGX + p.sprite.s;
@@ -235,7 +231,9 @@ Level.prototype.posicionarPlayer = function(p){
 }*/
 
 Level.prototype.copiaSalas = function(rooms){
-  //this.salas = JSON.parse(JSON.stringify(rooms));  //Copia matriz
+  //this.rooms = JSON.parse(JSON.stringify(rooms));  //Copia matriz
+  //console.log(rooms);
+  this.rooms = [];
   for(let i = 0; i < rooms.length; i++){
      this.rooms.push(new Room(0));
      this.rooms[this.rooms.length - 1].copy(rooms[i]);
