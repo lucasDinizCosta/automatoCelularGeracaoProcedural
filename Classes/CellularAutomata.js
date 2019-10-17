@@ -134,6 +134,8 @@ CellularAutomata.prototype.filterRooms = function(sizeRoomsMinimal = 10){
     for(let i = 0; i < this.rooms.length; i++){                         //Reorder the numbers of the rooms
         this.rooms[i].number = i + 1;                                   //Initiate with number 1
     }
+    /*this.gameOfWallRulesAutomataRemoveWalls();
+    this.toggleMaps();
     this.gameOfWallRulesAutomataPutWalls();
     this.toggleMaps();
     this.gameOfWallRulesAutomataRemoveWalls();
@@ -141,7 +143,7 @@ CellularAutomata.prototype.filterRooms = function(sizeRoomsMinimal = 10){
     this.gameOfWallRulesAutomataPutWalls();
     this.toggleMaps();
     this.gameOfWallRulesAutomataFinalStepCleanWalls();
-    this.toggleMaps();
+    this.toggleMaps();*/
     while(this.gameOfWallRulesAutomataFinalStepCleanWalls() !== 0){ //Limpa as paredes espaçadas
         this.toggleMaps();
         this.gameOfWallRulesAutomataPutWalls();
@@ -149,6 +151,8 @@ CellularAutomata.prototype.filterRooms = function(sizeRoomsMinimal = 10){
         this.gameOfWallRulesAutomataRemoveWalls();
         this.toggleMaps();
     }
+    this.gameOfWallRulesAutomataRemoveWalls();
+    this.toggleMaps();
     this.countRooms();
 }
 
@@ -171,7 +175,6 @@ CellularAutomata.prototype.setTeleporters = function(){
         while(sortPosition === blocksSorted[0]){
             sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1));
         }
-        //this.rooms[i].teleporterInitial.setStart(1, this.rooms[i].number, this.rooms[i].blocks[sortPosition][1], );
         this.rooms[i].teleporterInitial.setPosition(this.rooms[i].blocks[sortPosition][0], this.rooms[i].blocks[sortPosition][1]);
         blocksSorted[0] = sortPosition;
         sortPosition = this.getRandomInt(0 , (this.rooms[i].blocks.length - 1))
@@ -180,7 +183,6 @@ CellularAutomata.prototype.setTeleporters = function(){
         }
         blocksSorted[1] = sortPosition;
         this.rooms[i].teleporterFinal.setPosition(this.rooms[i].blocks[sortPosition][0], this.rooms[i].blocks[sortPosition][1]);
-        //this.rooms[i].teleporterFinal.setStart(2, this.rooms[i].number, this.rooms[i].blocks[sortPosition][1], this.rooms[i].blocks[sortPosition][0]);
         roomsAvaliable.push(this.rooms[i].number);
     }
     //GX => COLUNA, GY => LINHA
@@ -426,7 +428,7 @@ CellularAutomata.prototype.gameOfWallRulesAutomataFinalStepCleanWalls = function
                     case this.rockIndex: //Rock
                         break;
                     case this.wallIndex: //Wall
-                        if (this.countAdjacentsMoore(this.map, l, c, this.wallIndex, 1) >= 3) {
+                        if (this.countAdjacentsMoore(this.map, l, c, this.wallIndex, 1) >= 2 ) {
                             this.map2[l][c] = this.floorIndex;
                             count++;
                         }

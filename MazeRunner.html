@@ -194,7 +194,7 @@
             player.mover(dt);
             ctx.save();
             ctx.scale(escala, escala);
-            ctx.translate(-player.sprite.x + canvas.width/4 , - player.sprite.y + canvas.height/4);
+            ctx.translate(-player.sprite.x + canvas.width/4 , - player.sprite.y + canvas.height/4);            
             levelAtual.desenhar(ctx);
             player.desenhar(ctx);
             ctx.restore();
@@ -289,7 +289,7 @@
       ctx.fillText("Tesouros: " + teasuresCollected, 430, 20);
       ctx.strokeText("Level: " + player.levelNumber, 545, 20);
       ctx.fillText("Level: " + player.levelNumber, 545, 20);
-      if(debugMode == 1){
+      if(debugMode >= 1){
         ctx.font = "13px Arial Black";
         ctx.fillStyle = "yellow";
         ctx.strokeText("Debug mode ativado!!!", 110, 320);
@@ -388,25 +388,58 @@
             estado = 1;
             break;
           case 80:      //Pressionar a letra p
-            if(debugMode == 1){
+            debugMode = debugMode + 1;
+            if(debugMode > 2){
               debugMode = 0;
-              MAPA_AREA = 20;
             }
-            else{
-              debugMode = 1;
-              MAPA_AREA = 160;
+            switch(debugMode){
+              case 0: //Padrão do jogo
+                debugMode = 0;
+                escala = 1.8;
+                MAPA_AREA = 20;
+              break;
+              case 1: //Desenha debug mode
+
+              break;
+              case 2: //Desenha grade de salas
+
+              break;
             }
             break;
           case 187:
           case 107:      //+
-            if(debugMode == 1){
+            if(debugMode >= 1){
               escala = escala + 0.025;
+              if(escala >= 0.85)
+                MAPA_AREA = 20;
+              else{
+                if(escala > 0.3){
+                  MAPA_AREA = 80;
+                }
+                else{
+                  if(escala >=  0.0){
+                    MAPA_AREA = 160;
+                  }
+                }
+              }
             }
             break;
           case 189:
           case 109:      //-
-            if(debugMode == 1){
+            if(debugMode >= 1){
               escala = escala - 0.025;
+              if(escala >= 0.85)
+                MAPA_AREA = 20;
+              else{
+                if(escala > 0.3){
+                  MAPA_AREA = 80;
+                }
+                else{
+                  if(escala >=  0.0){
+                    MAPA_AREA = 160;
+                  }
+                }
+              }
             }
             break;
           default:
@@ -431,12 +464,9 @@
                 if (stateMainMenu == 0) {
                   levelAtual = new Level(widthMap, heightMap, sizeMap);
                   levelAtual.clonarLevel(levels[0]);
+                  levelAtual.updateGradeSalas();
                   player = new Player(12, "player");
                   player.sprite.map = levelAtual.mapa;
-                  //player.sprite.x = tela.width/2;
-                  //player.sprite.y = tela.height/2;
-                  //console.log(tela.width/2, tela.height/2);
-                  //console.log(player.sprite);
                   player.sprite.x = levelAtual.startX;
                   player.sprite.y = levelAtual.startY;
                   estado = 0;
@@ -491,59 +521,6 @@
         }
       }
     });
-
-
-    function pass(matriz) {
-      var nM = [];
-      for (var l = 0; l < matriz.length; l++) {
-        nM[l] = [];
-        for (var c = 0; c < matriz[0].length; c++) {
-          nM[l][c] = matriz[l][c];
-          if (matriz[l][c] == 1) {
-            try {
-
-              if (
-                matriz[l][c - 1] == 2 || matriz[l][c + 1] == 2 ||
-                matriz[l - 1][c] == 2 || matriz[l + 1][c] == 2 ||
-                matriz[l + 1][c - 1] == 2 || matriz[l - 1][c + 1] == 2 ||
-                matriz[l - 1][c - 1] == 2 || matriz[l + 1][c + 1] == 2
-              ) {
-                nM[l][c] = 0;
-              }
-
-              if (
-                matriz[l][c - 1] == 0 && matriz[l - 1][c - 1] == 0 &&
-                matriz[l + 1][c - 1] == 0
-              ) {
-                nM[l][c] = 0;
-              }
-
-              if (
-                matriz[l][c - 1] == 0 && matriz[l][c - 2] == 0
-              ) {
-                nM[l][c] = 0;
-              }
-
-            }
-            catch (e) { }
-          }
-        }
-
-      }
-      return nM;
-    }
-
-    function aplicaAutomato() {
-
-      geraFase.fullstep(3);
-      levelAtual.setMatrixMap(geraFase.map);
-    }
-
-    function randomizaMapa() {
-      geraFase = new CellularAutomata(heightMap, widthMap, 1, 0.5, 4, 0, 5, 1);//new CellularAutomata(heightMap, widthMap, 2, 0.5, 13, 0, 5, 1);
-      geraFase.scenarioRandomWall();
-      levelAtual.setMatrixMap(geraFase.map);
-    }
   </script>
 </body>
 

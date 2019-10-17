@@ -41,7 +41,7 @@ Level.prototype.setTempo = function(tempo, larguraBarra){
 };
 
 Level.prototype.updateGradeSalas = function(){
-  //this.gradeSalas = [];
+  this.gradeSalas = [];
   this.gradeSalas = this.mapa.geraGradeSalas();
   //console.log(this.gradeSalas);
 }
