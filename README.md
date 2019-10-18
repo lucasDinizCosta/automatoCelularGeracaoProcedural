@@ -7,4 +7,5 @@ Instruções:
 - <p align="justify"> p : Ativa ou desativa o modo debug de modo que as colisões e detecção de grade não são verificadas;</p>
 - <p align="justify"> + : Com o Debug mode ativado, este serve para aumentar o Zoom do mapa;</p>
 - <p align="justify"> - : Com o Debug mode ativado, este serve para diminuir o Zoom do mapa;</p>
-- <p align="justify"> CTRL Esquerdo : Player ataca usando a espada</p>
+- <p align="justify"> CTRL Esquerdo : Player ataca usando a espada;</p>
+- <p align="justify"> ESC : Retorna ao menu principal e gera um novo Level;</p>

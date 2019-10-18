@@ -297,12 +297,31 @@
     }
 
     function limparDados() {
-      player = null;
+      player = new Player(12, "player");
       tempoGameOver = 2;
       stateMainMenu = 0;
       tempoRectInt.w = 125;
       teasuresCollected = 0;
       tempoTransicaoFase = 1;
+      geraFase = new CellularAutomata(heightMap, widthMap, 1, 0.5, 4, 0, 5, 1);//new CellularAutomata(heightMap, widthMap, 2, 0.5, 13, 0, 5, 1);
+      // 0 => floor
+      // 5 => rock
+      // 1 => wall
+      geraFase.scenarioRandomWall();
+      geraFase.fullstep(2);
+      geraFase.countRooms();
+      geraFase.filterRooms(25);
+      levels = [];
+      levels.push(new Level(widthMap, heightMap, sizeMap));
+      levels[0].setMatrixMap(geraFase.map);
+      levels[0].copiaSalas(geraFase.rooms);
+      levels[0].updateGradeSalas();
+      levels[0].setTeleporters();
+      levels[0].posicionarPlayer(player);
+
+      levels[0].tesouros = 3;
+      levels[0].finishGX = 17;
+      levels[0].finishGY = 9;
     }
 
     function limparTela() {
