@@ -254,21 +254,43 @@ Sprite.prototype.desenhar = function (ctx) {
       
       break;
     case 1:
+      ctx.save();
       ctx.fillStyle = "blue";
       ctx.strokeStyle = "blue";
       ctx.linewidth = 10;
-      ctx.save();
       ctx.globalAlpha = 0.70;         //Transparência
       ctx.translate(this.x, this.y);
       ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
       ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
       ctx.restore();
     case 2:
+      ctx.save();
       ctx.strokeStyle = "Yellow";
       ctx.fillStyle = "orange";
       ctx.linewidth = 10;
      // imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
+      ctx.globalAlpha = 0.40;         //Transparência
+      ctx.translate(this.x, this.y);
+      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
+      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
+      ctx.restore();
+      break;
+    case 3:                       //Inicio de fase
       ctx.save();
+      ctx.fillStyle = "rgb(84, 46, 139)";
+      ctx.strokeStyle = "purple";
+      ctx.linewidth = 10;
+      ctx.globalAlpha = 0.70;         //Transparência
+      ctx.translate(this.x, this.y);
+      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
+      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
+      ctx.restore();
+    case 4:                     //Final de fase
+      ctx.save();
+      ctx.strokeStyle = "dark green";
+      ctx.fillStyle = "green";
+      ctx.linewidth = 10;
+      // imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
       ctx.globalAlpha = 0.40;         //Transparência
       ctx.translate(this.x, this.y);
       ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);

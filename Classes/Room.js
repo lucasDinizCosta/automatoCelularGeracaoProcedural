@@ -3,7 +3,8 @@ function Room(number){
     this.number = number;
     this.teleporterInitial = new Teleporter(1);       //(Inicio)Transição de uma sala pra outra
     this.teleporterFinal = new Teleporter(2);        //(Chegada)Transição de uma sala pra outra
-    this.endingLevel;            //Teleportador que termina a fase
+    this.endingLevel;                               //Teleportador que termina a fase
+    this.beginLevel;                               //Teleportador que Inicia a fase
 }
 
 //Room.prototype = new Room();
@@ -33,7 +34,8 @@ Room.prototype.draw = function(ctx){
     this.teleporterInitial.portal.desenhar(ctx);
     this.teleporterFinal.portal.desenhar(ctx);
     if(debugMode == 1){
-
+        ctx.save();
+        ctx.strokeStyle = "yellow";
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(this.teleporterInitial.portal.x, this.teleporterInitial.portal.y);
@@ -41,6 +43,7 @@ Room.prototype.draw = function(ctx){
         ctx.closePath();
         ctx.stroke();
         ctx.lineWidth = 1;
+        ctx.restore();
     }
 }
 

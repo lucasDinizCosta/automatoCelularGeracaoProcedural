@@ -16,8 +16,8 @@ function Level(w,h,s) {
   this.taxaDiminuicaoTempo = 0;
   this.stateCollectedItens = false;
   this.inimigos = [];
-  this.teleporteInicio;
-  this.teleporteFinal;
+  this.teleporteInicioLevel = new Teleporter(3);         //(Inicio) mapa
+  this.teleporteFinalLevel  = new Teleporter(4);        //(Final) mapa
   this.itens = [];
   for (var l = 0; l < h; l++) {
     this.gradeSalas[l] = [];
@@ -81,6 +81,8 @@ Level.prototype.clonarLevel= function(level){
   this.stateCollectedItens = level.stateCollectedItens;
   this.tempoFase = level.tempoFase;
   this.taxaDiminuicaoTempo = level.taxaDiminuicaoTempo;
+  this.teleporteInicioLevel.copy(level.teleporteInicioLevel);
+  this.teleporteFinalLevel.copy(level.teleporteFinalLevel);
   this.inimigos.length = 0;  
   this.itens.length = 0;
   for (var i = 0; i < level.inimigos.length; i++) {
@@ -219,6 +221,16 @@ Level.prototype.dadosSalas = function(){
 Level.prototype.posicionarPlayer = function(p){
   //Blocos da sala 1 e posiciona o personagem
   let posicao = this.rooms[0].blocks[this.getRandomInt(0, this.rooms[0].blocks.length - 1)];
+  while((posicao[0] === this.rooms[0].teleporterInitial.portal.gy) && (posicao[1] === this.rooms[0].teleporterInitial.portal.gx)
+  ||(posicao[0] === this.rooms[0].teleporterFinal.portal.gy) && (posicao[1] === this.rooms[0].teleporterFinal.portal.gx)){
+    posicao = this.rooms[0].blocks[this.getRandomInt(0, this.rooms[0].blocks.length - 1)];
+  }  
+  this.teleporteInicioLevel.portal.gx = posicao[1];
+  this.teleporteInicioLevel.portal.gy = posicao[0];
+  this.teleporteInicioLevel.roomNumber = 1;
+  this.teleporteInicioLevel.portal.x = this.mapa.s * this.teleporteInicioLevel.portal.gx + this.mapa.s/2;//p.sprite.s;
+  this.teleporteInicioLevel.portal.y = this.mapa.s * this.teleporteInicioLevel.portal.gy + this.mapa.s/2;//p.sprite.s;
+  
   this.startGX = posicao[1];
   this.startGY = posicao[0];
   this.startX = this.mapa.s * this.startGX + p.sprite.s;
@@ -243,6 +255,7 @@ Level.prototype.copiaSalas = function(rooms){
 
 Level.prototype.desenhar = function(ctx) {
   this.mapa.desenhar(ctx);
+  this.teleporteInicioLevel.portal.desenhar(ctx);
   for(let i = 0; i < this.rooms.length; i++){
     this.rooms[i].draw(ctx);
   }
