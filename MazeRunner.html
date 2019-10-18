@@ -112,13 +112,8 @@
     // 1 => wall
     geraFase.scenarioRandomWall();
     geraFase.fullstep(2);
-    //geraFase.fullstep(5);
     geraFase.countRooms();
-    //console.log("Antes: " + geraFase.rooms.length);
     geraFase.filterRooms(25);
-    //console.log("Depois: " + geraFase.rooms.length);
-    //geraFase.countRooms();
-    //console.log(geraFase.rooms);
     levels[0].setMatrixMap(geraFase.map);
     levels[0].copiaSalas(geraFase.rooms);
     levels[0].updateGradeSalas();
@@ -354,17 +349,20 @@
 
             break;
           case 32:  //Espaco  -- Ativa teleporte
-              for(let i = 0; i < levelAtual.rooms.length; i++){
-                if(levelAtual.rooms[i].teleporterInitial.portal.colidiuCom2(player.sprite)){
-                  levelAtual.rooms[i].teleporterInitial.teleportar(player);
-                  break;
-                }
-                if(levelAtual.rooms[i].teleporterFinal.portal.colidiuCom2(player.sprite)){
-                  levelAtual.rooms[i].teleporterFinal.teleportar(player);
-                  break;
-                }
+            for(let i = 0; i < levelAtual.rooms.length; i++){
+              if(levelAtual.rooms[i].teleporterInitial.portal.colidiuCom2(player.sprite)){
+                levelAtual.rooms[i].teleporterInitial.teleportar(player);
+                break;
               }
-              player.mover(dt);
+              if(levelAtual.rooms[i].teleporterFinal.portal.colidiuCom2(player.sprite)){
+                levelAtual.rooms[i].teleporterFinal.teleportar(player);
+                break;
+              }
+            }
+            player.mover(dt);
+            break;
+          case 17:  //Left CTRL
+            player.atacando = 1;  
             break;
           case 38:
             //if(player.left === false && player.down === false && player.right === false){
@@ -517,7 +515,11 @@
             player.sprite.vy = 0;
             player.down = false;
             break;
+          case 17:  //Left CTRL
+            player.atacando = 0;  
+            break;
           default:
+            break;
         }
       }
     });

@@ -27,6 +27,7 @@ function Sprite(s = 16, typ = 0) {
   this.animationState = 0;
   this.frameTimeAnimation = 12;
   this.speedAnimation = 160;
+  this.typeAnimation = 0;     //0 => Walking, 1 => Atacking
 
   this.colorBG;
   this.colorBorder;
@@ -174,18 +175,32 @@ Sprite.prototype.mover = function (dt) {
     this.map.cell[this.gy][this.gx] = 0;
   }*/
 
-  if(this.vx !== 0 || this.vy !== 0){
+  this.animationController();
+
+};
+
+Sprite.prototype.animationController = function(){
+  if(this.typeAnimation == 0){
+    if(this.vx !== 0 || this.vy !== 0){
+      this.frameTimeAnimation = this.frameTimeAnimation - this.speedAnimation*dt;
+      if(this.frameTimeAnimation < 0){
+        this.frameTimeAnimation = 12;
+        this.animationState = this.animationState + 1;
+      }
+    }
+    else{
+      this.frameTimeAnimation = 12;
+      this.animationState = 0;
+    }
+  }
+  else{
     this.frameTimeAnimation = this.frameTimeAnimation - this.speedAnimation*dt;
     if(this.frameTimeAnimation < 0){
       this.frameTimeAnimation = 12;
       this.animationState = this.animationState + 1;
     }
   }
-  else{
-    this.frameTimeAnimation = 12;
-    this.animationState = 0;
-  }
-};
+}
 
 Sprite.prototype.copy = function(sprite){
   //Atibutos da Fisica
@@ -223,8 +238,8 @@ Sprite.prototype.desenhar = function (ctx) {
       ctx.save();
       ctx.translate(this.x, this.y);
       ctx.beginPath();
-      //ctx.ellipse(-this.s/2, -this.s/4, this.s, this.s/2, 0, 0, 2*Math.PI, false);
-      ctx.ellipse(this.s/2, this.s/4, this.s, this.s/2, 0, 0, 2*Math.PI, false);
+      ctx.ellipse(-this.s/2+1, -this.s/4+2, this.s-2, this.s/2-2, 0, 0, 2*Math.PI, false);
+      //ctx.ellipse(this.s/2, this.s/4, this.s, this.s/2, 0, 0, 2*Math.PI, false);
       ctx.closePath();
       ctx.fill();
       ctx.stroke();

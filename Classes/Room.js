@@ -32,6 +32,16 @@ Room.prototype.removeBlockByMatrixIndex = function(row, column){
 Room.prototype.draw = function(ctx){
     this.teleporterInitial.portal.desenhar(ctx);
     this.teleporterFinal.portal.desenhar(ctx);
+    if(debugMode == 1){
+
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(this.teleporterInitial.portal.x, this.teleporterInitial.portal.y);
+        ctx.lineTo(this.teleporterInitial.proximoTeleporte.portal.x, this.teleporterInitial.proximoTeleporte.portal.y);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.lineWidth = 1;
+    }
 }
 
 Room.prototype.copy = function(room){
