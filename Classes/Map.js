@@ -221,9 +221,13 @@ Map.prototype.desenharCell = function(ctx, l, c){
     ctx.fillStyle = "yellow";
     ctx.strokeStyle = "black";
     ctx.lineWidth = 2;
-    ctx.font = "12px Arial Black";
-    ctx.strokeText(this.cell[l][c].room + "", c*this.s + this.s/2, l*this.s + this.s/2);
-    ctx.fillText(this.cell[l][c].room + "", c*this.s + this.s/2, l*this.s + this.s/2);
+    ctx.font = "10px Arial Black";
+    this.escreveTexto(ctx, this.cell[l][c].tipo + "", c*this.s + this.s/2-10, l*this.s + this.s/2);
+    ctx.fillStyle = "green";
+    this.escreveTexto(ctx, this.cell[l][c].room + "", c*this.s + this.s/2+10, l*this.s + this.s/2);
+    ctx.fillStyle = "blue";
+    this.escreveTexto(ctx, this.cell[l][c].dist + "", c*this.s + this.s/2, l*this.s + this.s/2+10);
+
   }
   /*if(this.greedRooms.length > 0){
     //ctx.fillStyle = "rgb(" + (35 + (this.greedRooms[l][c] * 24))+ ", " + 143 + (this.greedRooms[l][c] * 10) + ", " + (81 + (this.greedRooms[l][c] * 24)) +")";
@@ -235,3 +239,9 @@ Map.prototype.desenharCell = function(ctx, l, c){
     ctx.fillText(this.greedRooms[l][c] + "", c*this.s + this.s/2, l*this.s + this.s/2);
   }*/
 };
+
+Map.prototype.escreveTexto = function(ctx, texto, x, y){
+  ctx.strokeText(texto, x, y);
+  ctx.fillText(texto, x, y);
+}
+  
