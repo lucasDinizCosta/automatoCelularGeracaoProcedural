@@ -3,10 +3,10 @@ function Map(w,h,s){
   this.h = h;
   this.s = s;
   this.cell = [];
-  for (var l = 0; l < h; l++) {
+  for (let l = 0; l < h; l++) {
     this.cell[l] = [];
-    for (var c = 0; c < w; c++) {
-      this.cell[l][c] = 0;
+    for (let c = 0; c < w; c++) {
+      this.cell[l][c] = {tipo: 0, room:-3, dist:999};
     }
   }
   this.greedRooms = [];
@@ -16,7 +16,12 @@ function Map(w,h,s){
 Map.prototype.constructor = Map;
 
 Map.prototype.copyDates = function (matrix){
-  this.cell = JSON.parse(JSON.stringify(matrix)); //Copia matriz
+  //this.cell = JSON.parse(JSON.stringify(matrix)); //Copia matriz
+  for (var l = 0; l < this.h; l++) {
+    for (var c = 0; c < this.w; c++) {
+      this.cell[l][c].tipo = matrix[l][c];
+    }
+  }
 }
 
 Map.prototype.copyDataInto = function (matrix, L, C){ 
@@ -25,7 +30,7 @@ Map.prototype.copyDataInto = function (matrix, L, C){
   for(var l = 0; l<matrix.length-1; l++){
     //this.cell[l] = [];
     for(var c = 0; c<matrix[0].length-1; c++){
-      this.cell[l+L][c+C] = matrix[l][c];
+      this.cell[l+L][c+C].tipo = matrix[l][c];
     }
   }
 }
@@ -44,7 +49,6 @@ Map.prototype.initMap = function(L, C, v) {
 Map.prototype.geraGradeSalas = function(){
   let auxMatrix = this.initMap(this.h, this.w, -1);
   let auxMatrixVisited = [];
-  let sizeRooms = [];
   let room = 0;
   let roomFloors = 0;
   let caveArea = 0;
@@ -53,7 +57,7 @@ Map.prototype.geraGradeSalas = function(){
       auxMatrixVisited[i] = [];
       for(let j = 0; j < this.w; j++){
           auxMatrixVisited[i][j] = false;
-          if(this.cell[i][j] !== floorIndex){
+          if(this.cell[i][j].tipo !== floorIndex){
               auxMatrix[i][j] = -2;   //Cave area
               caveArea++;
           }
@@ -68,11 +72,17 @@ Map.prototype.geraGradeSalas = function(){
       for(let j = 0; j < this.w; j++){
           if(auxMatrix[i][j] === -1){
               room++;
-              this.visitCells(auxMatrix, this.map, i, j, floorIndex, 1, room);
+              this.visitCells(auxMatrix, this.cell, i, j, floorIndex, 1, room);
           }
       }
   }
   this.greedRooms = JSON.parse(JSON.stringify(auxMatrix)); //Copia matriz
+  for(let i = 0; i < this.h; i++){
+    for(let j = 0; j < this.w; j++){
+        this.cell[i][j].room = auxMatrix[i][j];
+    }
+  }
+  console.log(this.cell);
   return auxMatrix;
 }
 
@@ -111,7 +121,7 @@ Map.prototype.desenhar = function (ctx) {
   ctx.lineWidth = 2;
   for (var l = Math.max(0,player.sprite.gy-MAPA_AREA); l < Math.min(this.h, player.sprite.gy+MAPA_AREA); l++) {
     for (var c = Math.max(0,player.sprite.gx-MAPA_AREA); c < Math.min(this.w, player.sprite.gx+MAPA_AREA); c++) {
-      switch(this.cell[l][c]){
+      switch(this.cell[l][c].tipo){
         case 0:   //Vazio
           imageLibrary.drawSize(ctx, "floor_sand", c*this.s, l*this.s, this.s, this.s);
           break;
@@ -207,7 +217,15 @@ Map.prototype.desenharCell = function(ctx, l, c){
   ctx.strokeStyle = "white";
   ctx.lineWidth = 1;
   ctx.strokeRect(c*this.s, l*this.s, this.s, this.s);
-  if(this.greedRooms.length > 0){
+  if(this.cell[0][0].room !== -3){
+    ctx.fillStyle = "yellow";
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    ctx.font = "12px Arial Black";
+    ctx.strokeText(this.cell[l][c].room + "", c*this.s + this.s/2, l*this.s + this.s/2);
+    ctx.fillText(this.cell[l][c].room + "", c*this.s + this.s/2, l*this.s + this.s/2);
+  }
+  /*if(this.greedRooms.length > 0){
     //ctx.fillStyle = "rgb(" + (35 + (this.greedRooms[l][c] * 24))+ ", " + 143 + (this.greedRooms[l][c] * 10) + ", " + (81 + (this.greedRooms[l][c] * 24)) +")";
     ctx.fillStyle = "yellow";
     ctx.strokeStyle = "black";
@@ -215,5 +233,5 @@ Map.prototype.desenharCell = function(ctx, l, c){
     ctx.font = "12px Arial Black";
     ctx.strokeText(this.greedRooms[l][c] + "", c*this.s + this.s/2, l*this.s + this.s/2);
     ctx.fillText(this.greedRooms[l][c] + "", c*this.s + this.s/2, l*this.s + this.s/2);
-  }
+  }*/
 };

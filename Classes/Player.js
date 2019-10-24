@@ -44,18 +44,22 @@ function Player(size, nomeImagem) {
   this.animation[4].pose = 12;
   this.animation[4].qtdAnimacoes = 6;
   this.animation[4].typeAnimation = 1;
+  this.animation[4].speedAnimation = 160;
   this.animation[5].sizeImagem = 64;
   this.animation[5].pose = 13;
   this.animation[5].qtdAnimacoes = 6;
   this.animation[5].typeAnimation = 1;
+  this.animation[5].speedAnimation = 160;
   this.animation[6].sizeImagem = 64;
   this.animation[6].pose = 14;
   this.animation[6].qtdAnimacoes = 6;
   this.animation[6].typeAnimation = 1;
+  this.animation[6].speedAnimation = 160;
   this.animation[7].sizeImagem = 64;
   this.animation[7].pose = 15;
   this.animation[7].qtdAnimacoes = 6;
   this.animation[7].typeAnimation = 1;
+  this.animation[7].speedAnimation = 160;
 
   this.sprite.nomeImagem = nomeImagem;
 }
@@ -89,7 +93,7 @@ Player.prototype.tratarAnimacao = function(){
     case 0:
       break;
     case 1:
-      console.log("Atacando");
+      //console.log("Atacando");
       this.estadoAnimacaoAtual = this.estadoAnimacaoAtual + 4;
       /*if(this.sprite.animationState == 0){
 
@@ -103,6 +107,7 @@ Player.prototype.tratarAnimacao = function(){
   this.sprite.qtdAnimacoes = this.animation[this.estadoAnimacaoAtual].qtdAnimacoes;
   this.sprite.pose = this.animation[this.estadoAnimacaoAtual].pose;
   this.sprite.typeAnimation = this.animation[this.estadoAnimacaoAtual].typeAnimation;
+  this.sprite.speedAnimation = this.animation[this.estadoAnimacaoAtual].speedAnimation;
   this.poseAtual = this.animation[this.estadoAnimacaoAtual].pose;
 }
 
