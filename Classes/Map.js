@@ -82,7 +82,7 @@ Map.prototype.geraGradeSalas = function () {
       this.cell[i][j].room = auxMatrix[i][j];
     }
   }
-  console.log(this.cell);
+  //console.log(this.cell);
   return auxMatrix;
 }
 

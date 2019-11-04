@@ -107,7 +107,7 @@ Level.prototype.setTeleporters = function(){
     let roomsAvaliable = [];            //Rooms avaliable to choose initial teleporter 
     let roomsClosed = [];               //Rooms that the initial teleporter is connected
     let sortPosition;
-    let b = [];
+    let blocks = [];
 
 
     //Setting position of teleporters into the rooms
@@ -117,19 +117,19 @@ Level.prototype.setTeleporters = function(){
           let aux = [];
           aux.push(this.rooms[i].blocks[j][0]);
           aux.push(this.rooms[i].blocks[j][1]);
-          b.push(aux);
+          blocks.push(aux);
         }
-        sortPosition = this.getRandomInt(0 , (b.length - 1));
-        this.rooms[i].teleporterInitial.setPosition(b[sortPosition][0], b[sortPosition][1]);
-        b.splice(sortPosition, 1);
-        sortPosition = this.getRandomInt(0 , (b.length - 1));
-        this.rooms[i].teleporterFinal.setPosition(b[sortPosition][0], b[sortPosition][1]);
+        sortPosition = this.getRandomInt(0 , (blocks.length - 1));
+        this.rooms[i].teleporterInitial.setPosition(blocks[sortPosition][0], blocks[sortPosition][1]);
+        blocks.splice(sortPosition, 1);
+        sortPosition = this.getRandomInt(0 , (blocks.length - 1));
+        this.rooms[i].teleporterFinal.setPosition(blocks[sortPosition][0], blocks[sortPosition][1]);
         this.rooms[i].teleporterInitial.roomNumber = this.rooms[i].number;
         this.rooms[i].teleporterFinal.roomNumber = this.rooms[i].number;
         this.rooms[i].teleporterInitial.portal.map = this.mapa;
         this.rooms[i].teleporterFinal.portal.map = this.mapa;
         roomsAvaliable.push(this.rooms[i].number);
-        b = [];
+        blocks = [];
     }
     //GX => COLUNA, GY => LINHA
 
@@ -149,10 +149,8 @@ Level.prototype.setTeleporters = function(){
     roomsAvaliable.splice(indAvaliableRoom, 1);
 
     while(roomsAvaliable.length > 1){
-        //currentRoom = this.rooms[roomsAvaliable[indFinishRoom] - 1].number;
-        //console.log(roomsAvaliable.length);
         for(let i = 0; i < this.rooms.length; i++){
-            if(roomsAvaliable[i] === currentRoom){                       //Room's number was finded
+            if(roomsAvaliable[i] === currentRoom){                       //Room's number was found
                 indAvaliableRoom = i;
                 break;
             }
@@ -188,14 +186,14 @@ Level.prototype.setTeleporters = function(){
     roomsClosed.push(this.rooms[roomsAvaliable[0] - 1].number);
     roomsAvaliable.splice(indAvaliableRoom, 1);
 
-    console.log("\nINITIAL\nA -> B:");
+    /*console.log("\nINITIAL\nA -> B:");
     for(let i = 0; i < this.rooms.length; i++){
         console.log("A( "+ this.rooms[i].teleporterInitial.roomNumber +" ) -> B( " + this.rooms[i].teleporterInitial.proximoTeleporte.roomNumber+ " )");
     }
     console.log("\nFINAL\nB -> A:");
     for(let i = 0; i < this.rooms.length; i++){
         console.log("B( "+ this.rooms[i].teleporterFinal.roomNumber +" ) -> A( " + this.rooms[i].teleporterFinal.proximoTeleporte.roomNumber  + " )");
-    }
+    }*/
   }
   else{
     console.log("Level with only one room !!!");
@@ -221,8 +219,8 @@ Level.prototype.dadosSalas = function(){
 Level.prototype.posicionarPlayer = function(p){
   //Blocos da sala 1 e posiciona o personagem
   let posicao = this.rooms[0].blocks[this.getRandomInt(0, this.rooms[0].blocks.length - 1)];
-  while((posicao[0] === this.rooms[0].teleporterInitial.portal.gy) && (posicao[1] === this.rooms[0].teleporterInitial.portal.gx)
-  ||(posicao[0] === this.rooms[0].teleporterFinal.portal.gy) && (posicao[1] === this.rooms[0].teleporterFinal.portal.gx)){
+  while(((posicao[0] === this.rooms[0].teleporterInitial.portal.gy) && (posicao[1] === this.rooms[0].teleporterInitial.portal.gx))
+  ||((posicao[0] === this.rooms[0].teleporterFinal.portal.gy) && (posicao[1] === this.rooms[0].teleporterFinal.portal.gx))){
     posicao = this.rooms[0].blocks[this.getRandomInt(0, this.rooms[0].blocks.length - 1)];
   }  
   this.teleporteInicioLevel.portal.gx = posicao[1];
@@ -235,6 +233,23 @@ Level.prototype.posicionarPlayer = function(p){
   this.startGY = posicao[0];
   this.startX = this.mapa.s * this.startGX + p.sprite.s;
   this.startY = this.mapa.s * this.startGY + p.sprite.s;
+
+  let salaTeleporteFinal = this.getRandomInt(1, this.rooms.length - 1);
+  posicao = this.rooms[salaTeleporteFinal].blocks[this.getRandomInt(0, this.rooms[salaTeleporteFinal].blocks.length - 1)];
+  while(((posicao[0] === this.rooms[salaTeleporteFinal].teleporterInitial.portal.gy) && (posicao[1] === this.rooms[salaTeleporteFinal].teleporterInitial.portal.gx))
+  ||((posicao[0] === this.rooms[salaTeleporteFinal].teleporterFinal.portal.gy) && (posicao[1] === this.rooms[salaTeleporteFinal].teleporterFinal.portal.gx))){
+    posicao = this.rooms[0].blocks[this.getRandomInt(0, this.rooms[salaTeleporteFinal].blocks.length - 1)];
+  }  
+  this.teleporteFinalLevel.portal.gx = posicao[1];
+  this.teleporteFinalLevel.portal.gy = posicao[0];
+  this.teleporteFinalLevel.roomNumber = salaTeleporteFinal + 1;
+  this.teleporteFinalLevel.portal.x = this.mapa.s * this.teleporteFinalLevel.portal.gx + this.mapa.s/2;//p.sprite.s;
+  this.teleporteFinalLevel.portal.y = this.mapa.s * this.teleporteFinalLevel.portal.gy + this.mapa.s/2;//p.sprite.s;
+
+  this.finishGX = posicao[1];
+  this.finishGY = posicao[0];
+  this.finishX = this.mapa.s * this.finishGX + p.sprite.s;
+  this.finishY = this.mapa.s * this.finishGY + p.sprite.s;
 }
 
 /*Level.prototype.toggleLevel = function(l){
@@ -256,6 +271,7 @@ Level.prototype.copiaSalas = function(rooms){
 Level.prototype.desenhar = function(ctx) {
   this.mapa.desenhar(ctx);
   this.teleporteInicioLevel.portal.desenhar(ctx);
+  this.teleporteFinalLevel.portal.desenhar(ctx);
   for(let i = 0; i < this.rooms.length; i++){
     this.rooms[i].draw(ctx);
   }
