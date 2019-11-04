@@ -118,7 +118,9 @@
     levels[0].copiaSalas(geraFase.rooms);
     levels[0].updateGradeSalas();
     levels[0].setTeleporters();
+    levels[0].atualizaGradeTeleportes(dt);
     levels[0].posicionarPlayer(player);
+    levels[0].posicionarRecursos();
 
     levels[0].tesouros = 3;
     levels[0].finishGX = 17;

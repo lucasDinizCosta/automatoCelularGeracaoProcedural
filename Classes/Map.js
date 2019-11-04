@@ -9,7 +9,6 @@ function Map(w, h, s) {
       this.cell[l][c] = { tipo: 0, room: -3, dist: 999 };
     }
   }
-  this.greedRooms = [];
 }
 
 //Map.prototype = new Map();
@@ -76,13 +75,12 @@ Map.prototype.geraGradeSalas = function () {
       }
     }
   }
-  this.greedRooms = JSON.parse(JSON.stringify(auxMatrix)); //Copia matriz
-  for (let i = 0; i < this.h; i++) {
+
+  for (let i = 0; i < this.h; i++) {            //Copia matriz
     for (let j = 0; j < this.w; j++) {
       this.cell[i][j].room = auxMatrix[i][j];
     }
   }
-  //console.log(this.cell);
   return auxMatrix;
 }
 
@@ -98,9 +96,9 @@ Map.prototype.visitCells = function (auxMatrix, mapx, y, x, tp, d = 1, indexArea
     return;
   }
   if (auxMatrix[y][x] === -1) {         //Não mapeado ainda
-    auxMatrix[y][x] = indexArea;    //Set cell is visited
+    auxMatrix[y][x] = indexArea;        //Set cell is visited
   }
-  else {                               //Ou foi mapeado ou a celula é Wall/Rock
+  else {                                //Ou foi mapeado ou a celula é Wall/Rock
     return;
   }
   if (y - 1 >= 0) {
@@ -229,15 +227,6 @@ Map.prototype.desenharCell = function (ctx, l, c) {
     this.escreveTexto(ctx, this.cell[l][c].dist + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
 
   }
-  /*if(this.greedRooms.length > 0){
-    //ctx.fillStyle = "rgb(" + (35 + (this.greedRooms[l][c] * 24))+ ", " + 143 + (this.greedRooms[l][c] * 10) + ", " + (81 + (this.greedRooms[l][c] * 24)) +")";
-    ctx.fillStyle = "yellow";
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 2;
-    ctx.font = "12px Arial Black";
-    ctx.strokeText(this.greedRooms[l][c] + "", c*this.s + this.s/2, l*this.s + this.s/2);
-    ctx.fillText(this.greedRooms[l][c] + "", c*this.s + this.s/2, l*this.s + this.s/2);
-  }*/
 };
 
 Map.prototype.escreveTexto = function (ctx, texto, x, y) {

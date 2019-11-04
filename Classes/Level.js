@@ -200,6 +200,13 @@ Level.prototype.setTeleporters = function(){
   }
 }
 
+Level.prototype.atualizaGradeTeleportes = function(dt){
+  for(let i = 0; i < this.rooms.length; i++){         //Atualiza o gx e gy dos teleportes
+    this.rooms[i].teleporterInitial.portal.mover(dt);
+    this.rooms[i].teleporterFinal.portal.mover(dt);
+  }
+}
+
 Level.prototype.dadosSalas = function(){
   for(let i = 0; i < this.rooms.length; i++){
     console.log("Sala " + this.rooms[i].number + " : ");
@@ -252,14 +259,19 @@ Level.prototype.posicionarPlayer = function(p){
   this.finishY = this.mapa.s * this.finishGY + p.sprite.s;
 }
 
+Level.prototype.posicionarRecursos = function(){
+  this.mapa.atualizaDist(this.teleporteInicioLevel.portal.gy, this.teleporteInicioLevel.portal.gx, 0);
+  for(let i = 1; i < this.rooms.length; i++){        //Começa a analisar a partir da próxima sala
+    this.mapa.atualizaDist(this.rooms[i].teleporterInitial.portal.gy, this.rooms[i].teleporterInitial.portal.gx, 0);
+  }
+}
+
 /*Level.prototype.toggleLevel = function(l){
   this = JSON.parse(JSON.stringify(l));  //Copia matriz
 
 }*/
 
 Level.prototype.copiaSalas = function(rooms){
-  //this.rooms = JSON.parse(JSON.stringify(rooms));  //Copia matriz
-  //console.log(rooms);
   this.rooms = [];
   for(let i = 0; i < rooms.length; i++){
      this.rooms.push(new Room(0));
