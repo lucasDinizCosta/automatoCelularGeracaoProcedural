@@ -498,7 +498,7 @@ CellularAutomata.prototype.scenarioRandomWall = function (){
         matrix.push([l,c]);
       }
     }
-    let rockInMap = (this.r * this.HS * this.WS)
+    let rockInMap = (this.r * this.HS * this.WS);
     for(let i = 0; i < rockInMap; i++){
       let matrixIndexRandom = Math.floor(Math.random() * matrix.length);
       this.map[matrix[matrixIndexRandom][0]][matrix[matrixIndexRandom][1]] = this.rockIndex;

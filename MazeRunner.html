@@ -13,7 +13,9 @@
   <script src="Classes/ImageLibrary.js"></script>
   <script src="Classes/AudioLibrary.js"></script>
   <script src="Classes/CellularAutomata.js"></script>
-  <style>
+
+  <link rel="stylesheet" href="Css/default.css">
+ <!-- <style>
     body {
       padding: 20px;
       margin: 0;
@@ -30,18 +32,27 @@
       color: black;
     }
   </style>
+-->
 </head>
 
 <body>
-  <h1 align="center"><u>Trabalho de conclusão de curso de ciências exatas:</u> (2019)</h1>
+  <!-- <h1 align="center"><u>Trabalho de conclusão de curso de ciências exatas:</u> (2019)</h1> 
   <h2>&emsp;&emsp;Tema: Aplicação de autômatos celulares na geração procedural de mapas.</h2>
+  -->
 
-  <canvas id="canvas" width="600" height="350">
+  <canvas id="canvas" width="600px" height="350px"> 
     Seu browser não suporta canvas!
   </canvas>
 
   <script>
     var tela = document.getElementById("canvas");
+    
+    //Ocupa a janela toda
+    tela.width  = window.innerWidth;
+    tela.height = window.innerHeight;
+    tela.widthOld = 600;
+    tela.heightOld = 350;
+
     tela.style.border = '2px solid #000';                       //Colocando borda no canvas
     var ctx = tela.getContext("2d");
     var anterior = dt = 0;
@@ -211,8 +222,8 @@
             ctx.lineWidth = 2;
             ctx.strokeStyle = "black";
             ctx.font = "40px Arial Black";
-            //ctx.strokeText("Treasure explorer", tela.width/2, tela.height/3 - 50);
-            //ctx.fillText("Treasure explorer", tela.width/2, tela.height/3 - 50);
+            ctx.strokeText("Maze Runner", tela.width/2, tela.height/3 - 50);
+            ctx.fillText("Maze Runner", tela.width/2, tela.height/3 - 50);
             ctx.font = "15px Arial Black";
             ctx.font = fontMainMenu;
             if (stateMainMenu == 0) {
@@ -278,25 +289,39 @@
       ctx.textAlign = alignMainMenu;
       ctx.lineWidth = 2;
       ctx.strokeStyle = "black";
-      ctx.strokeText("Tempo: ", 55, 20);
-      ctx.fillText("Tempo: ", 55, 20);
-      ctx.strokeText("Vidas: " + player.vidas, 300, 20);
-      ctx.fillText("Vidas: " + player.vidas, 300, 20);
-      ctx.strokeText("Tesouros: " + teasuresCollected, 430, 20);
-      ctx.fillText("Tesouros: " + teasuresCollected, 430, 20);
-      ctx.strokeText("Level: " + player.levelNumber, 545, 20);
-      ctx.fillText("Level: " + player.levelNumber, 545, 20);
+      ctx.strokeText("Tempo: ", converteTelaCheia(55, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
+      ctx.fillText("Tempo: ", converteTelaCheia(55, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
+      ctx.strokeText("Vidas: " + player.vidas, converteTelaCheia(300, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
+      ctx.fillText("Vidas: " + player.vidas, converteTelaCheia(300, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
+      ctx.strokeText("Tesouros: " + teasuresCollected, converteTelaCheia(430, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
+      ctx.fillText("Tesouros: " + teasuresCollected, converteTelaCheia(430, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
+      ctx.strokeText("Level: " + player.levelNumber, converteTelaCheia(545, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
+      ctx.fillText("Level: " + player.levelNumber, converteTelaCheia(545, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
       if(debugMode >= 1){
         ctx.font = "13px Arial Black";
         ctx.fillStyle = "yellow";
-        ctx.strokeText("Debug mode ativado!!!", 110, 320);
-        ctx.fillText("Debug mode ativado!!!", 110, 320);
-        ctx.strokeText("Escala mapa: " + escala.toFixed(4), 500, 320);
-        ctx.fillText("Escala mapa: " + escala.toFixed(4), 500, 320);
-        ctx.strokeText("Player: [" + (player.sprite.gy) + "][" + (player.sprite.gx) + "]", 500, 340);
-        ctx.fillText("Player: [" + (player.sprite.gy) + "][" + (player.sprite.gx) + "]", 500, 340);
+        ctx.strokeText("Debug mode ativado!!!", converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
+        ctx.fillText("Debug mode ativado!!!", converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
+        ctx.strokeText("Escala mapa: " + escala.toFixed(4), converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
+        ctx.fillText("Escala mapa: " + escala.toFixed(4), converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
+        ctx.strokeText("Player: [" + (player.sprite.gy) + "][" + (player.sprite.gx) + "]", converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
+        ctx.fillText("Player: [" + (player.sprite.gy) + "][" + (player.sprite.gx) + "]", converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
       }
     }
+
+    //Conversão de escalas para o canvas ocupando a tela toda
+    function converteTelaCheia(valorAntigo, telaAntiga, telaNova){
+      let aux = Math.round(((valorAntigo * 100)/telaAntiga) * 100)/ 100;  //Arrendonda a porcentagem para duas casas decimais
+      return parseInt((aux / 100) * telaNova);
+    }
+
+    //Atualiza o formato do convas ao mudar o formato da janela ou ser redimensionada
+    function onResize(){
+      tela.width = window.innerWidth;
+      tela.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', onResize, false);         // Ouve os eventos de resize
 
     function limparDados() {
       player = new Player(12, "player");
