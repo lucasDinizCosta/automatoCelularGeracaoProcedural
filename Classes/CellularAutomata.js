@@ -91,7 +91,7 @@ CellularAutomata.prototype.countRooms = function(){
         text += "( R:"+ (i+1) + " , S:" + this.rooms[i].blocks.length + " ) ; ";
     }
     text += "}"
-    console.log(text);
+    //console.log(text);
     console.log("Number of rooms: " + this.rooms.length);
     console.log("Number of roomFloors: " + roomFloors);
     console.log("Number of caveArea: " + caveArea);

@@ -207,8 +207,6 @@
             levelAtual.desenhar(ctx);
             player.desenhar(ctx);
             ctx.restore();
-            //tempoRectExt.desenharTempo(ctx);
-            //tempoRectInt.desenharTempo(ctx);
             desenharHUD(ctx);
             break;
           case 1:         //Main menu
@@ -285,6 +283,15 @@
     }
 
     function desenharHUD(){
+      tempoRectExt.x = converteTelaCheia(77, tela.widthOld, tela.width);
+      tempoRectExt.y = converteTelaCheia(13, tela.heightOld, tela.height);
+      
+      tempoRectInt.x = converteTelaCheia(78, tela.widthOld, tela.width);
+      tempoRectInt.y = converteTelaCheia(13, tela.heightOld, tela.height);
+      
+      tempoRectExt.desenharTempo(ctx);
+      tempoRectInt.desenharTempo(ctx);
+
       ctx.font = "15px Arial Black";
       ctx.fillStyle = "white";
       ctx.textAlign = alignMainMenu;
