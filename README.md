@@ -5,6 +5,7 @@ Link Github io: https://lucasdinizcosta.github.io/automatoCelularGeracaoProcedur
 Instruções:
 - <p align="justify">Setas : Movimentação do personagem;</p>
 - <p align="justify"> p : Ativa ou desativa o modo debug de modo que as colisões e detecção de grade não são verificadas;</p>
+- <p align="justify"> f : Ativa e desativa a tela cheia (Fullscreen);</p>
 - <p align="justify"> + : Com o Debug mode ativado, este serve para aumentar o Zoom do mapa;</p>
 - <p align="justify"> - : Com o Debug mode ativado, este serve para diminuir o Zoom do mapa;</p>
 - <p align="justify"> CTRL Esquerdo : Player ataca usando a espada;</p>

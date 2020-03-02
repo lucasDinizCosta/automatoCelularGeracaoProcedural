@@ -55,6 +55,7 @@
 
     tela.style.border = '2px solid #000';                       //Colocando borda no canvas
     var ctx = tela.getContext("2d");
+    var fullscreen = false;
     var anterior = dt = 0;
     var estado = 1;
 
@@ -105,7 +106,7 @@
       geraFase.scenarioRandomWall();
       geraFase.fullstep(2);
       //geraFase.fullstep(6);
-      levels[0].setMatrixMap2(geraFase.map, Math.floor(k/3)*40, (k%3)*40);
+      levels[0].setMatrixMap2(getelaraFase.map, Math.floor(k/3)*40, (k%3)*40);
     }
     geraFase.countRooms();
     geraFase.filterRooms(15);
@@ -322,6 +323,8 @@
     }
 
     window.addEventListener('resize', onResize, false);         // Ouve os eventos de resize
+ 
+    
 
     function limparDados() {
       player = new Player(12, "player");
@@ -373,10 +376,46 @@
       }
     }
 
+    //FullScreen
+    /* View in fullscreen */
+    function openFullscreen() {
+      if (tela.requestFullscreen) {
+        tela.requestFullscreen();
+      } else if (tela.mozRequestFullScreen) { /* Firefox */
+        tela.mozRequestFullScreen();
+      } else if (tela.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        tela.webkitRequestFullscreen();
+      } else if (tela.msRequestFullscreen) { /* IE/Edge */
+        tela.msRequestFullscreen();
+      }
+    }
+
+    /* Close fullscreen */
+    function closeFullscreen() {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) { /* Firefox */
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) { /* IE/Edge */
+        document.msExitFullscreen();
+      }
+    }
+
     addEventListener("keydown", function (e) {
       //console.log(e.keyCode);
       if (estado == 0) {
         switch (e.keyCode) {
+          case 70:    //Letra F
+            fullscreen = !fullscreen;
+            if(fullscreen){
+              openFullscreen();
+            }
+            else{
+              closeFullscreen();
+            }
+            break;
           case 37:
             //if(player.up === false && player.down === false && player.right === false){
             player.sprite.vx = -playerVel;
@@ -431,7 +470,7 @@
             limparDados();
             estado = 1;
             break;
-          case 80:      //Pressionar a letra p
+          case 80:      //Pressionar a letra P
             debugMode = debugMode + 1;
             if(debugMode > 2){
               debugMode = 0;
@@ -493,6 +532,15 @@
       else {
         if (estado == 2) {
           switch (e.keyCode) {
+            case 70:    //Letra F
+              fullscreen = !fullscreen;
+              if(fullscreen){
+                openFullscreen();
+              }
+              else{
+                closeFullscreen();
+              }
+            break;
             case 13:    //Enter
               limparDados();
               estado = 1;
@@ -502,6 +550,15 @@
         }
         else {
           switch (e.keyCode) {
+            case 70:    //Letra F
+              fullscreen = !fullscreen;
+              if(fullscreen){
+                openFullscreen();
+              }
+              else{
+                closeFullscreen();
+              }
+            break;
             case 13:    //Enter
             case 32:    //Space bar
               if (estado != 2) {
