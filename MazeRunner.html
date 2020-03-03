@@ -134,6 +134,8 @@
     levels[0].posicionarPlayer(player);
     levels[0].posicionarRecursos();
 
+    levels[0].setTempo(10,125); //10 segundos
+
     levels[0].tesouros = 3;
     levels[0].finishGX = 17;
     levels[0].finishGY = 9;
@@ -172,16 +174,17 @@
     var alignMainMenu = "center";
     var stateMainMenu = 0;
 
-    /*********************************
-    *   --------- ESTADOS -----------*
-    *                                *
-    *   0 => jogando;                *
-    *   1 => Menu principal;         *
-    *   2 => Game over;              *
-    *   3 => Jogo fechado;           *
-    *   4 => Passou de fase;         *
-    *                                *
-    **********************************/
+    /************************************
+    *   --------- ESTADOS -----------   *
+    *                                   *
+    *       0 => Jogando;               *
+    *       1 => Menu principal;        *
+    *       2 => Game over;             *
+    *       3 => Jogo fechado;          *
+    *       4 => Passou de fase;        *
+    *       5 => Reiniciar fase;        *
+    *                                   *
+    *************************************/
 
     requestAnimationFrame(passo);
     function passo(t) {
@@ -195,12 +198,23 @@
       }
       else {
         switch (estado) {
-          case 0:
+          case 0:     // Jogando
             limparTela();
             /*if(audioLibrary.isPlaying("BGM")==false){
               audioLibrary.play("BGM");
             }*/
-            player.mover(dt);
+            if(levelAtual.tempoFase >= 0){
+              player.mover(dt);
+              controleTempo();
+            }
+            else{
+              if(debugMode != 0){
+                player.mover(dt);
+              }
+              else{
+
+              }
+            }
             ctx.save();
             ctx.scale(escala, escala);
             ctx.translate(-player.sprite.x + canvas.width/4 , - player.sprite.y + canvas.height/4);            
@@ -209,7 +223,7 @@
             ctx.restore();
             desenharHUD(ctx);
             break;
-          case 1:         //Main menu
+          case 1:         // Main menu
             limparTela();
             //imageLibrary.drawSize(ctx, "BG", 0, 0, tela.width, tela.height); // Imagem do fundo
             //if(audioLibrary.isPlaying("BGM")==false){
@@ -243,7 +257,7 @@
             }
 
             break;
-          case 2:
+          case 2:     // Game Over
             limparTela();
             //audioLibrary.stop("BGM");
             ctx.fillStyle = "white";
@@ -263,11 +277,11 @@
             }
 
             break;
-          case 3:
+          case 3:       // Tela preta == Jogo finalizado
             limparTela();
             break;
-          case 4:
-            tempoRectInt.w = 125;
+          case 4:       // Passou de fase
+            tempoRectInt.w = 127;
             treasuresCount = 0;
             minesCount = 0;
             tempoTransicaoFase = 1;
@@ -275,11 +289,29 @@
             player.levelNumber = player.levelNumber + 1;
             loadLevel();
             break;
+          case 5:     // Recarregar fase
+            
+            break;
           default:
         }
       }
       anterior = t;
       requestAnimationFrame(passo);
+    }
+
+    //  A cada 1 segundo ele executa uma passagem de tempo
+    function controleTempo(){
+      if(tempoTransicaoFase < 0){
+        tempoTransicaoFase = 1;
+        levelAtual.updateTempo();
+        tempoRectInt.w = tempoRectInt.w - levelAtual.taxaDiminuicaoTempo;
+        if(tempoRectInt.w <= 0){
+          tempoRectInt.w = 0;
+        }
+      }
+      else{
+        tempoTransicaoFase -= dt;
+      }
     }
 
     function desenharHUD(){
@@ -330,14 +362,12 @@
     }
 
     window.addEventListener('resize', onResize, false);         // Ouve os eventos de resize
- 
-    
 
     function limparDados() {
       player = new Player(12, "player");
       tempoGameOver = 2;
       stateMainMenu = 0;
-      tempoRectInt.w = 125;
+      tempoRectInt.w = 127;
       teasuresCollected = 0;
       tempoTransicaoFase = 1;
       geraFase = new CellularAutomata(heightMap, widthMap, 1, 0.5, 4, 0, 5, 1);//new CellularAutomata(heightMap, widthMap, 2, 0.5, 13, 0, 5, 1);

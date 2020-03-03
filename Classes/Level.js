@@ -40,6 +40,11 @@ Level.prototype.setTempo = function(tempo, larguraBarra){
   this.taxaDiminuicaoTempo = Math.floor(larguraBarra/tempo);
 };
 
+Level.prototype.updateTempo = function(){
+  this.tempoFase = this.tempoFase - 1;
+  //this.larguraBarra = this.larguraBarra - this.taxaDiminuicaoTempo;
+}
+
 Level.prototype.updateGradeSalas = function(){
   this.gradeSalas = [];
   this.gradeSalas = this.mapa.geraGradeSalas();
