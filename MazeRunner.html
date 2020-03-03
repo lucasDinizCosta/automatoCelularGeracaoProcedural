@@ -165,7 +165,7 @@
     tempoRectInt.h = 15;
     tempoRectInt.x = 96;
     tempoRectInt.y = 8;
-    tempoRectInt.colorBG = "green";
+    tempoRectInt.colorBG = "rgb(170,120,0)";
     tempoRectInt.borderSize = 0;
 
     //Main Menu campos
@@ -212,12 +212,13 @@
                 player.mover(dt);
               }
               else{
-
+                estado = 5;
+                limparTela();
               }
             }
             ctx.save();
             ctx.scale(escala, escala);
-            ctx.translate(-player.sprite.x + canvas.width/4 , - player.sprite.y + canvas.height/4);            
+            ctx.translate(-player.sprite.x + tela.width/4 , - player.sprite.y + tela.height/4);            
             levelAtual.desenhar(ctx);
             player.desenhar(ctx);
             ctx.restore();
@@ -287,10 +288,22 @@
             tempoTransicaoFase = 1;
             teasuresCollected = 0;
             player.levelNumber = player.levelNumber + 1;
-            loadLevel();
+            loadLevel(0);   //Load new level
             break;
           case 5:     // Recarregar fase
-            
+            tempoRectInt.w = 127;
+            treasuresCount = 0;
+            minesCount = 0;
+            tempoTransicaoFase = 1;
+            teasuresCollected = 0;
+            player.vidas--;
+            loadLevel(1);   //Reload Level
+            if(player.vidas < 0){       // Game over
+              estado = 2;
+            }
+            else{
+              
+            }
             break;
           default:
         }
@@ -299,7 +312,7 @@
       requestAnimationFrame(passo);
     }
 
-    //  A cada 1 segundo ele executa uma passagem de tempo
+    //  A cada 1 segundo ele executa uma diminuição na barra de tempo
     function controleTempo(){
       if(tempoTransicaoFase < 0){
         tempoTransicaoFase = 1;
@@ -349,13 +362,13 @@
       }
     }
 
-    //Conversão de escalas para o canvas ocupando a tela toda
+    // Conversão de escalas para o canvas ocupando a tela toda
     function converteTelaCheia(valorAntigo, telaAntiga, telaNova){
-      let aux = Math.round(((valorAntigo * 100)/telaAntiga) * 100)/ 100;  //Arrendonda a porcentagem para duas casas decimais
+      let aux = Math.round(((valorAntigo * 100)/telaAntiga) * 100)/ 100;  // Arrendonda a porcentagem para duas casas decimais
       return parseInt((aux / 100) * telaNova);
     }
 
-    //Atualiza o formato do convas ao mudar o formato da janela ou ser redimensionada
+    // Atualiza o formato do convas ao mudar o formato da janela ou ser redimensionada
     function onResize(){
       tela.width = window.innerWidth;
       tela.height = window.innerHeight;
@@ -364,13 +377,20 @@
     window.addEventListener('resize', onResize, false);         // Ouve os eventos de resize
 
     function limparDados() {
+      levelAtual = new Level(widthMap, heightMap, sizeMap);
+      levelAtual.clonarLevel(levels[0]);
+      levelAtual.updateGradeSalas();
       player = new Player(12, "player");
+      player.sprite.map = levelAtual.mapa;
+      player.sprite.x = levelAtual.startX;
+      player.sprite.y = levelAtual.startY;
+      /*player = new Player(12, "player");
       tempoGameOver = 2;
       stateMainMenu = 0;
       tempoRectInt.w = 127;
       teasuresCollected = 0;
       tempoTransicaoFase = 1;
-      geraFase = new CellularAutomata(heightMap, widthMap, 1, 0.5, 4, 0, 5, 1);//new CellularAutomata(heightMap, widthMap, 2, 0.5, 13, 0, 5, 1);
+      geraFase = new CellularAutomata(heightMap, widthMap, 1, 0.5, 4, 0, 5, 1); // new CellularAutomata(heightMap, widthMap, 2, 0.5, 13, 0, 5, 1);
       // 0 => floor
       // 5 => rock
       // 1 => wall
@@ -388,7 +408,7 @@
 
       levels[0].tesouros = 3;
       levels[0].finishGX = 17;
-      levels[0].finishGY = 9;
+      levels[0].finishGY = 9;*/
     }
 
     function limparTela() {
@@ -400,17 +420,28 @@
       return Math.floor(Math.random() * (max - min)) + min;                     //Seleciona um valor entre o min e o max
     }
 
-    function loadLevel() {
-      if (player.levelNumber > levels.length) {
-        limparDados();
-        estado = 1;
+    function loadLevel(option) {
+      switch(option){
+        case 0:   //Load New Level
+          if (player.levelNumber > levels.length) {
+            limparDados();
+            estado = 1;
+          }
+          else {
+            player.sprite.x = levels[player.levelNumber - 1].startX;
+            player.sprite.y = levels[player.levelNumber - 1].startY;
+            levelAtual.clonarLevel(levels[player.levelNumber - 1]);
+            estado = 0;
+          }
+          break;
+        case 1:   //Reload
+          player.sprite.x = levels[player.levelNumber - 1].startX;
+          player.sprite.y = levels[player.levelNumber - 1].startY;
+          levelAtual.clonarLevel(levels[player.levelNumber - 1]);
+          estado = 0;
+          break;
       }
-      else {
-        player.sprite.x = levels[player.levelNumber - 1].startX;
-        player.sprite.y = levels[player.levelNumber - 1].startY;
-        levelAtual.clonarLevel(levels[player.levelNumber - 1]);
-        estado = 0;
-      }
+      
     }
 
     //FullScreen
