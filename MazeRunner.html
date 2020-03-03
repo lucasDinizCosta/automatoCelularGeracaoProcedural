@@ -297,12 +297,12 @@
             tempoTransicaoFase = 1;
             teasuresCollected = 0;
             player.vidas--;
-            loadLevel(1);   //Reload Level
             if(player.vidas < 0){       // Game over
               estado = 2;
+              tempoGameOver = 2;
             }
             else{
-              
+              loadLevel(1);   // Reload Level
             }
             break;
           default:
