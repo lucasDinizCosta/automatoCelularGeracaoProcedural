@@ -13,6 +13,7 @@
   <script src="Classes/ImageLibrary.js"></script>
   <script src="Classes/AudioLibrary.js"></script>
   <script src="Classes/CellularAutomata.js"></script>
+  <script src="Classes/FireZone.js"></script>
 
   <link rel="stylesheet" href="Css/default.css">
  <!-- <style>
@@ -131,12 +132,12 @@
     levels[0].setTeleporters_2();               // Posiciona os teleportes das salas e referencia a celula no mapa ao invés de colocar só a posição
     levels[0].atualizaGradeTeleportes(dt);
     levels[0].posicionarPlayer(player);
-    levels[0].atualizaMatrizDistancias();
-    levels[0].setTempo(10,125); //10 segundos
+    levels[0].atualizaMatrizDistancias();       // Em relação aos teleportes inicial da fase e de cada sala
+    levels[0].posicionarFireZones(25);
+
+    levels[0].setTempo(10, 125); //10 segundos
 
     levels[0].tesouros = 3;
-    levels[0].finishGX = 17;
-    levels[0].finishGY = 9;
 
     var tempoGameOver = 2;
     var tempoTransicaoFase = 1;     //Tempo que decai um pouco da barra
@@ -348,7 +349,7 @@
       ctx.fillText("Tesouros: " + teasuresCollected, converteTelaCheia(430, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
       ctx.strokeText("Level: " + player.levelNumber, converteTelaCheia(545, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
       ctx.fillText("Level: " + player.levelNumber, converteTelaCheia(545, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
-      
+
       if(debugMode >= 1){
         ctx.font = "13px Arial Black";
         ctx.fillStyle = "yellow";

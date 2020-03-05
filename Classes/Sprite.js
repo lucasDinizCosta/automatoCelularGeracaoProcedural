@@ -299,11 +299,11 @@ Sprite.prototype.desenhar = function (ctx) {
       break;
     case 5:                     //Area safe
       ctx.save();
-      ctx.strokeStyle = "dark blue";
-      ctx.fillStyle = "light blue";
-      ctx.linewidth = 10;
+      ctx.strokeStyle = "yellow";
+      ctx.fillStyle = "red";
+      ctx.linewidth = 2;
       // imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
-      ctx.globalAlpha = 0.40;         //Transparência
+      //ctx.globalAlpha = 0.40;         //Transparência
       ctx.translate(this.x, this.y);
       ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
       ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);

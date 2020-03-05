@@ -371,19 +371,28 @@ Level.prototype.atualizaMatrizDistancias = function(){
   }
 }
 
-Level.prototype.posicionarAreasSafe = function(valor){
+Level.prototype.posicionarFireZones = function(valor){
   //Posiciona na primeira distancia 35 e depois recalcula
   let terminouPosicionamento = false;
   let indiceSala = 0;
-  while(terminouPosicionamento){
+  while(!terminouPosicionamento){
     let auxRoom = this.rooms[indiceSala];
-    
-    let celula = this.mapa.findCellByDistAndType(valor, 0, null, null);
+    let celula = auxRoom.findCellByDist(valor);
 
-    if(celula != null){
-
+    while(celula != null){
+      let auxFireZone = new FireZone();
+      auxFireZone.sprite.gx = celula.coluna;
+      auxFireZone.sprite.gy = celula.linha;
+      auxFireZone.sprite.x = celula.coluna * this.mapa.s + auxFireZone.sprite.s/2;
+      auxFireZone.sprite.y = celula.linha * this.mapa.s + auxFireZone.sprite.s/2;
+      auxRoom.fireZones.push(auxFireZone);
+      this.mapa.atualizaDist(celula.linha, celula.coluna, 0);     //Recalcula
+      celula = auxRoom.findCellByDist(valor);
     }
-    else{
+
+    indiceSala++;
+
+    if(indiceSala >= this.rooms.length){
       terminouPosicionamento = true;
     }
   }

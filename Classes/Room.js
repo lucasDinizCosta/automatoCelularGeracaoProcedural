@@ -5,7 +5,7 @@ function Room(number){
     this.teleporterFinal = new Teleporter(2);           // (Chegada)Transição de uma sala pra outra
     this.endingLevel;                                   // Teleportador que termina a fase
     this.beginLevel;                                    // Teleportador que Inicia a fase
-    this.areasSafe = [];                                // Area para a recarga do tempo
+    this.fireZones = [];                                // Area para a recarga do tempo
 }
 
 //Room.prototype = new Room();
@@ -32,9 +32,13 @@ Room.prototype.removeBlockByMatrixIndex = function(row, column){
     }
 }
 
+// Desenha os teleportes e as coneções entre eles
 Room.prototype.draw = function(ctx){
     this.teleporterInitial.portal.desenhar(ctx);
     this.teleporterFinal.portal.desenhar(ctx);
+    for(let i = 0; i < this.fireZones.length; i++){
+        this.fireZones[i].sprite.desenhar(ctx);
+    }
     if(debugMode == 1){
         ctx.save();
         ctx.strokeStyle = "yellow";
@@ -49,13 +53,12 @@ Room.prototype.draw = function(ctx){
     }
 }
 
-
 // Copia os dados da sala toda mas o vetor de blocos salva a linha e coluna apenas
 Room.prototype.copy = function(room){
     //console.log("Copy -- Room: ");
     //console.log(this.number + " (this.number)--(Room.number) " + room.number);
     //console.log("ROOM.copy():");
-    
+
     this.number = room.number;
     this.teleporterInitial.copy(room.teleporterInitial);
     this.teleporterFinal.copy(room.teleporterFinal);
@@ -80,6 +83,7 @@ Room.prototype.copyByLevelGeneration = function(room, mapa){
         aux.room = room.number;
         this.blocks.push(aux);
     }
+    this.copyFireZones(room);
 }
 
 // Copia os dados da sala toda mas o vetor de blocos salva REFERENCIA PRA MATRIZ DO MAPA
@@ -95,9 +99,28 @@ Room.prototype.copyWithReference = function(room, mapa){
         aux.room = room.number;
         this.blocks.push(aux);
     }
+    this.copyFireZones(room);
 }
 
+Room.prototype.copyFireZones = function(room){
+    for(let i = 0; i < room.fireZones.length; i++){
+        let aux = room.fireZones[i].sprite;
+        let newFireZone = new FireZone();
+        newFireZone.sprite.copy(aux);
+        this.fireZones.push(newFireZone);
+    }
+}
 
+// Procura celulas da sala que possuem distancia value
+Room.prototype.findCellByDist = function(value){
+    for(let i = 0; i < this.blocks.length; i++){
+        if(this.blocks[i].dist == value){
+            return this.blocks[i];
+        }
+    }
+    return null;                // Não encontrou nenhuma celula com a distancia determinada
+}
+  
 Room.prototype.setTeleporter = function(mode, beginGX, beginGY, endGX, endGY){
     if(mode = 0){   //Initial mode
         let teleporter = new Teleporter(1);
