@@ -12,9 +12,9 @@ function Level(w,h,s) {
   this.finishGX = 0;
   this.finishGY = 0;
   this.tempoFase = 0;
+  this.tempoTotal = 0;
   this.taxaDiminuicaoTempo = 0;
   this.stateCollectedItens = false;
-  this.areaSafe = [];
   this.inimigos = [];
   this.teleporteInicioLevel = new Teleporter(3);         //(Inicio) mapa
   this.teleporteFinalLevel  = new Teleporter(4);        //(Final) mapa
@@ -31,12 +31,12 @@ Level.prototype.constructor = Level;
 
 Level.prototype.setTempo = function(tempo, larguraBarra){
   this.tempoFase = tempo;
+  this.tempoTotal = tempo;
   this.taxaDiminuicaoTempo = Math.floor(larguraBarra/tempo);
 };
 
-Level.prototype.updateTempo = function(){
+Level.prototype.updateTempo = function(player){
   this.tempoFase = this.tempoFase - 1;
-  //this.larguraBarra = this.larguraBarra - this.taxaDiminuicaoTempo;
 }
 
 // Caminha na matriz e encontra as salas que cada célula pertence
@@ -77,6 +77,7 @@ Level.prototype.clonarLevel= function(level){
   this.finishGY = level.finishGY;
   this.stateCollectedItens = level.stateCollectedItens;
   this.tempoFase = level.tempoFase;
+  this.tempoTotal = level.tempoTotal;
   this.taxaDiminuicaoTempo = level.taxaDiminuicaoTempo;
   this.teleporteInicioLevel.copy(level.teleporteInicioLevel);
   this.teleporteFinalLevel.copy(level.teleporteFinalLevel);
@@ -433,3 +434,24 @@ Level.prototype.desenhar = function(ctx) {
     this.rooms[i].draw(ctx);
   }
 };
+
+// Testa as colisões do player com as firezones
+Level.prototype.colisaoFireZones = function(player){
+  let verificaColisao = false;
+  for(let i = 0; i < this.rooms.length; i++){
+    let auxFireZones = this.rooms[i].fireZones;
+    for(let j = 0; j < auxFireZones.length; j++){
+      if(player.sprite.colidiuCom2(auxFireZones[j].sprite)){
+        verificaColisao = true;
+        break;
+      }
+    }
+  }
+  if(verificaColisao){
+    player.morre = false;
+    this.tempoFase = this.tempoTotal;
+  }
+  else{
+    player.morre = true;
+  }
+}

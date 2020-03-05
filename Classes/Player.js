@@ -3,6 +3,7 @@ function Player(size, nomeImagem) {
   this.timeWalkSound = 0.5;
   this.levelNumber = 1;
   this.vidas = 3;
+  this.morre = true;
 
   //Mapa das teclas pressionadas
   this.up = false;

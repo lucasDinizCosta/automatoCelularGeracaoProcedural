@@ -135,18 +135,16 @@
     levels[0].atualizaMatrizDistancias();       // Em relação aos teleportes inicial da fase e de cada sala
     levels[0].posicionarFireZones(25);
 
-    levels[0].setTempo(10, 125); //10 segundos
+    levels[0].setTempo(10, 125);                //10 segundos
 
     levels[0].tesouros = 3;
 
     var tempoGameOver = 2;
-    var tempoTransicaoFase = 1;     //Tempo que decai um pouco da barra
+    var tempoTransicaoFase = 1;                 // Tempo que decai um pouco da barra
     var playerVel = 300;
 
     levelAtual.clonarLevel(levels[0]);
     player.sprite.map = levelAtual.mapa;
-    //player.sprite.x = tela.width/2;//levelAtual.startX;
-    //player.sprite.y = tela.height/2;//levelAtual.startY;
 
     var teasuresCollected = 0;    
 
@@ -202,8 +200,9 @@
             /*if(audioLibrary.isPlaying("BGM")==false){
               audioLibrary.play("BGM");
             }*/
+            player.mover(dt);
+            levelAtual.colisaoFireZones(player);
             if(levelAtual.tempoFase >= 0){
-              player.mover(dt);
               controleTempo();
             }
             else{
@@ -229,7 +228,6 @@
             //if(audioLibrary.isPlaying("BGM")==false){
             //audioLibrary.play("BGM");
             //}
-            limparTela();
             ctx.fillStyle = wordsColor;
             ctx.textAlign = alignMainMenu;
             ctx.lineWidth = 2;
@@ -315,14 +313,23 @@
     function controleTempo(){
       if(tempoTransicaoFase < 0){
         tempoTransicaoFase = 1;
-        levelAtual.updateTempo();
-        tempoRectInt.w = tempoRectInt.w - levelAtual.taxaDiminuicaoTempo;
+        if(player.morre){
+          tempoRectInt.w = tempoRectInt.w - levelAtual.taxaDiminuicaoTempo;  
+          levelAtual.updateTempo(player);
+        }
+        else{
+          tempoRectInt.w = 127;
+        }
         if(tempoRectInt.w <= 0){
           tempoRectInt.w = 0;
         }
       }
       else{
-        tempoTransicaoFase -= dt;
+        tempoTransicaoFase -= dt;        
+        if(!player.morre){
+          tempoRectInt.w = 127;
+          levelAtual.tempoFase = levelAtual.tempoTotal;
+        }
       }
     }
 
