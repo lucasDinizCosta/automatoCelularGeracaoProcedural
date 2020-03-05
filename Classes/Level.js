@@ -217,10 +217,10 @@ Level.prototype.setTeleporters_2 = function(){
           blocks.push(aux);
         }
         sortPosition = this.getRandomInt(0 , (blocks.length - 1));
-        this.rooms[i].teleporterInitial.setPosition(blocks[sortPosition][0], blocks[sortPosition][1]);
+        this.rooms[i].teleporterInitial.setPosition(blocks[sortPosition]);
         blocks.splice(sortPosition, 1);
         sortPosition = this.getRandomInt(0 , (blocks.length - 1));
-        this.rooms[i].teleporterFinal.setPosition(blocks[sortPosition][0], blocks[sortPosition][1]);
+        this.rooms[i].teleporterFinal.setPosition(blocks[sortPosition]);
         this.rooms[i].teleporterInitial.roomNumber = this.rooms[i].number;
         this.rooms[i].teleporterFinal.roomNumber = this.rooms[i].number;
         this.rooms[i].teleporterInitial.portal.map = this.mapa;
@@ -333,8 +333,8 @@ Level.prototype.posicionarPlayer = function(p){
   this.teleporteInicioLevel.portal.gx = posicao.coluna;    
   this.teleporteInicioLevel.portal.gy = posicao.linha;
   this.teleporteInicioLevel.roomNumber = 1;
-  this.teleporteInicioLevel.portal.x = this.mapa.s * this.teleporteInicioLevel.portal.gx + this.mapa.s/2;//p.sprite.s;
-  this.teleporteInicioLevel.portal.y = this.mapa.s * this.teleporteInicioLevel.portal.gy + this.mapa.s/2;//p.sprite.s;
+  this.teleporteInicioLevel.portal.x = this.mapa.s * this.teleporteInicioLevel.portal.gx + this.mapa.s/2;
+  this.teleporteInicioLevel.portal.y = this.mapa.s * this.teleporteInicioLevel.portal.gy + this.mapa.s/2;
   
   this.startGX = posicao.coluna;
   this.startGY = posicao.linha;
@@ -351,8 +351,8 @@ Level.prototype.posicionarPlayer = function(p){
   this.teleporteFinalLevel.portal.gx = posicao.coluna;
   this.teleporteFinalLevel.portal.gy = posicao.linha;
   this.teleporteFinalLevel.roomNumber = salaTeleporteFinal + 1;
-  this.teleporteFinalLevel.portal.x = this.mapa.s * this.teleporteFinalLevel.portal.gx + this.mapa.s/2;//p.sprite.s;
-  this.teleporteFinalLevel.portal.y = this.mapa.s * this.teleporteFinalLevel.portal.gy + this.mapa.s/2;//p.sprite.s;
+  this.teleporteFinalLevel.portal.x = this.mapa.s * this.teleporteFinalLevel.portal.gx + this.mapa.s/2; 
+  this.teleporteFinalLevel.portal.y = this.mapa.s * this.teleporteFinalLevel.portal.gy + this.mapa.s/2;
 
   this.finishGX = posicao.coluna;
   this.finishGY = posicao.linha;
@@ -366,9 +366,9 @@ Level.prototype.posicionarPlayer = function(p){
 
 Level.prototype.atualizaMatrizDistancias = function(){
   this.mapa.atualizaDist(this.teleporteInicioLevel.portal.gy, this.teleporteInicioLevel.portal.gx, 0);
-  /*for(let i = 1; i < this.rooms.length; i++){        //Começa a analisar a partir da próxima sala
+  for(let i = 1; i < this.rooms.length; i++){        //Começa a analisar a partir da próxima sala
     this.mapa.atualizaDist(this.rooms[i].teleporterInitial.portal.gy, this.rooms[i].teleporterInitial.portal.gx, 0);
-  }*/
+  }
 }
 
 Level.prototype.posicionarAreasSafe = function(valor){

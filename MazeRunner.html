@@ -327,10 +327,10 @@
 
     function desenharHUD(){
       tempoRectExt.x = converteTelaCheia(77, tela.widthOld, tela.width);
-      tempoRectExt.y = converteTelaCheia(13, tela.heightOld, tela.height);
+      tempoRectExt.y = converteTelaCheia(13.5, tela.heightOld, tela.height);
       
       tempoRectInt.x = converteTelaCheia(77, tela.widthOld, tela.width);
-      tempoRectInt.y = converteTelaCheia(13, tela.heightOld, tela.height);
+      tempoRectInt.y = converteTelaCheia(13.5, tela.heightOld, tela.height);
       
       tempoRectExt.desenharTempo(ctx);
       tempoRectInt.desenharTempo(ctx);
@@ -348,6 +348,7 @@
       ctx.fillText("Tesouros: " + teasuresCollected, converteTelaCheia(430, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
       ctx.strokeText("Level: " + player.levelNumber, converteTelaCheia(545, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
       ctx.fillText("Level: " + player.levelNumber, converteTelaCheia(545, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
+      
       if(debugMode >= 1){
         ctx.font = "13px Arial Black";
         ctx.fillStyle = "yellow";
