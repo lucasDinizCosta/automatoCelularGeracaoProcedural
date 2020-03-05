@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Trabalho de conclusão de curso: geração procedural</title>
+  <title>Maze Runner - Aplicação de técnicas na geração procedural de conteúdo</title>
   <script src="Classes/Map.js"></script>
   <script src="Classes/Room.js"></script>
   <script src="Classes/Level.js"></script>
@@ -132,7 +132,7 @@
     levels[0].setTeleporters();
     levels[0].atualizaGradeTeleportes(dt);
     levels[0].posicionarPlayer(player);
-    levels[0].posicionarRecursos();
+    levels[0].atualizaMatrizDistancias();
 
     levels[0].setTempo(10,125); //10 segundos
 
@@ -142,8 +142,7 @@
 
     var tempoGameOver = 2;
     var tempoTransicaoFase = 1;     //Tempo que decai um pouco da barra
-    var playerVel = 300; //150
-
+    var playerVel = 300;
 
     levelAtual.clonarLevel(levels[0]);
     player.sprite.map = levelAtual.mapa;
@@ -288,7 +287,7 @@
             tempoTransicaoFase = 1;
             teasuresCollected = 0;
             player.levelNumber = player.levelNumber + 1;
-            loadLevel(0);   //Load new level
+            loadLevel(0);       //Load new level
             break;
           case 5:     // Recarregar fase
             tempoRectInt.w = 127;

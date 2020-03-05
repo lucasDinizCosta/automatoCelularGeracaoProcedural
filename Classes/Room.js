@@ -1,14 +1,16 @@
 function Room(number){
     this.blocks = [];
     this.number = number;
-    this.teleporterInitial = new Teleporter(1);       //(Inicio)Transição de uma sala pra outra
-    this.teleporterFinal = new Teleporter(2);        //(Chegada)Transição de uma sala pra outra
-    this.endingLevel;                               //Teleportador que termina a fase
-    this.beginLevel;                               //Teleportador que Inicia a fase
+    this.teleporterInitial = new Teleporter(1);         // (Inicio)Transição de uma sala pra outra
+    this.teleporterFinal = new Teleporter(2);           // (Chegada)Transição de uma sala pra outra
+    this.endingLevel;                                   // Teleportador que termina a fase
+    this.beginLevel;                                    // Teleportador que Inicia a fase
+    this.areasSafe = [];                                // Area para a recarga do tempo
 }
 
 //Room.prototype = new Room();
 //Room.prototype.constructor = Room;
+
 
 Room.prototype.addBlock = function(row, column){
     let aux = [];

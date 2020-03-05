@@ -15,6 +15,7 @@ function Level(w,h,s) {
   this.tempoFase = 0;
   this.taxaDiminuicaoTempo = 0;
   this.stateCollectedItens = false;
+  this.areaSafe = [];
   this.inimigos = [];
   this.teleporteInicioLevel = new Teleporter(3);         //(Inicio) mapa
   this.teleporteFinalLevel  = new Teleporter(4);        //(Final) mapa
@@ -264,10 +265,32 @@ Level.prototype.posicionarPlayer = function(p){
   this.finishY = this.mapa.s * this.finishGY + p.sprite.s;
 }
 
-Level.prototype.posicionarRecursos = function(){
+/********************************
+ * Calcula a matriz de distancias
+ ********************************/
+
+Level.prototype.atualizaMatrizDistancias = function(){
   this.mapa.atualizaDist(this.teleporteInicioLevel.portal.gy, this.teleporteInicioLevel.portal.gx, 0);
   for(let i = 1; i < this.rooms.length; i++){        //Começa a analisar a partir da próxima sala
     this.mapa.atualizaDist(this.rooms[i].teleporterInitial.portal.gy, this.rooms[i].teleporterInitial.portal.gx, 0);
+  }
+}
+
+Level.prototype.posicionarAreasSafe = function(valor){
+  //Posiciona na primeira distancia 35 e depois recalcula
+  let terminouPosicionamento = false;
+  let indiceSala = 0;
+  while(terminouPosicionamento){
+    let auxRoom = this.rooms[indiceSala];
+    
+    let celula = this.mapa.findCellByDistAndType(valor, 0, null, null);
+
+    if(celula != null){
+
+    }
+    else{
+      terminouPosicionamento = true;
+    }
   }
 }
 

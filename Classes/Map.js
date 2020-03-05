@@ -6,7 +6,7 @@ function Map(w, h, s) {
   for (let l = 0; l < h; l++) {
     this.cell[l] = [];
     for (let c = 0; c < w; c++) {
-      this.cell[l][c] = { tipo: 0, room: -3, dist: 999 };
+      this.cell[l][c] = { tipo: 0, room: -3, dist: 999, linha: l, coluna: c};
     }
   }
 }
@@ -43,6 +43,36 @@ Map.prototype.initMap = function (L, C, v) {
     }
   }
   return mapx;
+}
+
+Map.prototype.findCellByDistAndType = function(value, type, row, column){
+  if(row != null && column != null){              // Começar a analisar de uma posicação específica
+    for(let l = row; l < this.h; l++){
+      for(let c = column; c < this.w; c++){
+        if(this.cell[l][c].tipo == type){
+          if(this.cell[l][c].dist >= value){
+            return this.cell[l][c];
+          }
+        }
+      }
+    }
+  }
+  else{
+    for(let l = 0; l < this.h; l++){
+      for(let c = 0; c < this.w; c++){
+        if(this.cell[l][c].tipo == type){
+          if(this.cell[l][c].dist >= value){
+            return this.cell[l][c];
+          }
+        }
+      }
+    }
+  }
+  return null;                // Não encontrou nenhuma celula com a caracteristica
+}
+
+Map.prototype.getCell = function(row, column){
+  return this.cell[row][column];
 }
 
 Map.prototype.geraGradeSalas = function () {
@@ -120,20 +150,20 @@ Map.prototype.desenhar = function (ctx) {
   for (var l = Math.max(0, player.sprite.gy - MAPA_AREA); l < Math.min(this.h, player.sprite.gy + MAPA_AREA); l++) {
     for (var c = Math.max(0, player.sprite.gx - MAPA_AREA); c < Math.min(this.w, player.sprite.gx + MAPA_AREA); c++) {
       switch (this.cell[l][c].tipo) {
-        case 0:   //Vazio
+        case 0:   // Vazio     -- Chão
           imageLibrary.drawSize(ctx, "floor_sand", c * this.s, l * this.s, this.s, this.s);
           break;
-        case 1:   //Bloqueado
+        case 1:   // Bloqueado -- Muro
           imageLibrary.drawSize(ctx, "brick_gray", c * this.s, l * this.s, this.s, this.s);
           break;
-        case 2:   //Local de saida
+        case 2:   // Local de saida
           ctx.strokeStyle = "darkBlue";
           ctx.fillStyle = "lightBlue";
           ctx.linewidth = 10;
           ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
           ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
           break;
-        case 3:   //local de chegada
+        case 3:   // local de chegada
           ctx.strokeStyle = "Yellow";
           ctx.fillStyle = "orange";
           ctx.linewidth = 10;
@@ -143,22 +173,28 @@ Map.prototype.desenhar = function (ctx) {
           ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
           ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
           ctx.restore();
-        case 4:   //Tesouro a pegar
+        case 4:   // Tesouro a pegar
           imageLibrary.drawSize(ctx, "floor_sand", c * this.s, l * this.s, this.s, this.s);
           ctx.fillStyle = "yellow";
           ctx.strokeStyle = "grey";
           ctx.fillRect(c * this.s + this.s / 3, l * this.s + this.s / 3, this.s / 3, this.s / 3);
           ctx.strokeRect(c * this.s + this.s / 3, l * this.s + this.s / 3, this.s / 3, this.s / 3);
           break;
-        case 5:   //Terreno vazio
-          //imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
+        case 5:   // Caverna
           imageLibrary.drawClipSize(ctx, "rockBlock", 0, 0, 32, 32, c * this.s, l * this.s, this.s, this.s);
           break;
-        case 6:   //Terreno com mina
-          //imageLibrary.dawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
-          //imageLibrary.drawClipSize(ctx, "sandBlock", 0, 0, 80, 80, c*this.s, l*this.s, this.s, this.s);
+        case 6:   // areaSafe - Recuperar a energia
+          ctx.strokeStyle = "Yellow";
+          ctx.fillStyle = "orange";
+          ctx.linewidth = 10;
+          imageLibrary.drawSize(ctx, "floor_sand", c * this.s, l * this.s, this.s, this.s);
+          ctx.save();
+          ctx.globalAlpha = 0.40;         //Transparência
+          ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
+          ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
+          ctx.restore();
           break;
-        case 7:   //Teleporte
+        case 7:   // Teleporte
           ctx.strokeStyle = "darkGreen";
           ctx.fillStyle = "lightGreen";
           ctx.linewidth = 10;
