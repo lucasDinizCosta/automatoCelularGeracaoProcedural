@@ -330,8 +330,8 @@ Level.prototype.posicionarPlayer = function(p){
   ||((posicao.linha === this.rooms[0].teleporterFinal.portal.gy) && (posicao.coluna === this.rooms[0].teleporterFinal.portal.gx))){
     posicao = this.rooms[0].blocks[this.getRandomInt(0, this.rooms[0].blocks.length - 1)];
   }  
-  this.teleporteInicioLevel.portal.gx = posicao.linha;    
-  this.teleporteInicioLevel.portal.gy = posicao.coluna;
+  this.teleporteInicioLevel.portal.gx = posicao.coluna;    
+  this.teleporteInicioLevel.portal.gy = posicao.linha;
   this.teleporteInicioLevel.roomNumber = 1;
   this.teleporteInicioLevel.portal.x = this.mapa.s * this.teleporteInicioLevel.portal.gx + this.mapa.s/2;//p.sprite.s;
   this.teleporteInicioLevel.portal.y = this.mapa.s * this.teleporteInicioLevel.portal.gy + this.mapa.s/2;//p.sprite.s;
@@ -341,11 +341,11 @@ Level.prototype.posicionarPlayer = function(p){
   this.startX = this.mapa.s * this.startGX + p.sprite.s;
   this.startY = this.mapa.s * this.startGY + p.sprite.s;
 
-  let salaTeleporteFinal = this.getRandomInt(1, this.rooms.length - 1);
+  let salaTeleporteFinal = this.getRandomInt(1, this.rooms.length - 1);           // Descarta a sala zero na seleção
   posicao = this.rooms[salaTeleporteFinal].blocks[this.getRandomInt(0, this.rooms[salaTeleporteFinal].blocks.length - 1)];
   while(((posicao.linha === this.rooms[salaTeleporteFinal].teleporterInitial.portal.gy) && (posicao.coluna === this.rooms[salaTeleporteFinal].teleporterInitial.portal.gx))
   ||((posicao.linha === this.rooms[salaTeleporteFinal].teleporterFinal.portal.gy) && (posicao.coluna === this.rooms[salaTeleporteFinal].teleporterFinal.portal.gx))){
-    posicao = this.rooms[salaTeleporteFinal - 1].blocks[this.getRandomInt(0, this.rooms[salaTeleporteFinal].blocks.length - 1)];
+    posicao = this.rooms[salaTeleporteFinal].blocks[this.getRandomInt(0, this.rooms[salaTeleporteFinal].blocks.length - 1)];
   }  
 
   this.teleporteFinalLevel.portal.gx = posicao.coluna;
@@ -404,7 +404,7 @@ Level.prototype.copiaSalas = function(rooms){
      this.rooms.push(new Room(0));
      this.rooms[this.rooms.length - 1].copyByLevelGeneration(rooms[i], this.mapa);
   }
-  
+
 }
 
 Level.prototype.copiaSalasComReferencia = function(rooms){
