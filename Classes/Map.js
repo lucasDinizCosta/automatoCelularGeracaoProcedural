@@ -14,7 +14,7 @@ function Map(w, h, s) {
 //Map.prototype = new Map();
 Map.prototype.constructor = Map;
 
-Map.prototype.copyDates = function (matrix) {
+Map.prototype.copyDates = function (matrix) {           // Copia a matriz de geração procedural que contém apenas o tipo da celula
   //this.cell = JSON.parse(JSON.stringify(matrix)); //Copia matriz
   for (var l = 0; l < this.h; l++) {
     for (var c = 0; c < this.w; c++) {
@@ -75,7 +75,8 @@ Map.prototype.getCell = function(row, column){
   return this.cell[row][column];
 }
 
-Map.prototype.geraGradeSalas = function () {
+// Caminha na matriz e encontra as salas que cada célula pertence
+Map.prototype.mapearSalas = function () {
   let auxMatrix = this.initMap(this.h, this.w, -1);
   let auxMatrixVisited = [];
   let room = 0;
@@ -106,12 +107,11 @@ Map.prototype.geraGradeSalas = function () {
     }
   }
 
-  for (let i = 0; i < this.h; i++) {            //Copia matriz
+  for (let i = 0; i < this.h; i++) {            //Ajusta os indices das salas de cada celula
     for (let j = 0; j < this.w; j++) {
       this.cell[i][j].room = auxMatrix[i][j];
     }
   }
-  return auxMatrix;
 }
 
 Map.prototype.visitCells = function (auxMatrix, mapx, y, x, tp, d = 1, indexArea) {   //visita as celulas visinhas de maneira recursiva e atribui o código da sala correspondente 
@@ -270,14 +270,19 @@ Map.prototype.escreveTexto = function (ctx, texto, x, y) {
   ctx.fillText(texto, x, y);
 }
 
+// Matriz de distancias: Calcula a distancia em relação a uma linha, coluna e valor inicial
 Map.prototype.atualizaDist = function (l, c, v) {
   let aavaliar = [{ l, c, v }];
   let cell;
+
+  //console.log("Map.AtualizaDist:");
+
   while (cell = aavaliar.pop()) {
 
     if (cell.l < 0 || cell.l >= this.h || cell.c < 0 || cell.c >= this.w) {
       continue;
     }
+
     if (this.cell[cell.l][cell.c].tipo != 0) {
       continue;
     }

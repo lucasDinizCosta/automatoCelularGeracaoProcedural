@@ -49,9 +49,13 @@ Room.prototype.draw = function(ctx){
     }
 }
 
+
+// Copia os dados da sala toda mas o vetor de blocos salva a linha e coluna apenas
 Room.prototype.copy = function(room){
     //console.log("Copy -- Room: ");
     //console.log(this.number + " (this.number)--(Room.number) " + room.number);
+    //console.log("ROOM.copy():");
+    
     this.number = room.number;
     this.teleporterInitial.copy(room.teleporterInitial);
     this.teleporterFinal.copy(room.teleporterFinal);
@@ -59,6 +63,36 @@ Room.prototype.copy = function(room){
         let aux = [];
         aux.push(room.blocks[i][0]);
         aux.push(room.blocks[i][1]);
+        this.blocks.push(aux);
+    }
+}
+
+// Copia os dados da sala toda mas o vetor de blocos salva a linha e coluna apenas
+Room.prototype.copyByLevelGeneration = function(room, mapa){
+    //console.log("Copy -- Room: ");
+    //console.log(this.number + " (this.number)--(Room.number) " + room.number);
+    //console.log("ROOM.copyByLevelGeneration():");
+    this.number = room.number;
+    this.teleporterInitial.copy(room.teleporterInitial);
+    this.teleporterFinal.copy(room.teleporterFinal);
+    for(let i = 0; i < room.blocks.length; i++){
+        let aux = mapa.cell[room.blocks[i][0]][ room.blocks[i][1]];
+        aux.room = room.number;
+        this.blocks.push(aux);
+    }
+}
+
+// Copia os dados da sala toda mas o vetor de blocos salva REFERENCIA PRA MATRIZ DO MAPA
+Room.prototype.copyWithReference = function(room, mapa){
+    
+    //console.log("ROOM.copyWithReference():");
+    //console.log(mapa);
+    this.number = room.number;
+    this.teleporterInitial.copy(room.teleporterInitial);
+    this.teleporterFinal.copy(room.teleporterFinal);
+    for(let i = 0; i < room.blocks.length; i++){
+        let aux = mapa.getCell(room.blocks[i].linha, room.blocks[i].coluna);
+        aux.room = room.number;
         this.blocks.push(aux);
     }
 }

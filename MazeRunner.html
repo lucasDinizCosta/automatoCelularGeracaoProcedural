@@ -126,14 +126,12 @@
     geraFase.fullstep(2);
     geraFase.countRooms();
     geraFase.filterRooms(25);
-    levels[0].setMatrixMap(geraFase.map);
-    levels[0].copiaSalas(geraFase.rooms);
-    levels[0].updateGradeSalas();
-    levels[0].setTeleporters();
+    levels[0].setMatrixMap(geraFase.map);       // Copia a matriz de tipos dentro do gerador
+    levels[0].copiaSalas(geraFase.rooms);       // Copia os dados em que os blocos da sala são apenas as posições linha e coluna da matriz
+    levels[0].setTeleporters_2();               // Posiciona os teleportes das salas e referencia a celula no mapa ao invés de colocar só a posição
     levels[0].atualizaGradeTeleportes(dt);
     levels[0].posicionarPlayer(player);
     levels[0].atualizaMatrizDistancias();
-
     levels[0].setTempo(10,125); //10 segundos
 
     levels[0].tesouros = 3;
@@ -191,8 +189,9 @@
       if (imageLibrary.loaded + audioLibrary.loaded < imageLibrary.size + audioLibrary.size) {//if(il.loaded+al.loaded<il.size+al.size) {
         //ctx.fillStyle = "white";
         //ctx.fillText("Carregando imagens e audio... "+(100*(il.loaded+al.loaded)/(il.size+al.loaded)).toFixed(2)+"%", 20, 100);
-        console.log("Carregando imagens e audio... " + (100 * (imageLibrary.loaded + audioLibrary.loaded) / (imageLibrary.size + audioLibrary.size)).toFixed(2) + "%", 20, 100);
-        console.log("Não terminou de carregar...");
+        //console.log("Carregando imagens e audio... " + (100 * (imageLibrary.loaded + audioLibrary.loaded) / (imageLibrary.size + audioLibrary.size)).toFixed(2) + "%", 20, 100);
+        //console.log("Não terminou de carregar...");
+        console.log("Carregando...");
         //return;
       }
       else {
@@ -378,7 +377,7 @@
     function limparDados() {
       levelAtual = new Level(widthMap, heightMap, sizeMap);
       levelAtual.clonarLevel(levels[0]);
-      levelAtual.updateGradeSalas();
+      //levelAtual.updateGradeSalas();
       player = new Player(12, "player");
       player.sprite.map = levelAtual.mapa;
       player.sprite.x = levelAtual.startX;
@@ -632,7 +631,7 @@
                 if (stateMainMenu == 0) {
                   levelAtual = new Level(widthMap, heightMap, sizeMap);
                   levelAtual.clonarLevel(levels[0]);
-                  levelAtual.updateGradeSalas();
+                  //levelAtual.updateGradeSalas();
                   player = new Player(12, "player");
                   player.sprite.map = levelAtual.mapa;
                   player.sprite.x = levelAtual.startX;
