@@ -302,11 +302,15 @@ Sprite.prototype.desenhar = function (ctx) {
       ctx.strokeStyle = "yellow";
       ctx.fillStyle = "red";
       ctx.linewidth = 2;
-      // imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
-      //ctx.globalAlpha = 0.40;         //Transparência
+      ctx.globalAlpha = 0.20;         //Transparência
       ctx.translate(this.x, this.y);
-      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
+      ctx.beginPath();
+      ctx.ellipse(0, 0 ,this.s*0.7, this.s*0.7, 0,0, Math.PI*2, false);
+      ctx.closePath();
+      ctx.stroke();
+      ctx.globalAlpha = 1.00;         //Transparência
+      imageLibrary.drawClip(ctx, "flames", Math.floor(this.pose)*16, 0, 16, 24, -8, -12, 16, 24);
+
       ctx.restore();
       break;
     default:

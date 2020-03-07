@@ -37,7 +37,8 @@ Room.prototype.draw = function(ctx){
     this.teleporterInitial.portal.desenhar(ctx);
     this.teleporterFinal.portal.desenhar(ctx);
     for(let i = 0; i < this.fireZones.length; i++){
-        this.fireZones[i].sprite.desenhar(ctx);
+        this.fireZones[i].desenhar(ctx);
+        this.fireZones[i].sprite.mover(0.16); //FIXME gol de mão
     }
     if(debugMode == 1){
         ctx.save();
