@@ -15,7 +15,7 @@
   <script src="Classes/CellularAutomata.js"></script>
   <script src="Classes/FireZone.js"></script>
 
-  <link rel="stylesheet" href="Css/default.css">
+  <link rel="stylesheet" href="CSS/default.css">
  <!-- <style>
     body {
       padding: 20px;
@@ -363,6 +363,8 @@
         ctx.fillStyle = "yellow";
         ctx.strokeText("Debug mode ativado!!!", converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
         ctx.fillText("Debug mode ativado!!!", converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
+        ctx.strokeText("FPS: " + ((1/dt).toFixed(4)), converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
+        ctx.fillText("FPS: "   + ((1/dt).toFixed(4)), converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
         ctx.strokeText("Escala mapa: " + escala.toFixed(4), converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
         ctx.fillText("Escala mapa: " + escala.toFixed(4), converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
         ctx.strokeText("Player: [" + (player.sprite.gy) + "][" + (player.sprite.gx) + "]", converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
