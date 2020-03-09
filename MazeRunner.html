@@ -12,6 +12,7 @@
   <script src="Classes/Teleporter.js"></script>
   <script src="Classes/ImageLibrary.js"></script>
   <script src="Classes/AudioLibrary.js"></script>
+  <script src="Classes/AssetsManager.js"></script>
   <script src="Classes/CellularAutomata.js"></script>
   <script src="Classes/FireZone.js"></script>
 
@@ -59,20 +60,35 @@
     var fullscreen = false;
     var anterior = dt = 0;
     var estado = 1;
-
+    
     //Carregamento de arquivos
     
     var imageLibrary = new ImageLibrary();
-    imageLibrary.load("brick_gray", "Imagens/brick_gray.png");
-    imageLibrary.load("brick_dark_Tp_0", "Imagens/brick_dark0.png");
-    imageLibrary.load("floor_sand", "Imagens/floor_sand_stone0.png");
-    imageLibrary.load("rockBlock", "Imagens/rock.png");
-    imageLibrary.load("grass_full", "Imagens/grass_full.png");
-    imageLibrary.load("player", "Imagens/player-sprite.png");    
-    imageLibrary.load("flames", "Imagens/flames.png");    
+    imageLibrary.load("brick_gray", "Assets/Imagens/brick_gray.png");
+    imageLibrary.load("brick_dark_Tp_0", "Assets/Imagens/brick_dark0.png");
+    imageLibrary.load("floor_sand", "Assets/Imagens/floor_sand_stone0.png");
+    imageLibrary.load("rockBlock", "Assets/Imagens/rock.png");
+    imageLibrary.load("grass_full", "Assets/Imagens/grass_full.png");
+    imageLibrary.load("player", "Assets/Imagens/player-sprite.png");    
+    imageLibrary.load("flames", "Assets/Imagens/flames.png");    
 
     var audioLibrary = new AudioLibrary();
-    audioLibrary.load("teleporte", "Audios/Teleport.wav");
+    audioLibrary.load("teleporte", "Assets/Audios/Teleport.wav");
+
+    // Controle das imagens e sons presentes no jogo
+    var assetsMng = new AssetsManager();
+
+    // Carregamento das imagens do jogo
+    assetsMng.loadImage("brick_gray", "Assets/Imagens/brick_gray.png");
+    assetsMng.loadImage("brick_dark_Tp_0", "Assets/Imagens/brick_dark0.png");
+    assetsMng.loadImage("floor_sand", "Assets/Imagens/floor_sand_stone0.png");
+    assetsMng.loadImage("rockBlock", "Assets/Imagens/rock.png");
+    assetsMng.loadImage("grass_full", "Assets/Imagens/grass_full.png");
+    assetsMng.loadImage("player", "Assets/Imagens/player-sprite.png");    
+    assetsMng.loadImage("flames", "Assets/Imagens/flames.png");    
+
+    // Carregamento dos audios presentes no jogo
+    assetsMng.loadAudio("teleporte", "Assets/Audios/Teleport.wav");
 
     //Proporções do mapa
     
@@ -186,15 +202,7 @@
     requestAnimationFrame(passo);
     function passo(t) {
       dt = (t - anterior) / 1000;
-      if (imageLibrary.loaded + audioLibrary.loaded < imageLibrary.size + audioLibrary.size) {//if(il.loaded+al.loaded<il.size+al.size) {
-        //ctx.fillStyle = "white";
-        //ctx.fillText("Carregando imagens e audio... "+(100*(il.loaded+al.loaded)/(il.size+al.loaded)).toFixed(2)+"%", 20, 100);
-        console.log("Carregando imagens e audio... " + (100 * (imageLibrary.loaded + audioLibrary.loaded) / (imageLibrary.size + audioLibrary.size)).toFixed(2) + "%", 20, 100);
-        //console.log("Não terminou de carregar...");
-        //console.log("Carregando...");
-        //return;
-      }
-      else {
+      if(assetsMng.progresso() === 100){       // Verifica se carrou todos os arquivos do jogo
         switch (estado) {
           case 0:     // Jogando
             limparTela();

@@ -95,10 +95,7 @@ Player.prototype.tratarAnimacao = function(){
       break;
     case 1:
       //console.log("Atacando");
-      this.estadoAnimacaoAtual = this.estadoAnimacaoAtual + 4;
-      /*if(this.sprite.animationState == 0){
-
-      }*/      
+      this.estadoAnimacaoAtual = this.estadoAnimacaoAtual + 4;    
       break;
     default:
       break;
@@ -111,7 +108,6 @@ Player.prototype.tratarAnimacao = function(){
   this.sprite.speedAnimation = this.animation[this.estadoAnimacaoAtual].speedAnimation;
   this.poseAtual = this.animation[this.estadoAnimacaoAtual].pose;
 }
-
 
 Player.prototype.desenhar = function(ctx){
   this.sprite.desenhar(ctx);
