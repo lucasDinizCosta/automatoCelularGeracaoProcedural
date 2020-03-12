@@ -151,10 +151,10 @@ Map.prototype.desenhar = function (ctx) {
     for (var c = Math.max(0, player.sprite.gx - MAPA_AREA); c < Math.min(this.w, player.sprite.gx + MAPA_AREA); c++) {
       switch (this.cell[l][c].tipo) {
         case 0:   // Vazio     -- Chão
-          imageLibrary.drawSize(ctx, "floor_sand", c * this.s, l * this.s, this.s, this.s);
+          assetsMng.drawSize(ctx, "floor_sand", c * this.s, l * this.s, this.s, this.s);
           break;
         case 1:   // Bloqueado -- Muro
-          imageLibrary.drawSize(ctx, "brick_gray", c * this.s, l * this.s, this.s, this.s);
+          assetsMng.drawSize(ctx, "brick_gray", c * this.s, l * this.s, this.s, this.s);
           break;
         case 2:   // Local de saida
           ctx.strokeStyle = "darkBlue";
@@ -167,27 +167,27 @@ Map.prototype.desenhar = function (ctx) {
           ctx.strokeStyle = "Yellow";
           ctx.fillStyle = "orange";
           ctx.linewidth = 10;
-          imageLibrary.drawSize(ctx, "floor_sand", c * this.s, l * this.s, this.s, this.s);
+          assetsMng.drawSize(ctx, "floor_sand", c * this.s, l * this.s, this.s, this.s);
           ctx.save();
           ctx.globalAlpha = 0.40;         //Transparência
           ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
           ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
           ctx.restore();
         case 4:   // Tesouro a pegar
-          imageLibrary.drawSize(ctx, "floor_sand", c * this.s, l * this.s, this.s, this.s);
+          assetsMng.drawSize(ctx, "floor_sand", c * this.s, l * this.s, this.s, this.s);
           ctx.fillStyle = "yellow";
           ctx.strokeStyle = "grey";
           ctx.fillRect(c * this.s + this.s / 3, l * this.s + this.s / 3, this.s / 3, this.s / 3);
           ctx.strokeRect(c * this.s + this.s / 3, l * this.s + this.s / 3, this.s / 3, this.s / 3);
           break;
         case 5:   // Caverna
-          imageLibrary.drawClipSize(ctx, "rockBlock", 0, 0, 32, 32, c * this.s, l * this.s, this.s, this.s);
+          assetsMng.drawClipSize(ctx, "rockBlock", 0, 0, 32, 32, c * this.s, l * this.s, this.s, this.s);
           break;
         case 6:   // areaSafe - Recuperar a energia
           ctx.strokeStyle = "Yellow";
           ctx.fillStyle = "orange";
           ctx.linewidth = 10;
-          imageLibrary.drawSize(ctx, "floor_sand", c * this.s, l * this.s, this.s, this.s);
+          assetsMng.drawSize(ctx, "floor_sand", c * this.s, l * this.s, this.s, this.s);
           ctx.save();
           ctx.globalAlpha = 0.40;         //Transparência
           ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
@@ -198,7 +198,7 @@ Map.prototype.desenhar = function (ctx) {
           ctx.strokeStyle = "darkGreen";
           ctx.fillStyle = "lightGreen";
           ctx.linewidth = 10;
-          //imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
+          //assetsMng.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
           ctx.save();
           ctx.globalAlpha = 0.40;         //Transparência
           ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
@@ -209,7 +209,7 @@ Map.prototype.desenhar = function (ctx) {
           ctx.strokeStyle = "purple";
           ctx.fillStyle = "purple";
           ctx.linewidth = 10;
-          //imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
+          //assetsMng.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
           ctx.save();
           ctx.globalAlpha = 0.60;         //Transparência
           ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
@@ -217,8 +217,8 @@ Map.prototype.desenhar = function (ctx) {
           ctx.restore();
           break;
         case 9:   //Bloqueio com espinho
-          //imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
-          //imageLibrary.drawSize(ctx, "tijoloEspinho", c*this.s, l*this.s, this.s, this.s);
+          //assetsMng.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
+          //assetsMng.drawSize(ctx, "tijoloEspinho", c*this.s, l*this.s, this.s, this.s);
           break;
         case 10:  //Posição do inimigo    
           ctx.strokeStyle = "darkgrey";

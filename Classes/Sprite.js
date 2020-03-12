@@ -276,7 +276,7 @@ Sprite.prototype.desenhar = function (ctx) {
       ctx.closePath();
       ctx.fill();
       ctx.stroke();
-      imageLibrary.drawClipSize(ctx, this.nomeImagem, 
+      assetsMng.drawClipSize(ctx, this.nomeImagem, 
         this.sizeImagem * (this.animationState % this.qtdAnimacoes), this.sizeImagem * this.pose, this.sizeImagem, this.sizeImagem, 
         -6-this.sizeImagem/2, 4-this.sizeImagem, this.sizeImagem, this.sizeImagem);
       ctx.restore();
@@ -301,7 +301,7 @@ Sprite.prototype.desenhar = function (ctx) {
       ctx.strokeStyle = "Yellow";
       ctx.fillStyle = "orange";
       ctx.linewidth = 10;
-     // imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
+     // assetsMng.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
       ctx.globalAlpha = 0.40;         //Transparência
       ctx.translate(this.x, this.y);
       ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
@@ -323,7 +323,7 @@ Sprite.prototype.desenhar = function (ctx) {
       ctx.strokeStyle = "dark green";
       ctx.fillStyle = "green";
       ctx.linewidth = 10;
-      // imageLibrary.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
+      // assetsMng.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
       ctx.globalAlpha = 0.40;         //Transparência
       ctx.translate(this.x, this.y);
       ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
@@ -342,7 +342,7 @@ Sprite.prototype.desenhar = function (ctx) {
       ctx.closePath();
       ctx.stroke();
       ctx.globalAlpha = 1.00;         //Transparência
-      imageLibrary.drawClip(ctx, "flames", Math.floor(this.pose)*16, 0, 16, 24, -8, -12, 16, 24);
+      assetsMng.drawClip(ctx, "flames", Math.floor(this.pose)*16, 0, 16, 24, -8, -12, 16, 24);
 
       ctx.restore();
       break;
