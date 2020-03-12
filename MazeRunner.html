@@ -10,8 +10,10 @@
   <script src="Classes/Player.js"></script>
   <script src="Classes/Sprite.js"></script>
   <script src="Classes/Teleporter.js"></script>
-  <script src="Classes/ImageLibrary.js"></script>
-  <script src="Classes/AudioLibrary.js"></script>
+  <!--
+    <script src="Classes/ImageLibrary.js"></script>
+    <script src="Classes/AudioLibrary.js"></script>
+  -->
   <script src="Classes/AssetsManager.js"></script>
   <script src="Classes/CellularAutomata.js"></script>
   <script src="Classes/FireZone.js"></script>
@@ -60,20 +62,6 @@
     var fullscreen = false;
     var anterior = dt = 0;
     var estado = 1;
-    
-    //Carregamento de arquivos
-    
-    var imageLibrary = new ImageLibrary();
-    imageLibrary.load("brick_gray", "Assets/Imagens/brick_gray.png");
-    imageLibrary.load("brick_dark_Tp_0", "Assets/Imagens/brick_dark0.png");
-    imageLibrary.load("floor_sand", "Assets/Imagens/floor_sand_stone0.png");
-    imageLibrary.load("rockBlock", "Assets/Imagens/rock.png");
-    imageLibrary.load("grass_full", "Assets/Imagens/grass_full.png");
-    imageLibrary.load("player", "Assets/Imagens/player-sprite.png");    
-    imageLibrary.load("flames", "Assets/Imagens/flames.png");    
-
-    var audioLibrary = new AudioLibrary();
-    audioLibrary.load("teleporte", "Assets/Audios/Teleport.wav");
 
     // Controle das imagens e sons presentes no jogo
     var assetsMng = new AssetsManager();
