@@ -101,20 +101,6 @@ Sprite.prototype.mover = function (dt) {
       }
     }
 
-
-    /*if(this.vx === 0 && this.map.cell[this.gy][this.gx+1]!==0 && (this.x*this.s > (this.gx)*this.map.s)){
-    console.log("FOI");
-    var limite = (this.gx+1)*this.map.s;
-    var maxDx = limite-(this.x+this.s/2);
-    var Dx = this.vx*dt;
-    this.x += Math.min(Dx, maxDx);
-  }*/
-
-  //Ponto central do sprite é o meio, logo compara com metade somente
-  //Tem alguns bugs em entrar parte nos blocos não permitidos
-
-  
-
     if(this.gy === 0 || this.gy === (this.map.h - 1))  //Trata casos extremos do mapa =>{gy <= 0, gy >= gyMapa}
     {
       if(this.gy === 0){
@@ -169,15 +155,62 @@ Sprite.prototype.mover = function (dt) {
     this.y += (this.vy)*dt;
   }
 
+  this.animationController();
+};
 
-  /*
-  if(this.map.cell[this.gy][this.gx] === 5){    //Substitui o cenário já descoberto
-    this.map.cell[this.gy][this.gx] = 0;
-  }*/
+Sprite.prototype.mover2 = function(dt){
+  this.gx = Math.floor(this.x/this.map.s);
+  this.gy = Math.floor(this.y/this.map.s);
+
+  if(debugMode == 0){
+    this.adicionaRestricaoMovimento(dt);
+  }
+  else{
+    this.x += (this.vx)*dt;
+    this.y += (this.vy)*dt;
+  }
 
   this.animationController();
+}
 
-};
+Sprite.prototype.adicionaRestricaoMovimento = function(dt){
+  let dnx;
+  let dx;
+  dx = this.vx * dt;
+  dnx = dx;
+  dy = this.vy * dt;
+  dny = dy;
+  if (dx > 0 && this.map.cell[this.gy][this.gx + 1].tipo != 0) {
+      dnx = this.map.s * (this.gx + 1) - (this.x + this.w / 2);
+      dx = Math.min(dnx, dx);
+  }
+  if (dx < 0 && this.map.cell[this.gy][this.gx - 1].tipo != 0) {
+      dnx = this.map.s * (this.gx - 1 + 1) - (this.x - this.w / 2);
+      dx = Math.max(dnx, dx);
+  }
+  if (dy > 0 && this.map.cell[this.gy + 1][this.gx].tipo != 0) {
+      dny = this.map.s * (this.gy + 1) - (this.y + this.h / 2);
+      dy = Math.min(dny, dy);
+  }
+  if (dy < 0 && this.map.cell[this.gy - 1][this.gx].tipo != 0) {
+      dny = this.map.s * (this.gy - 1 + 1) - (this.y - this.h / 2);
+      dy = Math.max(dny, dy);
+  }
+  this.vy = dy / dt;
+  this.x = this.x + dx;
+  this.y = this.y + dy;
+
+  var MAXX = this.map.s * this.map.c - this.w / 2;
+  var MAXY = this.map.s * this.map.l - this.h / 2;
+
+  if (this.x > MAXX) this.x = MAXX;
+  if (this.y > MAXY) {
+      this.y = MAXY;
+      this.vy = 0;
+  }
+  if (this.x - this.w / 2 < 0) this.x = 0 + this.w / 2;
+  if (this.y - this.h / 2 < 0) this.y = 0 + this.h / 2;
+}
 
 Sprite.prototype.animationController = function(){
   if(this.typeAnimation == 0){
