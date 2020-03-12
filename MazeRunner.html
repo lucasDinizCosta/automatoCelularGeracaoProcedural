@@ -202,7 +202,7 @@
     requestAnimationFrame(passo);
     function passo(t) {
       dt = (t - anterior) / 1000;
-      if(assetsMng.progresso() === 100){       // Verifica se carrou todos os arquivos do jogo
+      if(assetsMng.progresso() === 100){       // Verifica se carregou todos os arquivos do jogo
         switch (estado) {
           case 0:     // Jogando
             limparTela();

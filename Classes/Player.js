@@ -20,6 +20,15 @@ function Player(size, nomeImagem) {
   this.poseAtual = 0;
   this.animation = [];
   this.numAnimacoes = 8;
+
+  this.criarAnimacoes();
+  this.sprite.nomeImagem = nomeImagem;
+}
+
+//Player.prototype = new Player();
+Player.prototype.constructor = Player;
+
+Player.prototype.criarAnimacoes = function(){
   for(let i = 0; i < this.numAnimacoes; i++){
     this.animation.push(new Sprite());
   }
@@ -31,10 +40,12 @@ function Player(size, nomeImagem) {
   this.animation[1].pose = 9;
   this.animation[1].qtdAnimacoes = 8;
   this.animation[1].typeAnimation = 0;
+
   this.animation[2].sizeImagem = 64;
   this.animation[2].pose = 10;
   this.animation[2].qtdAnimacoes = 8;
   this.animation[2].typeAnimation = 0;
+  
   this.animation[3].sizeImagem = 64;
   this.animation[3].pose = 11;
   this.animation[3].qtdAnimacoes = 8;
@@ -61,12 +72,7 @@ function Player(size, nomeImagem) {
   this.animation[7].qtdAnimacoes = 6;
   this.animation[7].typeAnimation = 1;
   this.animation[7].speedAnimation = 160;
-
-  this.sprite.nomeImagem = nomeImagem;
 }
-
-//Player.prototype = new Player();
-//Player.prototype.constructor = Player;
 
 Player.prototype.mover = function(dt){
   this.tratarAnimacao();
