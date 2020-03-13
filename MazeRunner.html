@@ -176,6 +176,19 @@
     var stateMainMenu = 0;
 
     /************************************
+    *   --------- DEBUG MODE -----------*
+    *                                   *
+    *       0 => Normal;                *
+    *       1 => Centro Player;         *
+    *       2 => Box Collision;         *
+    *       3 => Dados das celulas:     *
+    *           - tipo(amarelo);        *
+    *           - room(verde);          *
+    *           - dist(azul));          *
+    *                                   *
+    *************************************/
+
+    /************************************
     *   --------- ESTADOS -----------   *
     *                                   *
     *       0 => Jogando;               *
@@ -357,8 +370,23 @@
       if(debugMode >= 1){
         ctx.font = "13px Arial Black";
         ctx.fillStyle = "yellow";
+        let typeMode = "";
+        switch(debugMode){
+          case 1: // Centro do personagem e celula marcada
+            typeMode = "Mode 1 - Centro personagem - Teleportes";
+            break;
+          case 2: // Box collision
+            typeMode = "Mode 2 - Caixa de Colisão";
+            break;
+          case 3: // Dados das celulas
+            typeMode = "Mode 3 - Dados das Celulas";
+            break;
+          default:
+        }
         ctx.strokeText("Debug mode ativado!!!", converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
         ctx.fillText("Debug mode ativado!!!", converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
+        ctx.strokeText(typeMode, converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(330, tela.heightOld, tela.height));
+        ctx.fillText(typeMode, converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(330, tela.heightOld, tela.height));
         ctx.strokeText("FPS: " + ((1/dt).toFixed(4)), converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
         ctx.fillText("FPS: "   + ((1/dt).toFixed(4)), converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
         ctx.strokeText("Escala mapa: " + escala.toFixed(4), converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
@@ -546,7 +574,7 @@
             break;
           case 80:      //Pressionar a letra P
             debugMode = debugMode + 1;
-            if(debugMode > 2){
+            if(debugMode > 3){
               debugMode = 0;
             }
             switch(debugMode){

@@ -232,7 +232,7 @@ Map.prototype.desenhar = function (ctx) {
           break;
       }
 
-      if (debugMode === 2) {
+      if (debugMode === 3) {
         this.desenharCell(ctx, l, c);         //Debug mode Grid
       }
     }
@@ -251,7 +251,7 @@ Map.prototype.desenharCell = function (ctx, l, c) {
   ctx.strokeStyle = "white";
   ctx.lineWidth = 1;
   ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
-  if (this.cell[0][0].room !== -3) {
+  //if (this.cell[0][0].room !== -3) {        //Verificacao de celula não alocada pra uma sala
     ctx.fillStyle = "yellow";
     ctx.strokeStyle = "black";
     ctx.lineWidth = 2;
@@ -262,7 +262,7 @@ Map.prototype.desenharCell = function (ctx, l, c) {
     ctx.fillStyle = "blue";
     this.escreveTexto(ctx, this.cell[l][c].dist + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
 
-  }
+  //}
 };
 
 Map.prototype.escreveTexto = function (ctx, texto, x, y) {

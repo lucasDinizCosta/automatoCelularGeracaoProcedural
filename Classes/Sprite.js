@@ -51,7 +51,7 @@ Sprite.prototype.mover = function (dt) {
     this.x = this.gx*this.map.s + this.s;       //Andando por grade
     this.y = this.gy*this.map.s + this.s;
   */
-  if(debugMode === 0){
+  if(debugMode === 0 || debugMode === 2){
     if(this.gx === 0 || this.gx === (this.map.w - 1))  //Trata casos extremos do mapa =>{gx <= 0, gx >= gxMapa}
     {
       if(this.gx === 0){
@@ -280,9 +280,13 @@ Sprite.prototype.desenhar = function (ctx) {
         this.sizeImagem * (this.animationState % this.qtdAnimacoes), this.sizeImagem * this.pose, this.sizeImagem, this.sizeImagem, 
         -6-this.sizeImagem/2, 4-this.sizeImagem, this.sizeImagem, this.sizeImagem);
       ctx.restore();
-      if(debugMode >= 1){
+      if(debugMode == 1){
         this.desenharCell(ctx);         //Debug mode Grid
         this.desenharCentro(ctx);
+      }
+      else if(debugMode == 2){
+        this.desenharCell(ctx);         //Debug mode Grid
+        this.desenharCaixaColisao(ctx);
       }
       
       break;
@@ -353,11 +357,21 @@ Sprite.prototype.desenhar = function (ctx) {
 };
 
 Sprite.prototype.desenharCentro = function(ctx){
-  ctx.fillStyle = "red";
+  ctx.fillStyle = "blue";
   ctx.strokeStyle = "blue";
   ctx.lineWidth = 1;
+  ctx.fillRect(this.x-1, this.y-1, 3, 3);
+  ctx.fillStyle = "red";
   ctx.fillRect(this.x, this.y, 1, 1);
-  ctx.strokeRect(this.x-1, this.y-1, 2, 2);
+}
+
+Sprite.prototype.desenharCaixaColisao = function(ctx){
+  ctx.fillStyle = "red";
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 1;
+  ctx.fillRect(this.x - this.s/2, this.y - this.s/2, this.s, this.s);
+  ctx.fillStyle = "red";
+  ctx.fillRect(this.x, this.y, 1, 1);
 }
 
 Sprite.prototype.desenharTempo = function (ctx) {
@@ -366,6 +380,15 @@ Sprite.prototype.desenharTempo = function (ctx) {
   ctx.lineWidth = this.borderSize;
   ctx.fillRect(this.x, this.y, this.w, this.h);
   ctx.strokeRect(this.x, this.y, this.w, this.h);
+};
+
+Sprite.prototype.desenharCell = function(ctx){
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(this.gx * this.map.s, this.gy * this.map.s, this.map.s, this.map.s);
+  ctx.strokeStyle = "yellow";
+  ctx.lineWidth = 1;
+  ctx.strokeRect(this.gx * this.map.s, this.gy * this.map.s, this.map.s, this.map.s);
 };
 
 Sprite.prototype.impoeLimites = function(x, y, w, h){
@@ -387,15 +410,6 @@ Sprite.prototype.impoeLimites = function(x, y, w, h){
   }
 };
 
-Sprite.prototype.desenharCell = function(ctx){
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 2;
-  ctx.strokeRect(this.gx * this.map.s, this.gy * this.map.s, this.map.s, this.map.s);
-  ctx.strokeStyle = "yellow";
-  ctx.lineWidth = 1;
-  ctx.strokeRect(this.gx * this.map.s, this.gy * this.map.s, this.map.s, this.map.s);
-};
-
 /** 
  * ColidiuCom possui o ponto central do sprite no canto superior esquerdo
 */
@@ -409,7 +423,7 @@ Sprite.prototype.colidiuCom = function (alvo) {
 };
 
 /** 
- * ColidiuCom possui o ponto central do sprite no centro
+ * ColidiuCom2s possui o ponto central do sprite no centro
 */
 
 Sprite.prototype.colidiuCom2 = function (alvo) {
