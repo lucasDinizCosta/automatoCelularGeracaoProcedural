@@ -368,8 +368,7 @@
       ctx.fillText("Level: " + player.levelNumber, converteTelaCheia(545, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
 
       if(debugMode >= 1){
-        ctx.font = "13px Arial Black";
-        ctx.fillStyle = "yellow";
+        ctx.font = "13px Arial Black";        
         let typeMode = "";
         switch(debugMode){
           case 1: // Centro do personagem e celula marcada
@@ -383,6 +382,12 @@
             break;
           default:
         }
+        ctx.fillStyle = "black";
+        ctx.strokeStyle = "yellow";
+        ctx.fillRect(converteTelaCheia(5, tela.widthOld, tela.width), converteTelaCheia(310, tela.heightOld, tela.height), converteTelaCheia(555, tela.widthOld, tela.width), converteTelaCheia(37, tela.heightOld, tela.height));
+        ctx.strokeRect(converteTelaCheia(5, tela.widthOld, tela.width), converteTelaCheia(310, tela.heightOld, tela.height), converteTelaCheia(555, tela.widthOld, tela.width), converteTelaCheia(37, tela.heightOld, tela.height));
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = "yellow";
         ctx.strokeText("Debug mode ativado!!!", converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
         ctx.fillText("Debug mode ativado!!!", converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
         ctx.strokeText(typeMode, converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(330, tela.heightOld, tela.height));
