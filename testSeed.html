@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Gerador de Seed</title>
+</head>
+<body>
+    <h1>Gerador de Seed:</h1>
+
+    <script type="text/javascript">
+        //  https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
+
+        /**
+        *   randomMethod 1:
+        *
+        * A elegância dessa solução, vem da falta de números "mágicos" 
+        * (além de 10000, que representa a quantidade mínima de dígitos que você deve jogar 
+        * fora para evitar padrões estranhos - veja resultados com os valores 10, 100, 1000 ) 
+        * Brevidade também é legal.
+        *
+        *   Antti Sykäri's algorithm
+        */
+        var seed = 1;
+
+        function randomMethod1() {
+            var x = Math.sin(seed++) * 10000;
+            return x - Math.floor(x);
+        }
+
+        /**
+        *   randomMethod 2:
+        *   
+        *   xmur3:
+        */
+
+        function xmur3(str) {
+            for(var i = 0, h = 1779033703 ^ str.length; i < str.length; i++)
+                h = Math.imul(h ^ str.charCodeAt(i), 3432918353),
+                h = h << 13 | h >>> 19;
+            return function() {
+                h = Math.imul(h ^ h >>> 16, 2246822507);
+                h = Math.imul(h ^ h >>> 13, 3266489909);
+                return (h ^= h >>> 16) >>> 0;
+            }
+        }
+
+        /**
+        *   sfc32: 
+        */
+
+        function sfc32(a, b, c, d) {
+            return function() {
+                a >>>= 0; b >>>= 0; c >>>= 0; d >>>= 0; 
+                var t = (a + b) | 0;
+                a = b ^ b >>> 9;
+                b = c + (c << 3) | 0;
+                c = (c << 21 | c >>> 11);
+                d = d + 1 | 0;
+                t = t + d | 0;
+                c = c + t | 0;
+                return (t >>> 0) / 4294967296;
+            }
+        }
+
+        /**
+        *    Mulberry32:
+        */
+
+        function mulberry32(a) {
+            return function() {
+                var t = a += 0x6D2B79F5;
+                t = Math.imul(t ^ t >>> 15, t | 1);
+                t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+                return ((t ^ t >>> 14) >>> 0) / 4294967296;
+            }
+        }
+
+        // Create xmur3 state:
+        var seed2 = xmur3("apples");
+
+        // Output four 32-bit hashes to provide the seed for sfc32.
+        var rand2 = sfc32(seed2(), seed2(), seed2(), seed2());
+
+        // Output one 32-bit hash to provide the seed for mulberry32.
+        var rand3 = mulberry32(seed2());
+
+    </script>
+</body>
+</html>
