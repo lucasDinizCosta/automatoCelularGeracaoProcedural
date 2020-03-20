@@ -83,14 +83,14 @@ CellularAutomata.prototype.countRooms = function(){
         }
     }
 
-    let text = "Size of rooms: {";
+    //let text = "Size of rooms: {";
     /*for(let i = 0; i < sizeRooms.length; i++){
         text += "( R:"+ (i+1) + " , S:" + sizeRooms[i] + " ) ; ";
     }*/
-    for(let i = 0; i < this.rooms.length; i++){
+    /*for(let i = 0; i < this.rooms.length; i++){
         text += "( R:"+ (i+1) + " , S:" + this.rooms[i].blocks.length + " ) ; ";
     }
-    text += "}"
+    text += "}";*/
     //console.log(text);
     console.log("Number of rooms: " + this.rooms.length);
     console.log("Number of roomFloors: " + roomFloors);
