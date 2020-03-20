@@ -373,6 +373,10 @@ Level.prototype.atualizaMatrizDistancias = function(){
 }
 
 Level.prototype.posicionarFireZones = function(valor){
+
+  //Posiciona nos teleportes das salas
+  this.posicionarFireZonesTeleportes(valor);
+
   //Posiciona na primeira distancia 35 e depois recalcula
   let terminouPosicionamento = false;
   let indiceSala = 0;
@@ -390,6 +394,47 @@ Level.prototype.posicionarFireZones = function(valor){
       this.mapa.atualizaDist(celula.linha, celula.coluna, 0);     //Recalcula
       celula = auxRoom.findCellByDist(valor);
     }
+
+    indiceSala++;
+
+    if(indiceSala >= this.rooms.length){
+      terminouPosicionamento = true;
+    }
+  }
+}
+
+/**
+ * Posiciona as firezones nos teleportes
+ */
+Level.prototype.posicionarFireZonesTeleportes = function(valor){
+  //Posiciona na primeira distancia 35 e depois recalcula
+  let terminouPosicionamento = false;
+  let indiceSala = 0;
+  while(!terminouPosicionamento){
+    let auxRoom = this.rooms[indiceSala];
+    let celula = this.mapa.getCell(auxRoom.teleporterInitial.portal.gy, auxRoom.teleporterInitial.portal.gx);
+
+    // No teleporte inicial
+    let auxFireZone = new FireZone();
+    auxFireZone.sprite.gx = celula.coluna;
+    auxFireZone.sprite.gy = celula.linha;
+    auxFireZone.sprite.x = celula.coluna * this.mapa.s + auxFireZone.sprite.s/2;
+    auxFireZone.sprite.y = celula.linha * this.mapa.s + auxFireZone.sprite.s/2;
+    auxRoom.fireZones.push(auxFireZone);
+    this.mapa.atualizaDist(celula.linha, celula.coluna, 0);     //Recalcula
+    celula = auxRoom.findCellByDist(valor);
+
+    
+    // No teleporte final
+    celula = this.mapa.getCell(auxRoom.teleporterFinal.portal.gy, auxRoom.teleporterFinal.portal.gx);
+    auxFireZone = new FireZone();
+    auxFireZone.sprite.gx = celula.coluna;
+    auxFireZone.sprite.gy = celula.linha;
+    auxFireZone.sprite.x = celula.coluna * this.mapa.s + auxFireZone.sprite.s/2;
+    auxFireZone.sprite.y = celula.linha * this.mapa.s + auxFireZone.sprite.s/2;
+    auxRoom.fireZones.push(auxFireZone);
+    this.mapa.atualizaDist(celula.linha, celula.coluna, 0);     //Recalcula
+    celula = auxRoom.findCellByDist(valor);
 
     indiceSala++;
 
@@ -447,6 +492,7 @@ Level.prototype.colisaoFireZones = function(player){
       }
     }
   }
+
   if(verificaColisao){
     player.morre = false;
     this.tempoFase = this.tempoTotal;
