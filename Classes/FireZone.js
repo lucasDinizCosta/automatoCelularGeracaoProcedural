@@ -5,8 +5,9 @@ function FireZone() {
     this.sprite.mover = function (dt) {
         this.pose += 4*dt;
         this.pose = this.pose > 4 ? 0 : this.pose;
+        this.x = this.gx * this.map.s + this.s;             // Centraliza a firezone na celula
+        this.y = this.gy * this.map.s + this.s;
     }
-
 }
 
 FireZone.prototype.desenhar = function (ctx) {

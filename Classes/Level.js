@@ -390,6 +390,7 @@ Level.prototype.posicionarFireZones = function(valor){
       auxFireZone.sprite.gy = celula.linha;
       auxFireZone.sprite.x = celula.coluna * this.mapa.s + auxFireZone.sprite.s/2;
       auxFireZone.sprite.y = celula.linha * this.mapa.s + auxFireZone.sprite.s/2;
+      auxFireZone.sprite.map = this.mapa;
       auxRoom.fireZones.push(auxFireZone);
       this.mapa.atualizaDist(celula.linha, celula.coluna, 0);     //Recalcula
       celula = auxRoom.findCellByDist(valor);
@@ -420,6 +421,7 @@ Level.prototype.posicionarFireZonesTeleportes = function(valor){
     auxFireZone.sprite.gy = celula.linha;
     auxFireZone.sprite.x = celula.coluna * this.mapa.s + auxFireZone.sprite.s/2;
     auxFireZone.sprite.y = celula.linha * this.mapa.s + auxFireZone.sprite.s/2;
+    auxFireZone.sprite.map = this.mapa;
     auxRoom.fireZones.push(auxFireZone);
     this.mapa.atualizaDist(celula.linha, celula.coluna, 0);     //Recalcula
     celula = auxRoom.findCellByDist(valor);
@@ -432,6 +434,7 @@ Level.prototype.posicionarFireZonesTeleportes = function(valor){
     auxFireZone.sprite.gy = celula.linha;
     auxFireZone.sprite.x = celula.coluna * this.mapa.s + auxFireZone.sprite.s/2;
     auxFireZone.sprite.y = celula.linha * this.mapa.s + auxFireZone.sprite.s/2;
+    auxFireZone.sprite.map = this.mapa;
     auxRoom.fireZones.push(auxFireZone);
     this.mapa.atualizaDist(celula.linha, celula.coluna, 0);     //Recalcula
     celula = auxRoom.findCellByDist(valor);

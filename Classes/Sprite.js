@@ -334,7 +334,7 @@ Sprite.prototype.desenhar = function (ctx) {
       ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
       ctx.restore();
       break;
-    case 5:                     //Area safe
+    case 5:                     //Area safe --- FireZones
       ctx.save();
       ctx.strokeStyle = "yellow";
       ctx.fillStyle = "red";
@@ -347,8 +347,16 @@ Sprite.prototype.desenhar = function (ctx) {
       ctx.stroke();
       ctx.globalAlpha = 1.00;         //Transparência
       assetsMng.drawClip(ctx, "flames", Math.floor(this.pose)*16, 0, 16, 24, -8, -12, 16, 24);
-
       ctx.restore();
+      if(debugMode == 1){
+        //this.desenharCell(ctx);         //Debug mode Grid
+        this.desenharCentro(ctx);
+      }
+      else if(debugMode == 2){
+        //this.desenharCell(ctx);         //Debug mode Grid
+        this.desenharCaixaColisao(ctx);
+      }
+      
       break;
     default:
       console.log("Sprite type is wrong!!!");
