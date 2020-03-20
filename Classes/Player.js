@@ -1,5 +1,11 @@
 function Player(size, nomeImagem) {
-  this.sprite = new Sprite(size, 0);
+  /**
+   * Estabelece a relação de Herança entre Player e Sprite:
+   *  -> Sprite é pai e player é filho
+   */
+  Sprite.call(this, size, 0);            
+
+  //this.sprite = new Sprite(size, 0);
   this.timeWalkSound = 0.5;
   this.levelNumber = 1;
   this.vidas = 3;
@@ -22,10 +28,14 @@ function Player(size, nomeImagem) {
   this.numAnimacoes = 8;
 
   this.criarAnimacoes();
-  this.sprite.nomeImagem = nomeImagem;
+  //this.sprite.nomeImagem = nomeImagem;
+  this.nomeImagem = nomeImagem;
 }
 
 //Player.prototype = new Player();
+
+// Heranca
+Player.prototype = new Sprite();              // Define que o Player é um Sprite
 Player.prototype.constructor = Player;
 
 Player.prototype.criarAnimacoes = function(){
@@ -74,9 +84,9 @@ Player.prototype.criarAnimacoes = function(){
   this.animation[7].speedAnimation = 160;
 }
 
-Player.prototype.mover = function(dt){
+Player.prototype.moverCompleto = function(dt){
   this.tratarAnimacao();
-  this.sprite.mover(dt);
+  this.mover(dt);
 }
 
 Player.prototype.tratarAnimacao = function(){
@@ -107,14 +117,37 @@ Player.prototype.tratarAnimacao = function(){
       break;
   }
 
-  this.sprite.sizeImagem = this.animation[this.estadoAnimacaoAtual].sizeImagem;
-  this.sprite.qtdAnimacoes = this.animation[this.estadoAnimacaoAtual].qtdAnimacoes;
-  this.sprite.pose = this.animation[this.estadoAnimacaoAtual].pose;
-  this.sprite.typeAnimation = this.animation[this.estadoAnimacaoAtual].typeAnimation;
-  this.sprite.speedAnimation = this.animation[this.estadoAnimacaoAtual].speedAnimation;
+  this.sizeImagem = this.animation[this.estadoAnimacaoAtual].sizeImagem;
+  this.qtdAnimacoes = this.animation[this.estadoAnimacaoAtual].qtdAnimacoes;
+  this.pose = this.animation[this.estadoAnimacaoAtual].pose;
+  this.typeAnimation = this.animation[this.estadoAnimacaoAtual].typeAnimation;
+  this.speedAnimation = this.animation[this.estadoAnimacaoAtual].speedAnimation;
   this.poseAtual = this.animation[this.estadoAnimacaoAtual].pose;
 }
 
 Player.prototype.desenhar = function(ctx){
-  this.sprite.desenhar(ctx);
+  //this.sprite.desenhar(ctx);
+  ctx.linewidth = 1;
+  ctx.fillStyle = "rgba(10,10,10,0.4)";
+  ctx.strokeStyle = "rgba(10,10,10,0.4)";
+  ctx.save();
+  ctx.translate(this.x, this.y);
+  ctx.beginPath();
+  ctx.ellipse(-this.s/2+1, -this.s/4+2, this.s-2, this.s/2-2, 0, 0, 2*Math.PI, false);
+  //ctx.ellipse(this.s/2, this.s/4, this.s, this.s/2, 0, 0, 2*Math.PI, false);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+  assetsMng.drawClipSize(ctx, this.nomeImagem, 
+    this.sizeImagem * (this.animationState % this.qtdAnimacoes), this.sizeImagem * this.pose, this.sizeImagem, this.sizeImagem, 
+    -6-this.sizeImagem/2, 4-this.sizeImagem, this.sizeImagem, this.sizeImagem);
+  ctx.restore();
+  if(debugMode == 1){
+    this.desenharCell(ctx);         //Debug mode Grid
+    this.desenharCentro(ctx);
+  }
+  else if(debugMode == 2){
+    this.desenharCell(ctx);         //Debug mode Grid
+    this.desenharCaixaColisao(ctx);
+  }
 }

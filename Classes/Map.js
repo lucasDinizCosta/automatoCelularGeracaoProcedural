@@ -163,8 +163,8 @@ Map.prototype.visitCells = function (auxMatrix, mapx, y, x, tp, d = 1, indexArea
 
 Map.prototype.desenhar = function (ctx) {
   ctx.lineWidth = 2;
-  for (var l = Math.max(0, player.sprite.gy - MAPA_AREA); l < Math.min(this.h, player.sprite.gy + MAPA_AREA); l++) {
-    for (var c = Math.max(0, player.sprite.gx - MAPA_AREA); c < Math.min(this.w, player.sprite.gx + MAPA_AREA); c++) {
+  for (var l = Math.max(0, player.gy - MAPA_AREA); l < Math.min(this.h, player.gy + MAPA_AREA); l++) {
+    for (var c = Math.max(0, player.gx - MAPA_AREA); c < Math.min(this.w, player.gx + MAPA_AREA); c++) {
       switch (this.cell[l][c].tipo) {
         case 0:   // Vazio     -- Chão
           assetsMng.drawSize(ctx, "floor_sand", c * this.s, l * this.s, this.s, this.s);

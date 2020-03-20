@@ -7,8 +7,8 @@
   <script src="Classes/Map.js"></script>
   <script src="Classes/Room.js"></script>
   <script src="Classes/Level.js"></script>
-  <script src="Classes/Player.js"></script>
   <script src="Classes/Sprite.js"></script>
+  <script src="Classes/Player.js"></script>
   <script src="Classes/Teleporter.js"></script>
   <!--
     <script src="Classes/ImageLibrary.js"></script>
@@ -160,7 +160,7 @@
     var playerVel = 300;
 
     levelAtual.clonarLevel(levels[0]);
-    player.sprite.map = levelAtual.mapa;
+    player.map = levelAtual.mapa;
 
     var teasuresCollected = 0;    
 
@@ -221,14 +221,14 @@
             /*if(audioLibrary.isPlaying("BGM")==false){
               audioLibrary.play("BGM");
             }*/
-            player.mover(dt);
+            player.moverCompleto(dt);
             levelAtual.colisaoFireZones(player);
             if(levelAtual.tempoFase >= 0){
               controleTempo();
             }
             else{
               if(debugMode != 0){
-                player.mover(dt);
+                player.moverCompleto(dt);
               }
               else{
                 estado = 5;
@@ -237,7 +237,7 @@
             }
             ctx.save();
             ctx.scale(escala, escala);
-            ctx.translate(-player.sprite.x + tela.width/4 , - player.sprite.y + tela.height/4);            
+            ctx.translate(-player.x + tela.width/4 , - player.y + tela.height/4);            
             levelAtual.desenhar(ctx);
             player.desenhar(ctx);
             ctx.restore();
@@ -407,8 +407,8 @@
         ctx.fillText("FPS: "   + ((1/dt).toFixed(4)), converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
         ctx.strokeText("Escala mapa: " + escala.toFixed(4), converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
         ctx.fillText("Escala mapa: " + escala.toFixed(4), converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
-        ctx.strokeText("Player: [" + (player.sprite.gy) + "][" + (player.sprite.gx) + "]", converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
-        ctx.fillText("Player: [" + (player.sprite.gy) + "][" + (player.sprite.gx) + "]", converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
+        ctx.strokeText("Player: [" + (player.gy) + "][" + (player.gx) + "]", converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
+        ctx.fillText("Player: [" + (player.gy) + "][" + (player.gx) + "]", converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
       }
     }
 
@@ -431,9 +431,9 @@
       levelAtual.clonarLevel(levels[0]);
       //levelAtual.updateGradeSalas();
       player = new Player(12, "player");
-      player.sprite.map = levelAtual.mapa;
-      player.sprite.x = levelAtual.startX;
-      player.sprite.y = levelAtual.startY;
+      player.map = levelAtual.mapa;
+      player.x = levelAtual.startX;
+      player.y = levelAtual.startY;
       /*player = new Player(12, "player");
       tempoGameOver = 2;
       stateMainMenu = 0;
@@ -478,15 +478,15 @@
             estado = 1;
           }
           else {
-            player.sprite.x = levels[player.levelNumber - 1].startX;
-            player.sprite.y = levels[player.levelNumber - 1].startY;
+            player.x = levels[player.levelNumber - 1].startX;
+            player.y = levels[player.levelNumber - 1].startY;
             levelAtual.clonarLevel(levels[player.levelNumber - 1]);
             estado = 0;
           }
           break;
         case 1:   //Reload
-          player.sprite.x = levels[player.levelNumber - 1].startX;
-          player.sprite.y = levels[player.levelNumber - 1].startY;
+          player.x = levels[player.levelNumber - 1].startX;
+          player.y = levels[player.levelNumber - 1].startY;
           levelAtual.clonarLevel(levels[player.levelNumber - 1]);
           estado = 0;
           break;
@@ -536,16 +536,16 @@
             break;
           case 37:
             //if(player.up === false && player.down === false && player.right === false){
-            player.sprite.vx = -playerVel;
-            //player.sprite.gx = player.sprite.gx - 1;
+            player.vx = -playerVel;
+            //player.gx = player.gx - 1;
             player.left = true;
             player.sentidoMovimento = 2;
             //}
             break;
           case 39:
             //if(player.up === false && player.down === false && player.left === false){
-            player.sprite.vx = +playerVel;
-            //player.sprite.gx = player.sprite.gx + 1;
+            player.vx = +playerVel;
+            //player.gx = player.gx + 1;
             player.right = true;
             player.sentidoMovimento = 0;
             //}
@@ -553,32 +553,32 @@
             break;
           case 32:  //Espaco  -- Ativa teleporte
             for(let i = 0; i < levelAtual.rooms.length; i++){
-              if(levelAtual.rooms[i].teleporterInitial.portal.colidiuCom2(player.sprite)){
+              if(levelAtual.rooms[i].teleporterInitial.portal.colidiuCom2(player)){
                 levelAtual.rooms[i].teleporterInitial.teleportar(player);
                 break;
               }
-              if(levelAtual.rooms[i].teleporterFinal.portal.colidiuCom2(player.sprite)){
+              if(levelAtual.rooms[i].teleporterFinal.portal.colidiuCom2(player)){
                 levelAtual.rooms[i].teleporterFinal.teleportar(player);
                 break;
               }
             }
-            player.mover(dt);
+            player.moverCompleto(dt);
             break;
           case 17:  //Left CTRL
             player.atacando = 1;  
             break;
           case 38:
             //if(player.left === false && player.down === false && player.right === false){
-            player.sprite.vy = -playerVel;
-            //player.sprite.gy = player.sprite.gy - 1;
+            player.vy = -playerVel;
+            //player.gy = player.gy - 1;
             player.up = true;
             player.sentidoMovimento = 3;
             //}
             break;
           case 40:
             //if(player.left === false && player.up === false && player.right === false){
-            player.sprite.vy = +playerVel;
-            //player.sprite.gy = player.sprite.gy + 1;
+            player.vy = +playerVel;
+            //player.gy = player.gy + 1;
             player.down = true;
             player.sentidoMovimento = 1;
             //}
@@ -685,9 +685,9 @@
                   levelAtual.clonarLevel(levels[0]);
                   //levelAtual.updateGradeSalas();
                   player = new Player(12, "player");
-                  player.sprite.map = levelAtual.mapa;
-                  player.sprite.x = levelAtual.startX;
-                  player.sprite.y = levelAtual.startY;
+                  player.map = levelAtual.mapa;
+                  player.x = levelAtual.startX;
+                  player.y = levelAtual.startY;
                   estado = 0;
                 }
                 else {
@@ -721,19 +721,19 @@
       if (player != null) {
         switch (e.keyCode) {
           case 37:
-            player.sprite.vx = 0;
+            player.vx = 0;
             player.left = false;
             break;
           case 39:
-            player.sprite.vx = 0;
+            player.vx = 0;
             player.right = false;
             break;
           case 38:
-            player.sprite.vy = 0;
+            player.vy = 0;
             player.up = false;
             break;
           case 40:
-            player.sprite.vy = 0;
+            player.vy = 0;
             player.down = false;
             break;
           case 17:  //Left CTRL

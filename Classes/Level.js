@@ -340,8 +340,8 @@ Level.prototype.posicionarPlayer = function(p){
   
   this.startGX = posicao.coluna;
   this.startGY = posicao.linha;
-  this.startX = this.mapa.s * this.startGX + p.sprite.s;
-  this.startY = this.mapa.s * this.startGY + p.sprite.s;
+  this.startX = this.mapa.s * this.startGX + p.s;
+  this.startY = this.mapa.s * this.startGY + p.s;
 
   let salaTeleporteFinal = this.getRandomInt(1, this.rooms.length - 1);           // Descarta a sala zero na seleção
   posicao = this.rooms[salaTeleporteFinal].blocks[this.getRandomInt(0, this.rooms[salaTeleporteFinal].blocks.length - 1)];
@@ -359,8 +359,8 @@ Level.prototype.posicionarPlayer = function(p){
 
   this.finishGX = posicao.coluna;
   this.finishGY = posicao.linha;
-  this.finishX = this.mapa.s * this.finishGX + p.sprite.s;
-  this.finishY = this.mapa.s * this.finishGY + p.sprite.s;
+  this.finishX = this.mapa.s * this.finishGX + p.s;
+  this.finishY = this.mapa.s * this.finishGY + p.s;
 }
 
 /********************************
@@ -491,7 +491,7 @@ Level.prototype.colisaoFireZones = function(player){
   for(let i = 0; i < this.rooms.length; i++){
     let auxFireZones = this.rooms[i].fireZones;
     for(let j = 0; j < auxFireZones.length; j++){
-      if(player.sprite.colidiuCom2(auxFireZones[j].sprite)){
+      if(player.colidiuCom2(auxFireZones[j].sprite)){
         verificaColisao = true;
         break;
       }
