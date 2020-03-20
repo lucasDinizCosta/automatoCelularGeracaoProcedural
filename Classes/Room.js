@@ -37,7 +37,9 @@ Room.prototype.draw = function(ctx){
     for(let i = 0; i < this.fireZones.length; i++){
         this.fireZones[i].desenhar(ctx);
         this.fireZones[i].sprite.mover(0.16); //FIXME gol de mão
-    }
+    }    
+    this.teleporterInitial.portal.desenhar(ctx);    
+    this.teleporterFinal.portal.desenhar(ctx);
     if(debugMode == 1){
         ctx.save();
         ctx.strokeStyle = "yellow";
@@ -50,8 +52,6 @@ Room.prototype.draw = function(ctx){
         ctx.lineWidth = 1;
         ctx.restore();
     }
-    this.teleporterInitial.portal.desenhar(ctx);
-    this.teleporterFinal.portal.desenhar(ctx);
 }
 
 // Copia os dados da sala toda mas o vetor de blocos salva a linha e coluna apenas
