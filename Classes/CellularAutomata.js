@@ -166,12 +166,14 @@ CellularAutomata.prototype.getRandomInt = function(min, max){
     return seedGen.getRandomIntMethod_1(min, max);    
 }
 
-CellularAutomata.prototype.setTeleporters = function(){
+/*CellularAutomata.prototype.setTeleporters = function(){
     let indAvaliableRoom;
     let indFinishRoom;
     let roomsAvaliable = [];            //Rooms avaliable to choose initial teleporter 
     let roomsClosed = [];               //Rooms that the initial teleporter is connected
+    let blocksSorted = [-1,-1];
     let sortPosition;
+    console.log("\n\n\n\n -----" + blocksSorted +  "\n\n\n\n");
 
     for(let i = 0; i < this.rooms.length; i++){                 //Setting teleports into the room
         //Setting positions of the teleporters
@@ -260,7 +262,7 @@ CellularAutomata.prototype.setTeleporters = function(){
     for(let i = 0; i < this.rooms.length; i++){
         console.log("B( "+ this.rooms[i].teleporterFinal.startIDRoom +" ) -> A( " + this.rooms[i].teleporterFinal.finishIDRoom  + " )");
     }
-}
+}*/
 
 CellularAutomata.prototype.visitCells = function(auxMatrix, mapx, y, x, tp, d = 1, indexArea){   //visita as celulas visinhas de maneira recursiva e atribui o código da sala correspondente 
     /*********************************************

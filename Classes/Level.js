@@ -92,12 +92,12 @@ Level.prototype.clonarLevel= function(level){
   this.copiaSalasComReferencia(level.rooms);
 }
 
+/**
+ * Utiliza o gerador de seed como referencia pra escolha numerica
+ */
 Level.prototype.getRandomInt = function(min, max){
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
+  return seedGen.getRandomIntMethod_1(min, max); 
 }
-
 
 // Atribui os teleportes dentro das salas e insere nos blocos somente a linha e a coluna
 Level.prototype.setTeleporters = function(){

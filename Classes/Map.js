@@ -23,6 +23,22 @@ Map.prototype.copyDates = function (matrix) {           // Copia a matriz de ger
   }
 }
 
+/**
+ * Return a text with type of each cells on the map
+ */
+Map.prototype.getMatrixType = function(){
+  let text = "map[ " + this.h + " ][ "+ this.w + " ] = {\n";
+  for(let i = 0; i < this.h; i++){
+    text += "[";
+    for(let j = 0; j < this.w; j++){
+      text += this.cell[i][j].tipo + ", ";
+    }
+    text += "]\n";
+  }
+  text += "\n}\n"
+  return text;
+}
+
 Map.prototype.copyDataInto = function (matrix, L, C) {
   //console.log(matrix);
   //if(!this.cell) this.cell = [];
