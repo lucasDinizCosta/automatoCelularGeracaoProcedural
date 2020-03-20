@@ -17,6 +17,7 @@
   <script src="Classes/AssetsManager.js"></script>
   <script src="Classes/CellularAutomata.js"></script>
   <script src="Classes/FireZone.js"></script>
+  <script src="Classes/SeedGenerator.js"></script>
 
   <link rel="stylesheet" href="CSS/default.css">
  <!-- <style>
@@ -77,6 +78,9 @@
 
     // Carregamento dos audios presentes no jogo
     assetsMng.loadAudio("teleporte", "Assets/Audios/Teleport.wav");
+    
+    // SeedGenerator ===> Utilizado para retornar ao mesmo mapa com apenas o código da seed
+    var seedGen = new SeedGenerator({seed_1: 1000000 , seed_2_string: "teste"});
 
     // Proporções do mapa
     

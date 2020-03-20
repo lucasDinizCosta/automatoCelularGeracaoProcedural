@@ -156,10 +156,14 @@ CellularAutomata.prototype.filterRooms = function(sizeRoomsMinimal = 10){
     this.countRooms();
 }
 
-CellularAutomata.prototype.getRandomInt = function(min, max){
+/*CellularAutomata.prototype.getRandomInt = function(min, max){
     min = Math.ceil(min);
     max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
+    return Math.floor(Math.random() * (max - min)) + min;    
+}*/
+
+CellularAutomata.prototype.getRandomInt = function(min, max){
+    return seedGen.getRandomIntMethod_1(min, max);    
 }
 
 CellularAutomata.prototype.setTeleporters = function(){
@@ -500,7 +504,7 @@ CellularAutomata.prototype.scenarioRandomWall = function (){
     }
     let rockInMap = (this.r * this.HS * this.WS);
     for(let i = 0; i < rockInMap; i++){
-      let matrixIndexRandom = Math.floor(Math.random() * matrix.length);
+      let matrixIndexRandom = Math.floor(seedGen.getRandomMethod_1() * matrix.length);//Math.random() * matrix.length);
       this.map[matrix[matrixIndexRandom][0]][matrix[matrixIndexRandom][1]] = this.rockIndex;
       this.map2[matrix[matrixIndexRandom][0]][matrix[matrixIndexRandom][1]] = this.rockIndex;
       matrix.splice(matrixIndexRandom, 1);

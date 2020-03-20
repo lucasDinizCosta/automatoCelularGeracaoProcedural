@@ -2,7 +2,7 @@ function SeedGenerator(params = {}){
     var exemplo = {
         seed_1: 1,
         seed_2: 0,
-        seed_2_string: "apples"
+        seed_2_string: "apple"
     }
 
     Object.assign(this, exemplo, params);
