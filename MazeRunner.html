@@ -78,9 +78,21 @@
 
     // Carregamento dos audios presentes no jogo
     assetsMng.loadAudio("teleporte", "Assets/Audios/Teleport.wav");
-    
+
     // SeedGenerator ===> Utilizado para retornar ao mesmo mapa com apenas o código da seed
-    var seedGen = new SeedGenerator({seed_1: 1000000 , seed_2_string: "teste"});
+    var seedValueURL = location.search;
+
+    if(seedValueURL.length != 0){                   //SEED PASSADA NA URL
+      let aux = "?seed=";
+      seedValueURL = seedValueURL.substring(aux.length, seedValueURL.length);
+      seedValueURL = parseInt(seedValueURL);
+    }
+    else{                                           //sEED ALEATÓRIA
+      let maxValue = 5000000;
+      let minValue = 500000;
+      seedValueURL = (Math.floor(Math.random() * (maxValue - minValue)) + minValue);
+    }
+    var seedGen = new SeedGenerator({seed_1: seedValueURL , seed_2_string: "teste"});
 
     // Proporções do mapa
     
