@@ -336,6 +336,7 @@ Level.prototype.posicionarPlayer = function(p){
   this.teleporteInicioLevel.roomNumber = 1;
   this.teleporteInicioLevel.portal.x = this.mapa.s * this.teleporteInicioLevel.portal.gx + this.mapa.s/2;
   this.teleporteInicioLevel.portal.y = this.mapa.s * this.teleporteInicioLevel.portal.gy + this.mapa.s/2;
+  this.teleporteInicioLevel.portal.map = this.mapa;
   
   this.startGX = posicao.coluna;
   this.startGY = posicao.linha;
@@ -354,6 +355,7 @@ Level.prototype.posicionarPlayer = function(p){
   this.teleporteFinalLevel.roomNumber = salaTeleporteFinal + 1;
   this.teleporteFinalLevel.portal.x = this.mapa.s * this.teleporteFinalLevel.portal.gx + this.mapa.s/2; 
   this.teleporteFinalLevel.portal.y = this.mapa.s * this.teleporteFinalLevel.portal.gy + this.mapa.s/2;
+  this.teleporteFinalLevel.portal.map = this.mapa;
 
   this.finishGX = posicao.coluna;
   this.finishGY = posicao.linha;
