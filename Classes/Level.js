@@ -100,109 +100,8 @@ Level.prototype.getRandomInt = function(min, max){
   return seedGen.getRandomIntMethod_1(min, max); 
 }
 
-// Atribui os teleportes dentro das salas e insere nos blocos somente a linha e a coluna
-Level.prototype.setTeleporters = function(){
-  if(this.rooms.length > 1){          //Only will have teleporters if that are more than one room
-    let indAvaliableRoom;
-    let indFinishRoom;
-    let roomsAvaliable = [];            //Rooms avaliable to choose initial teleporter 
-    let roomsClosed = [];               //Rooms that the initial teleporter is connected
-    let sortPosition;
-    let blocks = [];
-
-
-    //Setting position of teleporters into the rooms
-
-    for(let i = 0; i < this.rooms.length; i++){                 //Setting teleports into the room
-        for(let j = 0; j < this.rooms[i].blocks.length; j++){
-          let aux = [];
-          aux.push(this.rooms[i].blocks[j][0]);
-          aux.push(this.rooms[i].blocks[j][1]);
-          blocks.push(aux);
-        }
-        sortPosition = this.getRandomInt(0 , (blocks.length - 1));
-        this.rooms[i].teleporterInitial.setPosition(blocks[sortPosition][0], blocks[sortPosition][1]);
-        blocks.splice(sortPosition, 1);
-        sortPosition = this.getRandomInt(0 , (blocks.length - 1));
-        this.rooms[i].teleporterFinal.setPosition(blocks[sortPosition][0], blocks[sortPosition][1]);
-        this.rooms[i].teleporterInitial.roomNumber = this.rooms[i].number;
-        this.rooms[i].teleporterFinal.roomNumber = this.rooms[i].number;
-        this.rooms[i].teleporterInitial.portal.map = this.mapa;
-        this.rooms[i].teleporterFinal.portal.map = this.mapa;
-        roomsAvaliable.push(this.rooms[i].number);
-        blocks = [];
-    }
-    //GX => COLUNA, GY => LINHA
-
-    //Connecting first rooms manually
-
-    indAvaliableRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));                 //Begin teleporter room
-    indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
-    while(indAvaliableRoom  ===  indFinishRoom){
-        indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
-    }
-    let currentRoom = this.rooms[roomsAvaliable[indFinishRoom] - 1].number;
-    
-    this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial.proximoTeleporte = this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal;
-    this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal.proximoTeleporte = this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial;
-
-    roomsClosed.push(roomsAvaliable[indAvaliableRoom]);//roomsClosed.push(this.rooms[roomsAvaliable[indAvaliableRoom] - 1].number);
-    roomsAvaliable.splice(indAvaliableRoom, 1);
-
-    while(roomsAvaliable.length > 1){
-        for(let i = 0; i < this.rooms.length; i++){
-            if(roomsAvaliable[i] === currentRoom){                       //Room's number was found
-                indAvaliableRoom = i;
-                break;
-            }
-        }
-
-        indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
-        while(indAvaliableRoom  ===  indFinishRoom){
-            indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
-            if(roomsAvaliable.length === 2){
-                if(indAvaliableRoom === 0){
-                    indFinishRoom = 1;
-                    break;
-                }
-                else{
-                  indFinishRoom = 0;
-                  break;
-                }
-            }
-        }
-        currentRoom = roomsAvaliable[indFinishRoom];//this.rooms[roomsAvaliable[indFinishRoom] - 1].number;
-
-        this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial.proximoTeleporte = this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal;
-        this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal.proximoTeleporte = this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial;
-
-        roomsClosed.push(this.rooms[roomsAvaliable[indAvaliableRoom] - 1].number);
-        roomsAvaliable.splice(indAvaliableRoom, 1);
-    }
-    //Connecting last room => to create a cycle on the rooms connections
-
-    this.rooms[roomsAvaliable[0] - 1].teleporterInitial.proximoTeleporte = this.rooms[roomsClosed[0] - 1].teleporterFinal;
-    this.rooms[roomsClosed[0] - 1].teleporterFinal.proximoTeleporte = this.rooms[roomsAvaliable[0] - 1].teleporterInitial;
-
-    roomsClosed.push(this.rooms[roomsAvaliable[0] - 1].number);
-    roomsAvaliable.splice(indAvaliableRoom, 1);
-
-    /*console.log("\nINITIAL\nA -> B:");
-    for(let i = 0; i < this.rooms.length; i++){
-        console.log("A( "+ this.rooms[i].teleporterInitial.roomNumber +" ) -> B( " + this.rooms[i].teleporterInitial.proximoTeleporte.roomNumber+ " )");
-    }
-    console.log("\nFINAL\nB -> A:");
-    for(let i = 0; i < this.rooms.length; i++){
-        console.log("B( "+ this.rooms[i].teleporterFinal.roomNumber +" ) -> A( " + this.rooms[i].teleporterFinal.proximoTeleporte.roomNumber  + " )");
-    }*/
-  }
-  else{
-    console.log("Level with only one room !!!");
-  }
-}
-
 // Atribui os teleportes dentro das salas e insere nos blocos A REFERENCIA PARA O MAPA
-Level.prototype.setTeleporters_2 = function(){
+Level.prototype.setTeleporters = function(){
   if(this.rooms.length > 1){          //Only will have teleporters if that are more than one room
     let indAvaliableRoom;
     let indFinishRoom;
@@ -369,8 +268,8 @@ Level.prototype.posicionarPlayer = function(p){
  ********************************/
 
 Level.prototype.atualizaMatrizDistancias = function(){
-  this.mapa.atualizaDist(this.teleporteInicioLevel.portal.gy, this.teleporteInicioLevel.portal.gx, 0, 0);
-  this.mapa.atualizaDist(this.teleporteInicioLevel.portal.gy, this.teleporteInicioLevel.portal.gx, 0, 1);
+  this.mapa.atualizaDist(this.teleporteInicioLevel.portal.gy, this.teleporteInicioLevel.portal.gx, 0, 0);                   // Firezones
+  this.mapa.atualizaDist(this.teleporteInicioLevel.portal.gy, this.teleporteInicioLevel.portal.gx, 0, 1);                   // Inimigos
   for(let i = 1; i < this.rooms.length; i++){        //Começa a analisar a partir da próxima sala
     this.mapa.atualizaDist(this.rooms[i].teleporterInitial.portal.gy, this.rooms[i].teleporterInitial.portal.gx, 0, 0);     // Firezones
     this.mapa.atualizaDist(this.rooms[i].teleporterInitial.portal.gy, this.rooms[i].teleporterInitial.portal.gx, 0, 1);     // Inimigos

@@ -145,7 +145,7 @@
     geraFase.filterRooms(25);
     levels[0].setMatrixMap(geraFase.map);       // Copia a matriz de tipos dentro do gerador
     levels[0].copiaSalas(geraFase.rooms);       // Copia os dados em que os blocos da sala são apenas as posições linha e coluna da matriz
-    levels[0].setTeleporters_2();               // Posiciona os teleportes das salas e referencia a celula no mapa ao invés de colocar só a posição
+    levels[0].setTeleporters();               // Posiciona os teleportes das salas e referencia a celula no mapa ao invés de colocar só a posição
     levels[0].atualizaGradeTeleportes(dt);
     levels[0].posicionarPlayer(player);
     levels[0].atualizaMatrizDistancias();       // Em relação aos teleportes inicial da fase e de cada sala
