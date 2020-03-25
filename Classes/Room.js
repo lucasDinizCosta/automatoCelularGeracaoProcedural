@@ -1,8 +1,8 @@
 function Room(number){
     this.blocks = [];
     this.number = number;
-    this.teleporterInitial = new Teleporter(0);         // (Inicio)Transição de uma sala pra outra
-    this.teleporterFinal = new Teleporter(1);           // (Chegada)Transição de uma sala pra outra
+    this.teleporterInitial = new Teleporter(2);         // (Inicio)Transição de uma sala pra outra
+    this.teleporterFinal = new Teleporter(3);           // (Chegada)Transição de uma sala pra outra
     this.endingLevel;                                   // Teleportador que termina a fase
     this.beginLevel;                                    // Teleportador que Inicia a fase
     this.fireZones = [];                                // Area para a recarga do tempo

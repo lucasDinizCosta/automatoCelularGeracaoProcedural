@@ -16,8 +16,8 @@ function Level(w,h,s) {
   this.taxaDiminuicaoTempo = 0;
   this.stateCollectedItens = false;
   this.inimigos = [];
-  this.teleporteInicioLevel = new Teleporter(3);         //(Inicio) mapa
-  this.teleporteFinalLevel  = new Teleporter(4);        //(Final) mapa
+  this.teleporteInicioLevel = new Teleporter(0);         //(Inicio) mapa
+  this.teleporteFinalLevel  = new Teleporter(1);        //(Final) mapa
   this.itens = [];
 };
 

@@ -563,11 +563,11 @@
             break;
           case 32:  //Espaco  -- Ativa teleporte
             for(let i = 0; i < levelAtual.rooms.length; i++){
-              if(levelAtual.rooms[i].teleporterInitial.portal.colidiuCom2(player)){
+              if(levelAtual.rooms[i].teleporterInitial.colidiuCom2(player)){
                 levelAtual.rooms[i].teleporterInitial.teleportar(player);
                 break;
               }
-              if(levelAtual.rooms[i].teleporterFinal.portal.colidiuCom2(player)){
+              if(levelAtual.rooms[i].teleporterFinal.colidiuCom2(player)){
                 levelAtual.rooms[i].teleporterFinal.teleportar(player);
                 break;
               }
