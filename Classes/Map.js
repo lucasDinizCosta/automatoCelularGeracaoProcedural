@@ -6,7 +6,7 @@ function Map(w, h, s) {
   for (let l = 0; l < h; l++) {
     this.cell[l] = [];
     for (let c = 0; c < w; c++) {
-      this.cell[l][c] = { tipo: 0, room: -3, dist: 999, linha: l, coluna: c};
+      this.cell[l][c] = { tipo: 0, room: -3, distFirezones: 999, distInimigos: 999, linha: l, coluna: c};
     }
   }
 }
@@ -248,7 +248,7 @@ Map.prototype.desenhar = function (ctx) {
           break;
       }
 
-      if (debugMode === 3) {
+      if (debugMode >= 3) {//if (debugMode === 3) {
         this.desenharCell(ctx, l, c);         //Debug mode Grid
       }
     }
@@ -268,15 +268,20 @@ Map.prototype.desenharCell = function (ctx, l, c) {
   ctx.lineWidth = 1;
   ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
   //if (this.cell[0][0].room !== -3) {        //Verificacao de celula não alocada pra uma sala
-    ctx.fillStyle = "yellow";
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 2;
-    ctx.font = "10px Arial Black";
-    this.escreveTexto(ctx, this.cell[l][c].tipo + "", c * this.s + this.s / 2 - 10, l * this.s + this.s / 2);
-    ctx.fillStyle = "green";
-    this.escreveTexto(ctx, this.cell[l][c].room + "", c * this.s + this.s / 2 + 10, l * this.s + this.s / 2);
-    ctx.fillStyle = "blue";
-    this.escreveTexto(ctx, this.cell[l][c].dist + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
+  ctx.fillStyle = "yellow";
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 2;
+  ctx.font = "10px Arial Black";
+  this.escreveTexto(ctx, this.cell[l][c].tipo + "", c * this.s + this.s / 2 - 10, l * this.s + this.s / 2);
+  ctx.fillStyle = "green";
+  this.escreveTexto(ctx, this.cell[l][c].room + "", c * this.s + this.s / 2 + 10, l * this.s + this.s / 2);
+  ctx.fillStyle = "blue";
+  if(debugMode == 3){
+    this.escreveTexto(ctx, this.cell[l][c].distFirezones + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
+  }
+  else{
+    this.escreveTexto(ctx, this.cell[l][c].distInimigos + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
+  }
 
   //}
 };
@@ -287,28 +292,58 @@ Map.prototype.escreveTexto = function (ctx, texto, x, y) {
 }
 
 // Matriz de distancias: Calcula a distancia em relação a uma linha, coluna e valor inicial
-Map.prototype.atualizaDist = function (l, c, v) {
+Map.prototype.atualizaDist = function (l, c, v, method) {
   let aavaliar = [{ l, c, v }];
   let cell;
 
   //console.log("Map.AtualizaDist:");
 
-  while (cell = aavaliar.pop()) {
+  /**
+   *  Para firezones
+   */
+  if(method == 0){
+    while (cell = aavaliar.pop()) {
 
-    if (cell.l < 0 || cell.l >= this.h || cell.c < 0 || cell.c >= this.w) {
-      continue;
+      if (cell.l < 0 || cell.l >= this.h || cell.c < 0 || cell.c >= this.w) {
+        continue;
+      }
+  
+      if (this.cell[cell.l][cell.c].tipo != 0) {
+        continue;
+      }
+      if (this.cell[cell.l][cell.c].distFirezones <= cell.v) {
+        continue;
+      }
+      this.cell[cell.l][cell.c].distFirezones = cell.v;
+      aavaliar.push({l:cell.l - 1, c:cell.c, v:cell.v + 1});
+      aavaliar.push({l:cell.l + 1, c:cell.c, v:cell.v + 1});
+      aavaliar.push({l:cell.l, c:cell.c - 1, v:cell.v + 1});
+      aavaliar.push({l:cell.l, c:cell.c + 1, v:cell.v + 1});
     }
-
-    if (this.cell[cell.l][cell.c].tipo != 0) {
-      continue;
-    }
-    if (this.cell[cell.l][cell.c].dist <= cell.v) {
-      continue;
-    }
-    this.cell[cell.l][cell.c].dist = cell.v;
-    aavaliar.push({l:cell.l - 1, c:cell.c, v:cell.v + 1});
-    aavaliar.push({l:cell.l + 1, c:cell.c, v:cell.v + 1});
-    aavaliar.push({l:cell.l, c:cell.c - 1, v:cell.v + 1});
-    aavaliar.push({l:cell.l, c:cell.c + 1, v:cell.v + 1});
   }
+  else{
+    /**
+     *  Para inimigos
+     */
+    
+    while (cell = aavaliar.pop()) {
+
+      if (cell.l < 0 || cell.l >= this.h || cell.c < 0 || cell.c >= this.w) {
+        continue;
+      }
+  
+      if (this.cell[cell.l][cell.c].tipo != 0) {
+        continue;
+      }
+      if (this.cell[cell.l][cell.c].distInimigos <= cell.v) {
+        continue;
+      }
+      this.cell[cell.l][cell.c].distInimigos = cell.v;
+      aavaliar.push({l:cell.l - 1, c:cell.c, v:cell.v + 1});
+      aavaliar.push({l:cell.l + 1, c:cell.c, v:cell.v + 1});
+      aavaliar.push({l:cell.l, c:cell.c - 1, v:cell.v + 1});
+      aavaliar.push({l:cell.l, c:cell.c + 1, v:cell.v + 1});
+    }
+  }
+  
 }

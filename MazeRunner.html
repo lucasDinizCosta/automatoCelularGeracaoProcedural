@@ -193,9 +193,17 @@
     *       1 => Centro Player;         *
     *       2 => Box Collision;         *
     *       3 => Dados das celulas:     *
+    *             (Firezones)           *
     *           - tipo(amarelo);        *
     *           - room(verde);          *
-    *           - dist(azul));          *
+    *           - distFirezones         *
+    *               (azul));            *
+    *       4 => Dados das celulas:     *
+    *             (Inimigos)            *
+    *           - tipo(amarelo);        *
+    *           - room(verde);          *
+    *           - distInimigos          *
+    *               (azul));            *
     *                                   *
     *************************************/
 
@@ -388,8 +396,11 @@
           case 2: // Box collision
             typeMode = "Mode 2 - Caixa de Colisão";
             break;
-          case 3: // Dados das celulas
-            typeMode = "Mode 3 - Dados das Celulas";
+          case 3: // Dados das celulas -- DistFirezones
+            typeMode = "Mode 3 - Dados das Celulas - DistFirezones";
+            break;
+          case 4: // Dados das celulas -- DistInimigos
+            typeMode = "Mode 4 - Dados das Celulas - DistInimigos";
             break;
           default:
         }
@@ -590,7 +601,7 @@
             break;
           case 80:      //Pressionar a letra P
             debugMode = debugMode + 1;
-            if(debugMode > 3){
+            if(debugMode > 4){
               debugMode = 0;
             }
             switch(debugMode){
@@ -598,12 +609,6 @@
                 debugMode = 0;
                 escala = 1.8;
                 MAPA_AREA = 20;
-              break;
-              case 1: //Desenha debug mode
-
-              break;
-              case 2: //Desenha grade de salas
-
               break;
             }
             break;

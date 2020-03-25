@@ -113,13 +113,24 @@ Room.prototype.copyFireZones = function(room){
 }
 
 // Procura celulas da sala que possuem distancia value
-Room.prototype.findCellByDist = function(value){
-    for(let i = 0; i < this.blocks.length; i++){
-        if(this.blocks[i].dist == value){
-            return this.blocks[i];
+Room.prototype.findCellByDist = function(value, type){
+    if(type == 0){          // Firezones
+        for(let i = 0; i < this.blocks.length; i++){
+            if(this.blocks[i].distFirezones == value){
+                return this.blocks[i];
+            }
         }
+        return null;                // Não encontrou nenhuma celula com a distancia determinada
     }
-    return null;                // Não encontrou nenhuma celula com a distancia determinada
+    else{                   // Inimigos
+        for(let i = 0; i < this.blocks.length; i++){
+            if(this.blocks[i].distInimigos == value){
+                return this.blocks[i];
+            }
+        }
+        return null;                // Não encontrou nenhuma celula com a distancia determinada
+    }
+    
 }
   
 Room.prototype.setTeleporter = function(mode, beginGX, beginGY, endGX, endGY){

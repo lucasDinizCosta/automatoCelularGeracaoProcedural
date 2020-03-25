@@ -60,7 +60,8 @@ Level.prototype.clonarLevel= function(level){
     for (var c = 0; c < level.mapa.w; c++) {
       this.mapa.cell[l][c].tipo = level.mapa.cell[l][c].tipo;
       this.mapa.cell[l][c].room = level.mapa.cell[l][c].room;
-      this.mapa.cell[l][c].dist = level.mapa.cell[l][c].dist;
+      this.mapa.cell[l][c].distFirezones = level.mapa.cell[l][c].distFirezones;
+      this.mapa.cell[l][c].distInimigos = level.mapa.cell[l][c].distInimigos;
       this.mapa.cell[l][c].linha = level.mapa.cell[l][c].linha;
       this.mapa.cell[l][c].coluna = level.mapa.cell[l][c].coluna;
     }
@@ -368,9 +369,11 @@ Level.prototype.posicionarPlayer = function(p){
  ********************************/
 
 Level.prototype.atualizaMatrizDistancias = function(){
-  this.mapa.atualizaDist(this.teleporteInicioLevel.portal.gy, this.teleporteInicioLevel.portal.gx, 0);
+  this.mapa.atualizaDist(this.teleporteInicioLevel.portal.gy, this.teleporteInicioLevel.portal.gx, 0, 0);
+  this.mapa.atualizaDist(this.teleporteInicioLevel.portal.gy, this.teleporteInicioLevel.portal.gx, 0, 1);
   for(let i = 1; i < this.rooms.length; i++){        //Começa a analisar a partir da próxima sala
-    this.mapa.atualizaDist(this.rooms[i].teleporterInitial.portal.gy, this.rooms[i].teleporterInitial.portal.gx, 0);
+    this.mapa.atualizaDist(this.rooms[i].teleporterInitial.portal.gy, this.rooms[i].teleporterInitial.portal.gx, 0, 0);     // Firezones
+    this.mapa.atualizaDist(this.rooms[i].teleporterInitial.portal.gy, this.rooms[i].teleporterInitial.portal.gx, 0, 1);     // Inimigos
   }
 }
 
@@ -394,8 +397,8 @@ Level.prototype.posicionarFireZones = function(valor){
       auxFireZone.sprite.y = celula.linha * this.mapa.s + auxFireZone.sprite.s/2;
       auxFireZone.sprite.map = this.mapa;
       auxRoom.fireZones.push(auxFireZone);
-      this.mapa.atualizaDist(celula.linha, celula.coluna, 0);     //Recalcula
-      celula = auxRoom.findCellByDist(valor);
+      this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 0);     //Recalcula
+      celula = auxRoom.findCellByDist(valor, 0);                  // valor, codigo para firezones
     }
 
     indiceSala++;
@@ -425,8 +428,7 @@ Level.prototype.posicionarFireZonesTeleportes = function(valor){
     auxFireZone.sprite.y = celula.linha * this.mapa.s + auxFireZone.sprite.s/2;
     auxFireZone.sprite.map = this.mapa;
     auxRoom.fireZones.push(auxFireZone);
-    this.mapa.atualizaDist(celula.linha, celula.coluna, 0);     //Recalcula
-    celula = auxRoom.findCellByDist(valor);
+    this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 0);     //Recalcula
 
     
     // No teleporte final
@@ -439,7 +441,6 @@ Level.prototype.posicionarFireZonesTeleportes = function(valor){
     auxFireZone.sprite.map = this.mapa;
     auxRoom.fireZones.push(auxFireZone);
     this.mapa.atualizaDist(celula.linha, celula.coluna, 0);     //Recalcula
-    celula = auxRoom.findCellByDist(valor);
 
     indiceSala++;
 
