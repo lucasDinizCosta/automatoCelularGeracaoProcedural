@@ -264,53 +264,6 @@ Sprite.prototype.copy = function(sprite){
 
 Sprite.prototype.desenhar = function (ctx) {
   switch(this.typeSprite){
-    case 0:
-      
-      break;
-    case 1:
-      ctx.save();
-      ctx.fillStyle = "blue";
-      ctx.strokeStyle = "blue";
-      ctx.linewidth = 10;
-      ctx.globalAlpha = 0.70;         //Transparência
-      ctx.translate(this.x, this.y);
-      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.restore();
-    case 2:
-      ctx.save();
-      ctx.strokeStyle = "Yellow";
-      ctx.fillStyle = "orange";
-      ctx.linewidth = 10;
-     // assetsMng.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
-      ctx.globalAlpha = 0.40;         //Transparência
-      ctx.translate(this.x, this.y);
-      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.restore();
-      break;
-    case 3:                       //Inicio de fase
-      ctx.save();
-      ctx.fillStyle = "rgb(84, 98, 139)";
-      ctx.strokeStyle = "purple";
-      ctx.linewidth = 10;
-      ctx.globalAlpha = 0.70;         //Transparência
-      ctx.translate(this.x, this.y);
-      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.restore();
-    case 4:                     //Final de fase
-      ctx.save();
-      ctx.strokeStyle = "dark green";
-      ctx.fillStyle = "green";
-      ctx.linewidth = 10;
-      // assetsMng.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
-      ctx.globalAlpha = 0.40;         //Transparência
-      ctx.translate(this.x, this.y);
-      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.restore();
-      break;
     case 5:                     //Area safe --- FireZones
       ctx.save();
       ctx.strokeStyle = "yellow";
@@ -333,7 +286,6 @@ Sprite.prototype.desenhar = function (ctx) {
         //this.desenharCell(ctx);         //Debug mode Grid
         this.desenharCaixaColisao(ctx);
       }
-      
       break;
     default:
       console.log("Sprite type is wrong!!!");

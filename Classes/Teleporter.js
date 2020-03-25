@@ -55,14 +55,14 @@ Teleporter.prototype.teleportar = function(player){
   }
 }
 
+var teste = 10;
 Teleporter.prototype.desenhar = function(ctx){
   switch(this.type){
     case 0:                     // Início de fase
-      ctx.save();
       ctx.strokeStyle = "dark green";
       ctx.fillStyle = "green";
       ctx.linewidth = 10;
-      // assetsMng.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
+      ctx.save();
       ctx.globalAlpha = 0.40;         //Transparência
       ctx.translate(this.x, this.y);
       ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
@@ -70,10 +70,10 @@ Teleporter.prototype.desenhar = function(ctx){
       ctx.restore();
       break;
     case 1:                     // Final de fase
-      ctx.save();
-      ctx.fillStyle = "rgb(84, 98, 139)";
       ctx.strokeStyle = "purple";
+      ctx.fillStyle = "rgb(84, 98, 139)";
       ctx.linewidth = 10;
+      ctx.save();
       ctx.globalAlpha = 0.60;         //Transparência
       ctx.translate(this.x, this.y);
       ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
@@ -81,26 +81,29 @@ Teleporter.prototype.desenhar = function(ctx){
       ctx.restore();
       break;
     case 2:                           // Teleporte Inicial room
-      ctx.save();
+      ctx.strokeStyle = "dark blue";
       ctx.fillStyle = "blue";
-      ctx.strokeStyle = "blue";
       ctx.linewidth = 10;
-      ctx.globalAlpha = 0.40;         //Transparência
+      ctx.save(); 
+      ctx.globalAlpha = 0.60;         //Transparência
       ctx.translate(this.x, this.y);
       ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
       ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
       ctx.restore();
+      break;
     case 3:                         // Teleporte final room
-      ctx.save();
       ctx.strokeStyle = "Yellow";
-      ctx.fillStyle = "orange";
+      ctx.fillStyle = "Orange";
       ctx.linewidth = 10;
-      // assetsMng.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
+      ctx.save();
       ctx.globalAlpha = 0.40;         //Transparência
       ctx.translate(this.x, this.y);
       ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
       ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
       ctx.restore();
+      break;
+    default:
+      console.log("Sprite type is wrong!!!");
       break;
   }                            
 }
