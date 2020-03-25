@@ -1,9 +1,18 @@
 function Teleporter(type){
-  this.proximoTeleporte = null;
-  this.portal = new Sprite(32, type);
+  /**
+   * Estabelece a relação de Herança entre Player e Sprite:
+   *  -> Sprite é pai e player é filho
+   */
+  Sprite.call(this, 32);     
+
+  this.proximoTeleporte = undefined;
+  this.type = type
+  //this = new Sprite(32, type);
   this.roomNumber = -1;
 }
-//Teleporter.prototype = new Teleporter();
+
+// Heranca
+Teleporter.prototype = new Sprite();              // Define que o Player é um Sprite
 Teleporter.prototype.constructor = Teleporter;
 
 /**
@@ -14,33 +23,64 @@ Teleporter.prototype.constructor = Teleporter;
 /**
  * Retorna a referencia pra celula diretamente no mapa
  */
+
 Teleporter.prototype.getCell = function(){
-  return this.portal.map.cell[this.portal.gy][this.portal.gx];
+  return this.map.cell[this.gy][this.gx];
 }
 
 Teleporter.prototype.setPosition = function(linha, coluna){
-   this.portal.x = coluna * this.portal.s + this.portal.s/2;
-   this.portal.y = linha * this.portal.s  + this.portal.s/2;
+   this.x = coluna * this.s + this.s/2;
+   this.y = linha * this.s  + this.s/2;
 }
 
 Teleporter.prototype.setPosition = function(celula){
-  this.portal.x = celula.coluna * this.portal.s + this.portal.s/2;
-  this.portal.y = celula.linha * this.portal.s  + this.portal.s/2;
+  this.x = celula.coluna * this.s + this.s/2;
+  this.y = celula.linha * this.s  + this.s/2;
 }
 
-Teleporter.prototype.copy = function(teleporter){
+Teleporter.prototype.copyTeleporte = function(teleporter){
   this.proximoTeleporte = teleporter.proximoTeleporte;
+  console.log(this.proximoTeleporte);
+  this.type = teleporter.type;
   this.roomNumber = teleporter.roomNumber;
-  this.portal.copy(teleporter.portal);
+  this.copy(teleporter);
 }
 
 Teleporter.prototype.teleportar = function(player){
   if(this.proximoTeleporte !== null){
     audioLibrary.play("teleporte");
-    player.sprite.x = this.proximoTeleporte.portal.x;
-    player.sprite.y = this.proximoTeleporte.portal.y;
+    player.x = this.proximoTeleporte.x;
+    player.y = this.proximoTeleporte.y;
   }
   else{
     console.log("prximoTeleporte eh null !!!");
   }
+}
+
+Teleporter.prototype.desenhar = function(ctx){
+  switch(this.type){
+    case 0:                     // Início de fase
+      ctx.save();
+      ctx.fillStyle = "rgb(84, 98, 139)";
+      ctx.strokeStyle = "purple";
+      ctx.linewidth = 10;
+      ctx.globalAlpha = 0.70;         //Transparência
+      ctx.translate(this.x, this.y);
+      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
+      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
+      ctx.restore();
+      break;
+    case 1:                     // Final de fase
+      ctx.save();
+      ctx.strokeStyle = "dark green";
+      ctx.fillStyle = "green";
+      ctx.linewidth = 10;
+      // assetsMng.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
+      ctx.globalAlpha = 0.40;         //Transparência
+      ctx.translate(this.x, this.y);
+      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
+      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
+      ctx.restore();
+      break;
+  }                            
 }

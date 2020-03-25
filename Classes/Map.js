@@ -35,7 +35,7 @@ Map.prototype.getMatrixType = function(){
     }
     text += "]\n";
   }
-  text += "\n}\n"
+  text += "\n}\n";
   return text;
 }
 

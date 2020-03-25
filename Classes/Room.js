@@ -1,8 +1,8 @@
 function Room(number){
     this.blocks = [];
     this.number = number;
-    this.teleporterInitial = new Teleporter(1);         // (Inicio)Transição de uma sala pra outra
-    this.teleporterFinal = new Teleporter(2);           // (Chegada)Transição de uma sala pra outra
+    this.teleporterInitial = new Teleporter(0);         // (Inicio)Transição de uma sala pra outra
+    this.teleporterFinal = new Teleporter(1);           // (Chegada)Transição de uma sala pra outra
     this.endingLevel;                                   // Teleportador que termina a fase
     this.beginLevel;                                    // Teleportador que Inicia a fase
     this.fireZones = [];                                // Area para a recarga do tempo
@@ -38,15 +38,15 @@ Room.prototype.draw = function(ctx){
         this.fireZones[i].desenhar(ctx);
         this.fireZones[i].sprite.mover(0.16); //FIXME gol de mão
     }    
-    this.teleporterInitial.portal.desenhar(ctx);    
-    this.teleporterFinal.portal.desenhar(ctx);
+    this.teleporterInitial.desenhar(ctx);    
+    this.teleporterFinal.desenhar(ctx);
     if(debugMode == 1){
         ctx.save();
         ctx.strokeStyle = "yellow";
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(this.teleporterInitial.portal.x, this.teleporterInitial.portal.y);
-        ctx.lineTo(this.teleporterInitial.proximoTeleporte.portal.x, this.teleporterInitial.proximoTeleporte.portal.y);
+        ctx.moveTo(this.teleporterInitial.x, this.teleporterInitial.y);
+        ctx.lineTo(this.teleporterInitial.proximoTeleporte.x, this.teleporterInitial.proximoTeleporte.y);
         ctx.closePath();
         ctx.stroke();
         ctx.lineWidth = 1;
@@ -93,8 +93,8 @@ Room.prototype.copyWithReference = function(room, mapa){
     //console.log("ROOM.copyWithReference():");
     //console.log(mapa);
     this.number = room.number;
-    this.teleporterInitial.copy(room.teleporterInitial);
-    this.teleporterFinal.copy(room.teleporterFinal);
+    this.teleporterInitial.copyTeleporte(room.teleporterInitial);
+    this.teleporterFinal.copyTeleporte(room.teleporterFinal);
     for(let i = 0; i < room.blocks.length; i++){
         let aux = mapa.getCell(room.blocks[i].linha, room.blocks[i].coluna);
         aux.room = room.number;

@@ -265,29 +265,6 @@ Sprite.prototype.copy = function(sprite){
 Sprite.prototype.desenhar = function (ctx) {
   switch(this.typeSprite){
     case 0:
-      ctx.linewidth = 1;
-      ctx.fillStyle = "rgba(10,10,10,0.4)";
-      ctx.strokeStyle = "rgba(10,10,10,0.4)";
-      ctx.save();
-      ctx.translate(this.x, this.y);
-      ctx.beginPath();
-      ctx.ellipse(-this.s/2+1, -this.s/4+2, this.s-2, this.s/2-2, 0, 0, 2*Math.PI, false);
-      //ctx.ellipse(this.s/2, this.s/4, this.s, this.s/2, 0, 0, 2*Math.PI, false);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
-      assetsMng.drawClipSize(ctx, this.nomeImagem, 
-        this.sizeImagem * (this.animationState % this.qtdAnimacoes), this.sizeImagem * this.pose, this.sizeImagem, this.sizeImagem, 
-        -6-this.sizeImagem/2, 4-this.sizeImagem, this.sizeImagem, this.sizeImagem);
-      ctx.restore();
-      if(debugMode == 1){
-        this.desenharCell(ctx);         //Debug mode Grid
-        this.desenharCentro(ctx);
-      }
-      else if(debugMode == 2){
-        this.desenharCell(ctx);         //Debug mode Grid
-        this.desenharCaixaColisao(ctx);
-      }
       
       break;
     case 1:
@@ -314,7 +291,7 @@ Sprite.prototype.desenhar = function (ctx) {
       break;
     case 3:                       //Inicio de fase
       ctx.save();
-      ctx.fillStyle = "rgb(84, 46, 139)";
+      ctx.fillStyle = "rgb(84, 98, 139)";
       ctx.strokeStyle = "purple";
       ctx.linewidth = 10;
       ctx.globalAlpha = 0.70;         //Transparência

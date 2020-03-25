@@ -3,7 +3,7 @@ function Player(size, nomeImagem) {
    * Estabelece a relação de Herança entre Player e Sprite:
    *  -> Sprite é pai e player é filho
    */
-  Sprite.call(this, size, 0);            
+  Sprite.call(this, size);            
 
   //this.sprite = new Sprite(size, 0);
   this.timeWalkSound = 0.5;
@@ -28,7 +28,6 @@ function Player(size, nomeImagem) {
   this.numAnimacoes = 8;
 
   this.criarAnimacoes();
-  //this.sprite.nomeImagem = nomeImagem;
   this.nomeImagem = nomeImagem;
 }
 
