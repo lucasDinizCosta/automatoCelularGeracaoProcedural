@@ -11,6 +11,13 @@ Teleporter.prototype.constructor = Teleporter;
  * GY => Linha
  */
 
+/**
+ * Retorna a referencia pra celula diretamente no mapa
+ */
+Teleporter.prototype.getCell = function(){
+  return this.portal.map.cell[this.portal.gy][this.portal.gx];
+}
+
 Teleporter.prototype.setPosition = function(linha, coluna){
    this.portal.x = coluna * this.portal.s + this.portal.s/2;
    this.portal.y = linha * this.portal.s  + this.portal.s/2;

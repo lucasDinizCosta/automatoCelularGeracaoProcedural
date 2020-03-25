@@ -102,7 +102,7 @@ Level.prototype.getRandomInt = function(min, max){
 
 // Atribui os teleportes dentro das salas e insere nos blocos A REFERENCIA PARA O MAPA
 Level.prototype.setTeleporters = function(){
-  if(this.rooms.length > 1){          //Only will have teleporters if that are more than one room
+  if(this.rooms.length > 1){          //Only will have teleporters if there are more than one room
     let indAvaliableRoom;
     let indFinishRoom;
     let roomsAvaliable = [];            //Rooms avaliable to choose initial teleporter 
@@ -297,7 +297,7 @@ Level.prototype.posicionarFireZones = function(valor){
       auxFireZone.sprite.map = this.mapa;
       auxRoom.fireZones.push(auxFireZone);
       this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 0);     //Recalcula
-      celula = auxRoom.findCellByDist(valor, 0);                  // valor, codigo para firezones
+      celula = auxRoom.findCellByDist(valor, 0);                     // valor, codigo para firezones
     }
 
     indiceSala++;
@@ -313,14 +313,43 @@ Level.prototype.posicionarFireZones = function(valor){
  */
 Level.prototype.posicionarFireZonesTeleportes = function(valor){
   //Posiciona na primeira distancia 35 e depois recalcula
+  /**
+   * Teleporte inicial e final de level
+   */
+  let auxRoom = this.rooms[this.teleporteInicioLevel.roomNumber - 1];
+  let celula = this.teleporteInicioLevel.getCell();
+  let auxFireZone = new FireZone();
+  auxFireZone.sprite.gx = celula.coluna;
+  auxFireZone.sprite.gy = celula.linha;
+  auxFireZone.sprite.x = celula.coluna * this.mapa.s + auxFireZone.sprite.s/2;
+  auxFireZone.sprite.y = celula.linha * this.mapa.s + auxFireZone.sprite.s/2;
+  auxFireZone.sprite.map = this.mapa;
+  auxRoom.fireZones.push(auxFireZone);
+  this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 0);     //Recalcula
+
+  auxRoom = this.rooms[this.teleporteFinalLevel.roomNumber - 1];
+  celula = this.teleporteFinalLevel.getCell();
+  auxFireZone = new FireZone();
+  auxFireZone.sprite.gx = celula.coluna;
+  auxFireZone.sprite.gy = celula.linha;
+  auxFireZone.sprite.x = celula.coluna * this.mapa.s + auxFireZone.sprite.s/2;
+  auxFireZone.sprite.y = celula.linha * this.mapa.s + auxFireZone.sprite.s/2;
+  auxFireZone.sprite.map = this.mapa;
+  auxRoom.fireZones.push(auxFireZone);
+  this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 0);     //Recalcula
+
+  /**
+  * Teleportes nas salas
+  */
+
   let terminouPosicionamento = false;
   let indiceSala = 0;
   while(!terminouPosicionamento){
-    let auxRoom = this.rooms[indiceSala];
-    let celula = this.mapa.getCell(auxRoom.teleporterInitial.portal.gy, auxRoom.teleporterInitial.portal.gx);
+    auxRoom = this.rooms[indiceSala];
+    celula = this.mapa.getCell(auxRoom.teleporterInitial.portal.gy, auxRoom.teleporterInitial.portal.gx);
 
     // No teleporte inicial
-    let auxFireZone = new FireZone();
+    auxFireZone = new FireZone();
     auxFireZone.sprite.gx = celula.coluna;
     auxFireZone.sprite.gy = celula.linha;
     auxFireZone.sprite.x = celula.coluna * this.mapa.s + auxFireZone.sprite.s/2;
