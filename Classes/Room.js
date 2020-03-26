@@ -42,6 +42,13 @@ Room.prototype.draw = function(ctx){
     this.teleporterFinal.desenhar(ctx);
     if(debugMode == 1){
         ctx.save();
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(this.teleporterInitial.x, this.teleporterInitial.y);
+        ctx.lineTo(this.teleporterInitial.proximoTeleporte.x, this.teleporterInitial.proximoTeleporte.y);
+        ctx.closePath();
+        ctx.stroke();
         ctx.strokeStyle = "yellow";
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -131,23 +138,4 @@ Room.prototype.findCellByDist = function(value, type){
         return null;                // Não encontrou nenhuma celula com a distancia determinada
     }
     
-}
-  
-Room.prototype.setTeleporter = function(mode, beginGX, beginGY, endGX, endGY){
-    if(mode = 0){   //Initial mode
-        let teleporter = new Teleporter(1);
-        teleporter.startGX = beginGX;
-        teleporter.startGY = beginGY;
-        teleporter.finishGX = endGX;
-        teleporter.finishGY = endGY;
-        this.teleporterInitial = teleporter;
-    }
-    else{
-        let teleporter = new Teleporter(2);
-        teleporter.startGX = beginGX;
-        teleporter.startGY = beginGY;
-        teleporter.finishGX = endGX;
-        teleporter.finishGY = endGY;
-        this.teleporterFinal = teleporter;
-    }
-}
+} 
