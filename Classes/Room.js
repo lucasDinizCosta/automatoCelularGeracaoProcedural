@@ -36,7 +36,7 @@ Room.prototype.removeBlockByMatrixIndex = function(row, column){
 Room.prototype.draw = function(ctx){
     for(let i = 0; i < this.fireZones.length; i++){
         this.fireZones[i].desenhar(ctx);
-        this.fireZones[i].sprite.mover(0.16); //FIXME gol de mão
+        this.fireZones[i].mover(0.16);          //FIXME gol de mão
     }    
     this.teleporterInitial.desenhar(ctx);    
     this.teleporterFinal.desenhar(ctx);
@@ -105,9 +105,9 @@ Room.prototype.copyWithReference = function(room, mapa){
 
 Room.prototype.copyFireZones = function(room){
     for(let i = 0; i < room.fireZones.length; i++){
-        let aux = room.fireZones[i].sprite;
+        let aux = room.fireZones[i];
         let newFireZone = new FireZone();
-        newFireZone.sprite.copy(aux);
+        newFireZone.copy(aux);
         this.fireZones.push(newFireZone);
     }
 }
