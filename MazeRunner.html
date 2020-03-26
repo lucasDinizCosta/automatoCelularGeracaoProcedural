@@ -419,6 +419,11 @@
         ctx.fillText("Escala mapa: " + escala.toFixed(4), converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
         ctx.strokeText("Player: [" + (player.gy) + "][" + (player.gx) + "]", converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
         ctx.fillText("Player: [" + (player.gy) + "][" + (player.gx) + "]", converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
+
+        ctx.strokeText("Teleporte Inicial Level: [" + (levelAtual.teleporteInicioLevel.gy) + "][" + (levelAtual.teleporteInicioLevel.gx) + "]", converteTelaCheia(tela.widthOld/2, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
+        ctx.fillText("Teleporte Inicial Level: [" + (levelAtual.teleporteInicioLevel.gy) + "][" + (levelAtual.teleporteInicioLevel.gx) + "]", converteTelaCheia(tela.widthOld/2, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
+        ctx.strokeText("Teleporte Inicial Level: [" + (levelAtual.teleporteFinalLevel.gy) + "][" + (levelAtual.teleporteFinalLevel.gx) + "]", converteTelaCheia(tela.widthOld/2, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
+        ctx.fillText("Teleporte Inicial Level: [" + (levelAtual.teleporteFinalLevel.gy) + "][" + (levelAtual.teleporteFinalLevel.gx) + "]", converteTelaCheia(tela.widthOld/2, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
       }
     }
 
