@@ -372,7 +372,7 @@ Level.prototype.posicionarFireZonesTeleportes = function(valor){
     auxFireZone.y = celula.linha * this.mapa.s + auxFireZone.s/2;
     auxFireZone.map = this.mapa;
     auxRoom.fireZones.push(auxFireZone);
-    this.mapa.atualizaDist(celula.linha, celula.coluna, 0);     //Recalcula
+    this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 0);     //Recalcula
 
     indiceSala++;
 

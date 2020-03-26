@@ -11,7 +11,6 @@ function Room(number){
 //Room.prototype = new Room();
 //Room.prototype.constructor = Room;
 
-
 Room.prototype.addBlock = function(row, column){
     let aux = [];
     aux.push(row);
@@ -42,7 +41,7 @@ Room.prototype.draw = function(ctx){
     this.teleporterFinal.desenhar(ctx);
     if(debugMode == 1){
         ctx.save();
-        ctx.strokeStyle = "black";
+        ctx.strokeStyle = "black";                              // linha de acabamento preta pra facilitar a visualização
         ctx.lineWidth = 4;
         ctx.beginPath();
         ctx.moveTo(this.teleporterInitial.x, this.teleporterInitial.y);
