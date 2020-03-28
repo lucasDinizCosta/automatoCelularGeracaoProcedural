@@ -145,7 +145,7 @@
     geraFase.filterRooms(25);
     levels[0].setMatrixMap(geraFase.map);       // Copia a matriz de tipos dentro do gerador
     levels[0].copiaSalas(geraFase.rooms);       // Copia os dados em que os blocos da sala são apenas as posições linha e coluna da matriz
-    levels[0].setTeleporters_2();               // Posiciona os teleportes com base na DISTANCIA entre eles
+    levels[0].setTeleporters_2(70);               // Posiciona os teleportes com base na DISTANCIA entre eles
     levels[0].atualizaGradeTeleportes(dt);
     levels[0].posicionarPlayer(player);
     levels[0].atualizaMatrizDistancias();       // Em relação aos teleportes inicial da fase e de cada sala
@@ -185,26 +185,23 @@
     var alignMainMenu = "center";
     var stateMainMenu = 0;
 
-    /************************************
-    *   --------- DEBUG MODE -----------*
-    *                                   *
-    *       0 => Normal;                *
-    *       1 => Centro Player;         *
-    *       2 => Box Collision;         *
-    *       3 => Dados das celulas:     *
-    *             (Firezones)           *
-    *           - tipo(amarelo);        *
-    *           - room(verde);          *
-    *           - distFirezones         *
-    *               (azul));            *
-    *       4 => Dados das celulas:     *
-    *             (Inimigos)            *
-    *           - tipo(amarelo);        *
-    *           - room(verde);          *
-    *           - distInimigos          *
-    *               (azul));            *
-    *                                   *
-    *************************************/
+    /******************************************************************************
+    *   ---------------------------- DEBUG MODE --------------------------------  *
+    *                                                                             *
+    *       0 => Normal;                                                          *
+    *       1 => Centro Player;                                                   *
+    *       2 => Box Collision;                                                   *
+    *       3 => Dados das celulas (Teleportes):                                  *
+    *             (Firezones)                                                     *
+    *           - tipo (amarelo); - room (verde); - distTeleportes (azul));       *
+    *       4 => Dados das celulas (Firezones):                                   *
+    *             (Firezones)                                                     *
+    *           - tipo (amarelo); - room (verde); - distFirezones (azul));        *
+    *       5 => Dados das celulas (Inimigos):                                    *
+    *             (Firezones)                                                     *
+    *           - tipo (amarelo); - room (verde); - distInimigos (azul));         *
+    *                                                                             *
+    *******************************************************************************/
 
     /************************************
     *   --------- ESTADOS -----------   *
@@ -390,16 +387,19 @@
         let typeMode = "";
         switch(debugMode){
           case 1: // Centro do personagem e celula marcada
-            typeMode = "Mode 1 - Centro personagem - Teleportes";
+            typeMode = "Mode 1 - Ligação dos Teleportes";
             break;
           case 2: // Box collision
             typeMode = "Mode 2 - Caixa de Colisão";
             break;
-          case 3: // Dados das celulas -- DistFirezones
-            typeMode = "Mode 3 - Dados das Celulas - DistFirezones";
+          case 3: // Dados das celulas -- DistTeleportes
+            typeMode = "Mode 3 - Dados das Celulas - DistTeleportes";
             break;
-          case 4: // Dados das celulas -- DistInimigos
-            typeMode = "Mode 4 - Dados das Celulas - DistInimigos";
+          case 4: // Dados das celulas -- DistFirezones
+            typeMode = "Mode 4 - Dados das Celulas - DistFirezones";
+            break;
+          case 5: // Dados das celulas -- DistInimigos
+            typeMode = "Mode 5 - Dados das Celulas - DistInimigos";
             break;
           default:
         }
@@ -444,36 +444,10 @@
     function limparDados() {
       levelAtual = new Level(widthMap, heightMap, sizeMap);
       levelAtual.clonarLevel(levels[0]);
-      //levelAtual.updateGradeSalas();
       player = new Player(12, "player");
       player.map = levelAtual.mapa;
       player.x = levelAtual.startX;
       player.y = levelAtual.startY;
-      /*player = new Player(12, "player");
-      tempoGameOver = 2;
-      stateMainMenu = 0;
-      tempoRectInt.w = 127;
-      teasuresCollected = 0;
-      tempoTransicaoFase = 1;
-      geraFase = new CellularAutomata(heightMap, widthMap, 1, 0.5, 4, 0, 5, 1); // new CellularAutomata(heightMap, widthMap, 2, 0.5, 13, 0, 5, 1);
-      // 0 => floor
-      // 5 => rock
-      // 1 => wall
-      geraFase.scenarioRandomWall();
-      geraFase.fullstep(2);
-      geraFase.countRooms();
-      geraFase.filterRooms(25);
-      levels = [];
-      levels.push(new Level(widthMap, heightMap, sizeMap));
-      levels[0].setMatrixMap(geraFase.map);
-      levels[0].copiaSalas(geraFase.rooms);
-      levels[0].updateGradeSalas();
-      levels[0].setTeleporters();
-      levels[0].posicionarPlayer(player);
-
-      levels[0].tesouros = 3;
-      levels[0].finishGX = 17;
-      levels[0].finishGY = 9;*/
     }
 
     function limparTela() {
@@ -538,8 +512,11 @@
 
     addEventListener("keydown", function (e) {
       //console.log(e.keyCode);
-      if (estado == 0) {
+      if (estado == 0) {                              // Mapeamento do teclado -- estado "Jogando"
         switch (e.keyCode) {
+          /**
+           *  Fullscreen
+           */
           case 70:    //Letra F
             fullscreen = !fullscreen;
             if(fullscreen){
@@ -552,7 +529,6 @@
           case 37:
             //if(player.up === false && player.down === false && player.right === false){
             player.vx = -playerVel;
-            //player.gx = player.gx - 1;
             player.left = true;
             player.sentidoMovimento = 2;
             //}
@@ -560,7 +536,6 @@
           case 39:
             //if(player.up === false && player.down === false && player.left === false){
             player.vx = +playerVel;
-            //player.gx = player.gx + 1;
             player.right = true;
             player.sentidoMovimento = 0;
             //}
@@ -585,7 +560,6 @@
           case 38:
             //if(player.left === false && player.down === false && player.right === false){
             player.vy = -playerVel;
-            //player.gy = player.gy - 1;
             player.up = true;
             player.sentidoMovimento = 3;
             //}
@@ -593,19 +567,22 @@
           case 40:
             //if(player.left === false && player.up === false && player.right === false){
             player.vy = +playerVel;
-            //player.gy = player.gy + 1;
             player.down = true;
             player.sentidoMovimento = 1;
             //}
             break;
-          case 27:      //Pressionar o Esq
+          case 27:      //Pressionar o Esq === RETORNA AO MENU PRINCIPAL
             stateMainMenu = 0;
             limparDados();
             estado = 1;
             break;
+          
+          /**
+           *  Debug Mode
+           */
           case 80:      //Pressionar a letra P
             debugMode = debugMode + 1;
-            if(debugMode > 4){
+            if(debugMode > 5){
               debugMode = 0;
             }
             switch(debugMode){
@@ -657,7 +634,7 @@
 
       }
       else {
-        if (estado == 2) {
+        if (estado == 2) {                  // Teclas no MENU PRINCIPAL
           switch (e.keyCode) {
             case 70:    //Letra F
               fullscreen = !fullscreen;

@@ -276,11 +276,17 @@ Map.prototype.desenharCell = function (ctx, l, c) {
   ctx.fillStyle = "green";
   this.escreveTexto(ctx, this.cell[l][c].room + "", c * this.s + this.s / 2 + 10, l * this.s + this.s / 2);
   ctx.fillStyle = "blue";
-  if(debugMode == 3){
-    this.escreveTexto(ctx, this.cell[l][c].distFirezones + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
-  }
-  else{
-    this.escreveTexto(ctx, this.cell[l][c].distInimigos + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
+
+  switch(debugMode){
+    case 3:                   //Teleportes
+      this.escreveTexto(ctx, this.cell[l][c].distTeleportes + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
+      break;
+    case 4:                   //Firezones
+      this.escreveTexto(ctx, this.cell[l][c].distFirezones + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
+      break;
+    case 5:                   //Inimigos
+      this.escreveTexto(ctx, this.cell[l][c].distInimigos + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
+      break;
   }
 };
 

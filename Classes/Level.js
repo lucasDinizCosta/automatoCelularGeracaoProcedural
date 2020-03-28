@@ -206,9 +206,11 @@ Level.prototype.setTeleporters = function(){
 /**
  * -> Atribui os teleportes dentro das salas e insere nos blocos A REFERENCIA PARA O MAPA
  * -> Posiciona de forma com base na DISTÂNCIA DOS TELEPORTES
+ * 
+ *  porcentagem: Intervalo de distância
  */
 
-Level.prototype.setTeleporters_2 = function(){
+Level.prototype.setTeleporters_2 = function(porcentagem){
   if(this.rooms.length > 1){          //Only will have teleporters if there are more than one room
     let indAvaliableRoom;
     let indFinishRoom;
@@ -235,7 +237,7 @@ Level.prototype.setTeleporters_2 = function(){
     this.teleporteInicioLevel.y = this.mapa.s * this.teleporteInicioLevel.gy + this.mapa.s/2;
     this.teleporteInicioLevel.map = this.mapa;
 
-
+    
     // Posiciona a sala do teleporte final do level
     let salaTeleporteFinal = this.getRandomInt(1, this.rooms.length - 1);           // Descarta a sala zero na seleção
     posicao = this.rooms[salaTeleporteFinal].blocks[this.getRandomInt(0, this.rooms[salaTeleporteFinal].blocks.length - 1)];
