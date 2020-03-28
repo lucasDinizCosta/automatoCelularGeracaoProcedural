@@ -6,7 +6,8 @@ function Map(w, h, s) {
   for (let l = 0; l < h; l++) {
     this.cell[l] = [];
     for (let c = 0; c < w; c++) {
-      this.cell[l][c] = { tipo: 0, room: -3, distFirezones: 999, distInimigos: 999, linha: l, coluna: c};
+      this.cell[l][c] = { tipo: 0, room: -3, distTeleportes: 999, distFirezones: 999,  
+        distInimigos: 999, linha: l, coluna: c};
     }
   }
 }
@@ -62,7 +63,7 @@ Map.prototype.initMap = function (L, C, v) {
 }
 
 Map.prototype.findCellByDistAndType = function(value, type, row, column){
-  if(row != null && column != null){              // Começar a analisar de uma posicação específica
+  if(row != null && column != null){              // Começar a analisar de uma posição específica
     for(let l = row; l < this.h; l++){
       for(let c = column; c < this.w; c++){
         if(this.cell[l][c].tipo == type){
@@ -267,7 +268,6 @@ Map.prototype.desenharCell = function (ctx, l, c) {
   ctx.strokeStyle = "white";
   ctx.lineWidth = 1;
   ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
-  //if (this.cell[0][0].room !== -3) {        //Verificacao de celula não alocada pra uma sala
   ctx.fillStyle = "yellow";
   ctx.strokeStyle = "black";
   ctx.lineWidth = 2;
@@ -282,8 +282,6 @@ Map.prototype.desenharCell = function (ctx, l, c) {
   else{
     this.escreveTexto(ctx, this.cell[l][c].distInimigos + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
   }
-
-  //}
 };
 
 Map.prototype.escreveTexto = function (ctx, texto, x, y) {
@@ -296,54 +294,63 @@ Map.prototype.atualizaDist = function (l, c, v, method) {
   let aavaliar = [{ l, c, v }];
   let cell;
 
-  //console.log("Map.AtualizaDist:");
-
-  /**
-   *  Para firezones
-   */
-  if(method == 0){
-    while (cell = aavaliar.pop()) {
-
-      if (cell.l < 0 || cell.l >= this.h || cell.c < 0 || cell.c >= this.w) {
-        continue;
-      }
-  
-      if (this.cell[cell.l][cell.c].tipo != 0) {
-        continue;
-      }
-      if (this.cell[cell.l][cell.c].distFirezones <= cell.v) {
-        continue;
-      }
-      this.cell[cell.l][cell.c].distFirezones = cell.v;
-      aavaliar.push({l:cell.l - 1, c:cell.c, v:cell.v + 1});
-      aavaliar.push({l:cell.l + 1, c:cell.c, v:cell.v + 1});
-      aavaliar.push({l:cell.l, c:cell.c - 1, v:cell.v + 1});
-      aavaliar.push({l:cell.l, c:cell.c + 1, v:cell.v + 1});
-    }
-  }
-  else{
-    /**
-     *  Para inimigos
-     */
+  switch(method){
+    case 0:         // Firezones
+      while (cell = aavaliar.pop()) {
+        if (cell.l < 0 || cell.l >= this.h || cell.c < 0 || cell.c >= this.w) {
+          continue;
+        }
     
-    while (cell = aavaliar.pop()) {
+        if (this.cell[cell.l][cell.c].tipo != 0) {
+          continue;
+        }
+        if (this.cell[cell.l][cell.c].distFirezones <= cell.v) {
+          continue;
+        }
+        this.cell[cell.l][cell.c].distFirezones = cell.v;
+        aavaliar.push({l:cell.l - 1, c:cell.c, v:cell.v + 1});
+        aavaliar.push({l:cell.l + 1, c:cell.c, v:cell.v + 1});
+        aavaliar.push({l:cell.l, c:cell.c - 1, v:cell.v + 1});
+        aavaliar.push({l:cell.l, c:cell.c + 1, v:cell.v + 1});
+      }
+      break;
 
-      if (cell.l < 0 || cell.l >= this.h || cell.c < 0 || cell.c >= this.w) {
-        continue;
+    case 1:         // Inimigos
+      while (cell = aavaliar.pop()) {
+        if (cell.l < 0 || cell.l >= this.h || cell.c < 0 || cell.c >= this.w) {
+          continue;
+        }
+        if (this.cell[cell.l][cell.c].tipo != 0) {
+          continue;
+        }
+        if (this.cell[cell.l][cell.c].distInimigos <= cell.v) {
+          continue;
+        }
+        this.cell[cell.l][cell.c].distInimigos = cell.v;
+        aavaliar.push({l:cell.l - 1, c:cell.c, v:cell.v + 1});
+        aavaliar.push({l:cell.l + 1, c:cell.c, v:cell.v + 1});
+        aavaliar.push({l:cell.l, c:cell.c - 1, v:cell.v + 1});
+        aavaliar.push({l:cell.l, c:cell.c + 1, v:cell.v + 1});
       }
-  
-      if (this.cell[cell.l][cell.c].tipo != 0) {
-        continue;
+      break;
+
+    case 2:         // Teleportes
+      while (cell = aavaliar.pop()) {
+        if (cell.l < 0 || cell.l >= this.h || cell.c < 0 || cell.c >= this.w) {
+          continue;
+        }
+        if (this.cell[cell.l][cell.c].tipo != 0) {
+          continue;
+        }
+        if (this.cell[cell.l][cell.c].distTeleportes <= cell.v) {
+          continue;
+        }
+        this.cell[cell.l][cell.c].distTeleportes = cell.v;
+        aavaliar.push({l:cell.l - 1, c:cell.c, v:cell.v + 1});
+        aavaliar.push({l:cell.l + 1, c:cell.c, v:cell.v + 1});
+        aavaliar.push({l:cell.l, c:cell.c - 1, v:cell.v + 1});
+        aavaliar.push({l:cell.l, c:cell.c + 1, v:cell.v + 1});
       }
-      if (this.cell[cell.l][cell.c].distInimigos <= cell.v) {
-        continue;
-      }
-      this.cell[cell.l][cell.c].distInimigos = cell.v;
-      aavaliar.push({l:cell.l - 1, c:cell.c, v:cell.v + 1});
-      aavaliar.push({l:cell.l + 1, c:cell.c, v:cell.v + 1});
-      aavaliar.push({l:cell.l, c:cell.c - 1, v:cell.v + 1});
-      aavaliar.push({l:cell.l, c:cell.c + 1, v:cell.v + 1});
-    }
+      break;
   }
-  
 }

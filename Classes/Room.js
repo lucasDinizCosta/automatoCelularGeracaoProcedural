@@ -31,6 +31,41 @@ Room.prototype.removeBlockByMatrixIndex = function(row, column){
     }
 }
 
+/**
+ * Retorna a maior distancia na matriz dentre os atributos determinados
+ */
+Room.prototype.getMaxDist = function(option){
+    let value = 0;
+    switch(option){
+        case "Teleportes":                     // Teleportes
+            for(let i = 0; i < this.blocks.length; i++){
+                let bloco = this.blocks[i];
+                if(bloco.distTeleportes >= value){
+                    value = bloco.distTeleportes;
+                }
+            }
+            break;
+        case "Firezones":                     // Firezones
+            for(let i = 0; i < this.blocks.length; i++){
+                let bloco = this.blocks[i];
+                if(bloco.distFirezones >= value){
+                    value = bloco.distFirezones;
+                }
+            }
+            break;
+        case "Inimigos":                     // Inimigos
+            for(let i = 0; i < this.blocks.length; i++){
+                let bloco = this.blocks[i];
+                if(bloco.distInimigos >= value){
+                    value = bloco.distInimigos;
+                }
+            }
+            break;
+    }
+    return value;
+}
+
+
 // Desenha os teleportes e as coneções entre eles
 Room.prototype.draw = function(ctx){
     for(let i = 0; i < this.fireZones.length; i++){

@@ -1,4 +1,4 @@
-function Sprite(s = 16, typ = 0) {
+function Sprite(s = 16) {
   //Atibutos da Fisica
   this.x = 0;
   this.vx = 0;
@@ -32,7 +32,6 @@ function Sprite(s = 16, typ = 0) {
   this.colorBG;
   this.colorBorder;
   this.borderSize = 1;
-  this.typeSprite = typ;
 };
 
 Sprite.prototype = new Sprite();
