@@ -31,7 +31,7 @@ Room.prototype.removeBlockByMatrixIndex = function(row, column){
     }
 }
 
-// Procura celula da sala que possui distancia value
+// Procura 1 celula da sala que possui distancia value
 Room.prototype.getCellByDist = function(value, option){
     switch(option){
         case 0:             // Teleportes
@@ -59,6 +59,36 @@ Room.prototype.getCellByDist = function(value, option){
             return null;                // Não encontrou nenhuma celula com a distancia determinada
             break;
     }
+}
+
+// Procura LISTA de celulas da sala que possui distancia MAIOR OU IGUAL a Value
+Room.prototype.getCellsByDist = function(value, option){
+    let listCells = [];
+    switch(option){
+        case 0:             // Teleportes
+            for(let i = 0; i < this.blocks.length; i++){
+                if(this.blocks[i].distTeleportes >= value){
+                    listCells.push(this.blocks[i]);
+                }
+            }
+            break;
+        case 1:             // Firezones
+            for(let i = 0; i < this.blocks.length; i++){
+                if(this.blocks[i].distFirezones == value){
+                    listCells.push(this.blocks[i]);
+                }
+            }
+            break;
+        case 2:             // Inimigos
+            for(let i = 0; i < this.blocks.length; i++){
+                if(this.blocks[i].distInimigos == value){
+                    listCells.push(this.blocks[i]);
+                }
+            }
+            break;
+    }
+
+    return listCells;
 }
 
 /**
