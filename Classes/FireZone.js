@@ -28,11 +28,11 @@ FireZone.prototype.desenhar = function (ctx) {
     assetsMng.drawClip(ctx, "flames", Math.floor(this.pose) * 16, 0, 16, 24, -8, -12, 16, 24);
     ctx.restore();
     if(debugMode == 1){
-    //this.desenharCell(ctx);         //Debug mode Grid
+        //this.desenharCell(ctx);         //Debug mode Grid
         this.desenharCentro(ctx);
     }
     else if(debugMode == 2){
-    //this.desenharCell(ctx);         //Debug mode Grid
+        //this.desenharCell(ctx);         //Debug mode Grid
         this.desenharCaixaColisao(ctx);
     }
 }

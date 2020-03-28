@@ -293,9 +293,27 @@ Map.prototype.escreveTexto = function (ctx, texto, x, y) {
 Map.prototype.atualizaDist = function (l, c, v, method) {
   let aavaliar = [{ l, c, v }];
   let cell;
-
+  //alert("atualizaDist");
   switch(method){
-    case 0:         // Firezones
+    case 0:                                 // Teleportes
+      while (cell = aavaliar.pop()) {
+        if (cell.l < 0 || cell.l >= this.h || cell.c < 0 || cell.c >= this.w) {
+          continue;
+        }
+        if (this.cell[cell.l][cell.c].tipo != 0) {
+          continue;
+        }
+        if (this.cell[cell.l][cell.c].distTeleportes <= cell.v) {
+          continue;
+        }
+        this.cell[cell.l][cell.c].distTeleportes = cell.v;
+        aavaliar.push({l:cell.l - 1, c:cell.c, v:cell.v + 1});
+        aavaliar.push({l:cell.l + 1, c:cell.c, v:cell.v + 1});
+        aavaliar.push({l:cell.l, c:cell.c - 1, v:cell.v + 1});
+        aavaliar.push({l:cell.l, c:cell.c + 1, v:cell.v + 1});
+      }
+      break;
+    case 1:         // Firezones
       while (cell = aavaliar.pop()) {
         if (cell.l < 0 || cell.l >= this.h || cell.c < 0 || cell.c >= this.w) {
           continue;
@@ -314,8 +332,7 @@ Map.prototype.atualizaDist = function (l, c, v, method) {
         aavaliar.push({l:cell.l, c:cell.c + 1, v:cell.v + 1});
       }
       break;
-
-    case 1:         // Inimigos
+    case 2:         // Inimigos
       while (cell = aavaliar.pop()) {
         if (cell.l < 0 || cell.l >= this.h || cell.c < 0 || cell.c >= this.w) {
           continue;
@@ -327,25 +344,6 @@ Map.prototype.atualizaDist = function (l, c, v, method) {
           continue;
         }
         this.cell[cell.l][cell.c].distInimigos = cell.v;
-        aavaliar.push({l:cell.l - 1, c:cell.c, v:cell.v + 1});
-        aavaliar.push({l:cell.l + 1, c:cell.c, v:cell.v + 1});
-        aavaliar.push({l:cell.l, c:cell.c - 1, v:cell.v + 1});
-        aavaliar.push({l:cell.l, c:cell.c + 1, v:cell.v + 1});
-      }
-      break;
-
-    case 2:         // Teleportes
-      while (cell = aavaliar.pop()) {
-        if (cell.l < 0 || cell.l >= this.h || cell.c < 0 || cell.c >= this.w) {
-          continue;
-        }
-        if (this.cell[cell.l][cell.c].tipo != 0) {
-          continue;
-        }
-        if (this.cell[cell.l][cell.c].distTeleportes <= cell.v) {
-          continue;
-        }
-        this.cell[cell.l][cell.c].distTeleportes = cell.v;
         aavaliar.push({l:cell.l - 1, c:cell.c, v:cell.v + 1});
         aavaliar.push({l:cell.l + 1, c:cell.c, v:cell.v + 1});
         aavaliar.push({l:cell.l, c:cell.c - 1, v:cell.v + 1});

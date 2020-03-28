@@ -55,7 +55,6 @@ Teleporter.prototype.teleportar = function(player){
   }
 }
 
-var teste = 10;
 Teleporter.prototype.desenhar = function(ctx){
   switch(this.type){
     case 0:                     // Início de fase
