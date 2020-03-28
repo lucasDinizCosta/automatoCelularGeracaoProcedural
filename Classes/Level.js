@@ -501,7 +501,7 @@ Level.prototype.posicionarFireZonesTeleportes = function(valor){
   auxFireZone.y = celula.linha * this.mapa.s + auxFireZone.s/2;
   auxFireZone.map = this.mapa;
   auxRoom.fireZones.push(auxFireZone);
-  this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 0);     //Recalcula
+  this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 1);     //Recalcula
 
   auxRoom = this.rooms[this.teleporteFinalLevel.roomNumber - 1];
   celula = this.teleporteFinalLevel.getCell();
@@ -512,7 +512,7 @@ Level.prototype.posicionarFireZonesTeleportes = function(valor){
   auxFireZone.y = celula.linha * this.mapa.s + auxFireZone.s/2;
   auxFireZone.map = this.mapa;
   auxRoom.fireZones.push(auxFireZone);
-  this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 0);     //Recalcula
+  this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 1);     //Recalcula
 
   /**
   * Teleportes nas salas
@@ -532,7 +532,7 @@ Level.prototype.posicionarFireZonesTeleportes = function(valor){
     auxFireZone.y = celula.linha * this.mapa.s + auxFireZone.s/2;
     auxFireZone.map = this.mapa;
     auxRoom.fireZones.push(auxFireZone);
-    this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 0);     //Recalcula
+    this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 1);     //Recalcula
 
     // No teleporte final
     celula = this.mapa.getCell(auxRoom.teleporterFinal.gy, auxRoom.teleporterFinal.gx);
@@ -543,7 +543,7 @@ Level.prototype.posicionarFireZonesTeleportes = function(valor){
     auxFireZone.y = celula.linha * this.mapa.s + auxFireZone.s/2;
     auxFireZone.map = this.mapa;
     auxRoom.fireZones.push(auxFireZone);
-    this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 0);     //Recalcula
+    this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 1);     //Recalcula
 
     indiceSala++;
 
