@@ -455,10 +455,6 @@
       ctx.fillRect(0, 0, tela.width, tela.height);
     }
 
-    function getRandomArbitrary(min, max) {
-      return Math.floor(Math.random() * (max - min)) + min;                     //Seleciona um valor entre o min e o max
-    }
-
     function loadLevel(option) {
       switch(option){
         case 0:   //Load New Level
@@ -510,13 +506,141 @@
       }
     }
 
+    /************************************************************
+     * Mapeamento de teclas pressionadas apenas durante o Jogo  *
+     * Estado = 0                                               *
+     ************************************************************/
+    function mapeamentoTecladoNoEstadoJogando(keyCode){
+      switch (keyCode) {
+        /**
+         *  Fullscreen
+         */
+        case 70:    //Letra F
+          fullscreen = !fullscreen;
+          if(fullscreen){
+            openFullscreen();
+          }
+          else{
+            closeFullscreen();
+          }
+          break;
+        case 37:
+          //if(player.up === false && player.down === false && player.right === false){
+          player.vx = -playerVel;
+          player.left = true;
+          player.sentidoMovimento = 2;
+          //}
+          break;
+        case 39:
+          //if(player.up === false && player.down === false && player.left === false){
+          player.vx = +playerVel;
+          player.right = true;
+          player.sentidoMovimento = 0;
+          //}
+
+          break;
+        case 32:  //Espaco  -- Ativa teleporte
+          for(let i = 0; i < levelAtual.rooms.length; i++){
+            if(levelAtual.rooms[i].teleporterInitial.colidiuCom2(player)){
+              levelAtual.rooms[i].teleporterInitial.teleportar(player);
+              break;
+            }
+            if(levelAtual.rooms[i].teleporterFinal.colidiuCom2(player)){
+              levelAtual.rooms[i].teleporterFinal.teleportar(player);
+              break;
+            }
+          }
+          player.moverCompleto(dt);
+          break;
+        case 17:  //Left CTRL
+          player.atacando = 1;  
+          break;
+        case 38:
+          //if(player.left === false && player.down === false && player.right === false){
+          player.vy = -playerVel;
+          player.up = true;
+          player.sentidoMovimento = 3;
+          //}
+          break;
+        case 40:
+          //if(player.left === false && player.up === false && player.right === false){
+          player.vy = +playerVel;
+          player.down = true;
+          player.sentidoMovimento = 1;
+          //}
+          break;
+        case 27:      //Pressionar o Esq === RETORNA AO MENU PRINCIPAL
+          stateMainMenu = 0;
+          limparDados();
+          estado = 1;
+          break;
+        
+        /**
+         *  Debug Mode
+         */
+        case 80:      //Pressionar a letra P
+          debugMode = debugMode + 1;
+          if(debugMode > 5){
+            debugMode = 0;
+          }
+          switch(debugMode){
+            case 0: //Padrão do jogo
+              debugMode = 0;
+              escala = 1.8;
+              MAPA_AREA = 20;
+            break;
+          }
+          break;
+        case 187:
+        case 107:      //+
+          if(debugMode >= 1){
+            escala = escala + 0.025;
+            if(escala >= 0.85)
+              MAPA_AREA = 20;
+            else{
+              if(escala > 0.3){
+                MAPA_AREA = 80;
+              }
+              else{
+                if(escala >=  0.0){
+                  MAPA_AREA = 160;
+                }
+              }
+            }
+          }
+          break;
+        case 189:
+        case 109:      //-
+          if(debugMode >= 1){
+            escala = escala - 0.025;
+            if(escala >= 0.85)
+              MAPA_AREA = 20;
+            else{
+              if(escala > 0.3){
+                MAPA_AREA = 80;
+              }
+              else{
+                if(escala >=  0.0){
+                  MAPA_AREA = 160;
+                }
+              }
+            }
+          }
+          break;
+      }
+    }
+
+    /**
+     * Mapeamento de teclas pressionadas 
+     */
+
     addEventListener("keydown", function (e) {
       //console.log(e.keyCode);
       if (estado == 0) {                              // Mapeamento do teclado -- estado "Jogando"
+        mapeamentoTecladoNoEstadoJogando(e.keyCode);  // Redireciona para a função para deixar o código mais legível
+      }
+      else {
         switch (e.keyCode) {
-          /**
-           *  Fullscreen
-           */
           case 70:    //Letra F
             fullscreen = !fullscreen;
             if(fullscreen){
@@ -525,184 +649,48 @@
             else{
               closeFullscreen();
             }
-            break;
-          case 37:
-            //if(player.up === false && player.down === false && player.right === false){
-            player.vx = -playerVel;
-            player.left = true;
-            player.sentidoMovimento = 2;
-            //}
-            break;
-          case 39:
-            //if(player.up === false && player.down === false && player.left === false){
-            player.vx = +playerVel;
-            player.right = true;
-            player.sentidoMovimento = 0;
-            //}
-
-            break;
-          case 32:  //Espaco  -- Ativa teleporte
-            for(let i = 0; i < levelAtual.rooms.length; i++){
-              if(levelAtual.rooms[i].teleporterInitial.colidiuCom2(player)){
-                levelAtual.rooms[i].teleporterInitial.teleportar(player);
-                break;
+          break;
+          case 13:    //Enter
+          case 32:    //Space bar
+            if (estado != 2) {
+              if (stateMainMenu == 0) {
+                levelAtual = new Level(widthMap, heightMap, sizeMap);
+                levelAtual.clonarLevel(levels[0]);
+                //levelAtual.updateGradeSalas();
+                player = new Player(12, "player");
+                player.map = levelAtual.mapa;
+                player.x = levelAtual.startX;
+                player.y = levelAtual.startY;
+                estado = 0;
               }
-              if(levelAtual.rooms[i].teleporterFinal.colidiuCom2(player)){
-                levelAtual.rooms[i].teleporterFinal.teleportar(player);
-                break;
+              else {
+                estado = 3;
               }
             }
-            player.moverCompleto(dt);
-            break;
-          case 17:  //Left CTRL
-            player.atacando = 1;  
             break;
           case 38:
-            //if(player.left === false && player.down === false && player.right === false){
-            player.vy = -playerVel;
-            player.up = true;
-            player.sentidoMovimento = 3;
-            //}
+            if (stateMainMenu == 1) {
+              stateMainMenu = 0;
+            }
             break;
           case 40:
-            //if(player.left === false && player.up === false && player.right === false){
-            player.vy = +playerVel;
-            player.down = true;
-            player.sentidoMovimento = 1;
-            //}
+            if (stateMainMenu == 0) {
+              stateMainMenu = 1;
+            }
             break;
-          case 27:      //Pressionar o Esq === RETORNA AO MENU PRINCIPAL
+          case 27:      //Pressionar o Esq
             stateMainMenu = 0;
             limparDados();
             estado = 1;
             break;
-          
-          /**
-           *  Debug Mode
-           */
-          case 80:      //Pressionar a letra P
-            debugMode = debugMode + 1;
-            if(debugMode > 5){
-              debugMode = 0;
-            }
-            switch(debugMode){
-              case 0: //Padrão do jogo
-                debugMode = 0;
-                escala = 1.8;
-                MAPA_AREA = 20;
-              break;
-            }
-            break;
-          case 187:
-          case 107:      //+
-            if(debugMode >= 1){
-              escala = escala + 0.025;
-              if(escala >= 0.85)
-                MAPA_AREA = 20;
-              else{
-                if(escala > 0.3){
-                  MAPA_AREA = 80;
-                }
-                else{
-                  if(escala >=  0.0){
-                    MAPA_AREA = 160;
-                  }
-                }
-              }
-            }
-            break;
-          case 189:
-          case 109:      //-
-            if(debugMode >= 1){
-              escala = escala - 0.025;
-              if(escala >= 0.85)
-                MAPA_AREA = 20;
-              else{
-                if(escala > 0.3){
-                  MAPA_AREA = 80;
-                }
-                else{
-                  if(escala >=  0.0){
-                    MAPA_AREA = 160;
-                  }
-                }
-              }
-            }
-            break;
           default:
         }
-
       }
-      else {
-        if (estado == 2) {                  // Teclas no MENU PRINCIPAL
-          switch (e.keyCode) {
-            case 70:    //Letra F
-              fullscreen = !fullscreen;
-              if(fullscreen){
-                openFullscreen();
-              }
-              else{
-                closeFullscreen();
-              }
-            break;
-            case 13:    //Enter
-              limparDados();
-              estado = 1;
-              break;
-            default:
-          }
-        }
-        else {
-          switch (e.keyCode) {
-            case 70:    //Letra F
-              fullscreen = !fullscreen;
-              if(fullscreen){
-                openFullscreen();
-              }
-              else{
-                closeFullscreen();
-              }
-            break;
-            case 13:    //Enter
-            case 32:    //Space bar
-              if (estado != 2) {
-                if (stateMainMenu == 0) {
-                  levelAtual = new Level(widthMap, heightMap, sizeMap);
-                  levelAtual.clonarLevel(levels[0]);
-                  //levelAtual.updateGradeSalas();
-                  player = new Player(12, "player");
-                  player.map = levelAtual.mapa;
-                  player.x = levelAtual.startX;
-                  player.y = levelAtual.startY;
-                  estado = 0;
-                }
-                else {
-                  estado = 3;
-                }
-              }
-              break;
-            case 38:
-              if (stateMainMenu == 1) {
-                stateMainMenu = 0;
-              }
-              break;
-            case 40:
-              if (stateMainMenu == 0) {
-                stateMainMenu = 1;
-              }
-              break;
-            case 27:      //Pressionar o Esq
-              stateMainMenu = 0;
-              limparDados();
-              estado = 1;
-              break;
-            default:
-          }
-        }
-      }
-
     });
 
+    /**
+     * Mapeamento de teclas SOLTAS 
+     */
     addEventListener("keyup", function (e) {
       if (player != null) {
         switch (e.keyCode) {
