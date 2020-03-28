@@ -460,7 +460,8 @@ Level.prototype.posicionarFireZones = function(valor){
   let indiceSala = 0;
   while(!terminouPosicionamento){
     let auxRoom = this.rooms[indiceSala];
-    let celula = auxRoom.getCellByDist(valor, 1);
+    let listaCelulas = auxRoom.getCellsByDist(valor, 1);            //auxRoom.getCellByDist(valor, 1);
+    let celula = listaCelulas[this.getRandomInt(0, listaCelulas.length)];
 
     while(celula != null){
       let auxFireZone = new FireZone();
