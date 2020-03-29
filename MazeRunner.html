@@ -102,8 +102,7 @@
     var MAPA_AREA = 20;  
     var escala = 1.8;
     var K = 1;
-    var debugMode = 0;  //  0 => Colision is detected, 1 => colision is free
-
+    var debugMode = 0; 
     var player = new Player(16, "player");
 
     var levelAtual = new Level(widthMap, heightMap, sizeMap);
@@ -140,7 +139,7 @@
       totalRock: 4, floorIndex: 0, rockIndex: 2, wallIndex: 1
     });   //new CellularAutomata(heightMap, widthMap, 2, 0.5, 13, 0, 5, 1);
     // 0 => floor
-    // 5 => rock
+    // 2 => rock
     // 1 => wall
 
     geraFase.scenarioRandomWall();
@@ -217,6 +216,9 @@
     *       5 => Dados das celulas (Inimigos):                                    *
     *             (Firezones)                                                     *
     *           - tipo (amarelo); - room (verde); - distInimigos (azul));         *
+    *       6 => Dados das celulas (Tesouros):                                    *
+    *             (Firezones)                                                     *
+    *           - tipo (amarelo); - room (verde); - distTesouros (azul));         *
     *                                                                             *
     *******************************************************************************/
 
@@ -418,6 +420,9 @@
           case 5: // Dados das celulas -- DistInimigos
             typeMode = "Mode 5 - Dados das Celulas - DistInimigos";
             break;
+          case 6: // Dados das celulas -- DistTesouros
+            typeMode = "Mode 5 - Dados das Celulas - DistTesouros";
+            break;
           default:
         }
         ctx.fillStyle = "black";
@@ -597,7 +602,7 @@
          */
         case 80:      //Pressionar a letra P
           debugMode = debugMode + 1;
-          if(debugMode > 5){
+          if(debugMode > 6){
             debugMode = 0;
           }
           switch(debugMode){

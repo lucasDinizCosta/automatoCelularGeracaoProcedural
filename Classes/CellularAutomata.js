@@ -17,22 +17,9 @@ function CellularAutomata(params = {}){
 
     this.map = this.initMap(this.HS, this.WS, this.floorIndex);
     this.map2 = this.initMap(this.HS, this.WS, this.floorIndex);
-    /*this.HS = HS;
-    this.WS = WS;
-    this.MOORE = MOORE;
-    this.r = r;
-    this.n;
-    this.totalRock = totalRock;
-    this.floorIndex = floorIndex;
-    this.rockIndex = rockIndex;
-    this.wallIndex = wallIndex;
-    this.map = this.initMap(this.HS, this.WS, this.floorIndex);
-    this.map2 = this.initMap(this.HS, this.WS, this.floorIndex);
-    this.rooms = [];*/
 }
 //CellularAutomata.prototype = new CellularAutomata();
 CellularAutomata.prototype.constructor = CellularAutomata;
-
 
 /**
  * GX => COLUNA

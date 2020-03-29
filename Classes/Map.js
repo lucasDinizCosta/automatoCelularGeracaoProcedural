@@ -7,7 +7,7 @@ function Map(w, h, s) {
     this.cell[l] = [];
     for (let c = 0; c < w; c++) {
       this.cell[l][c] = { tipo: 0, room: -3, distTeleportes: 999, distFirezones: 999,  
-        distInimigos: 999, linha: l, coluna: c};
+        distInimigos: 999, distTesouros: 999, linha: l, coluna: c};
     }
   }
 }
@@ -210,14 +210,17 @@ Map.prototype.desenharCell = function (ctx, l, c) {
   ctx.fillStyle = "blue";
 
   switch(debugMode){
-    case 3:                   //Teleportes
+    case 3:                   // Teleportes
       this.escreveTexto(ctx, this.cell[l][c].distTeleportes + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
       break;
-    case 4:                   //Firezones
+    case 4:                   // Firezones
       this.escreveTexto(ctx, this.cell[l][c].distFirezones + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
       break;
-    case 5:                   //Inimigos
+    case 5:                   // Inimigos
       this.escreveTexto(ctx, this.cell[l][c].distInimigos + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
+      break;
+    case 6:                   // Tesouros
+      this.escreveTexto(ctx, this.cell[l][c].distTesouros + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
       break;
   }
 };
