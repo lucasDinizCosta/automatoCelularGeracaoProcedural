@@ -401,8 +401,7 @@
       ctx.strokeText("Level: " + player.levelNumber, converteTelaCheia(545, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
       ctx.fillText("Level: " + player.levelNumber, converteTelaCheia(545, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
 
-      if(debugMode >= 1){
-        ctx.font = "13px Arial Black";        
+      if(debugMode >= 1){       
         let typeMode = "";
         switch(debugMode){
           case 1: // Centro do personagem e celula marcada
@@ -412,21 +411,57 @@
             typeMode = "Mode 2 - Caixa de Colisão";
             break;
           case 3: // Dados das celulas -- DistTeleportes
-            typeMode = "Mode 3 - Dados das Celulas - DistTeleportes";
+            typeMode = "Mode 3 - Distancia - Teleportes";
             break;
           case 4: // Dados das celulas -- DistFirezones
-            typeMode = "Mode 4 - Dados das Celulas - DistFirezones";
+            typeMode = "Mode 4 - Distancia - Firezones";
             break;
           case 5: // Dados das celulas -- DistInimigos
-            typeMode = "Mode 5 - Dados das Celulas - DistInimigos";
+            typeMode = "Mode 5 - Distancia - Inimigos";
             break;
           case 6: // Dados das celulas -- DistTesouros
-            typeMode = "Mode 5 - Dados das Celulas - DistTesouros";
+            typeMode = "Mode 6 - Distancia - Tesouros";
             break;
           default:
+            break;
         }
-        ctx.fillStyle = "black";
-        ctx.strokeStyle = "yellow";
+        // Desenha padrão dados celulas
+        ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+        ctx.strokeStyle = "rgba(238, 255, 0, 0.5)";
+        let infoBox = {
+          x: converteTelaCheia(500, tela.widthOld, tela.width),
+          y: converteTelaCheia(250, tela.heightOld, tela.height),
+          width: converteTelaCheia(60, tela.widthOld, tela.width),
+          height: converteTelaCheia(60, tela.heightOld, tela.height)
+        } 
+
+        ctx.fillRect(infoBox.x, infoBox.y, infoBox.width, infoBox.height);
+        ctx.strokeRect(infoBox.x, infoBox.y, infoBox.width, infoBox.height);
+
+        ctx.strokeStyle = "rgba(238, 255, 0)";
+        ctx.fillStyle = "yellow";
+        ctx.fillRect(infoBox.x + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y +  converteTelaCheia(15, tela.heightOld, tela.height), 15, 15);
+        ctx.strokeRect(infoBox.x + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y +  converteTelaCheia(15, tela.heightOld, tela.height), 15, 15);
+        ctx.fillStyle = "green";
+        ctx.fillRect(infoBox.x + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y +  converteTelaCheia(30, tela.heightOld, tela.height), 15, 15);
+        ctx.strokeRect(infoBox.x + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y +  converteTelaCheia(30, tela.heightOld, tela.height), 15, 15);
+        ctx.fillStyle = "blue";
+        ctx.fillRect(infoBox.x + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y +  converteTelaCheia(45, tela.heightOld, tela.height), 15, 15);
+        ctx.strokeRect(infoBox.x + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y +  converteTelaCheia(45, tela.heightOld, tela.height), 15, 15);
+
+        ctx.lineWidth = 2;
+        ctx.fillStyle = "rgba(238, 255, 0)";
+        ctx.strokeStyle = "rgba(0, 0, 0)";
+        ctx.font = "11px Arial Black";
+        escreveTexto(ctx, "Celula", infoBox.x + infoBox.width/2, infoBox.y + 15);
+        escreveTexto(ctx, "Tipo", infoBox.x + infoBox.width/2 + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y + converteTelaCheia(15, tela.heightOld, tela.height) + 12);
+        escreveTexto(ctx, "Room", infoBox.x + infoBox.width/2 + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y + converteTelaCheia(30, tela.heightOld, tela.height) + 12);
+        escreveTexto(ctx, "Distancia", infoBox.x + infoBox.width/2 + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y + converteTelaCheia(45, tela.heightOld, tela.height) + 12);
+        
+        // Desenha menu lateral debaixo
+        ctx.font = "13px Arial Black"; 
+        ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+        ctx.strokeStyle = "rgba(238, 255, 0, 0.5)";
         ctx.fillRect(converteTelaCheia(5, tela.widthOld, tela.width), converteTelaCheia(310, tela.heightOld, tela.height), converteTelaCheia(555, tela.widthOld, tela.width), converteTelaCheia(37, tela.heightOld, tela.height));
         ctx.strokeRect(converteTelaCheia(5, tela.widthOld, tela.width), converteTelaCheia(310, tela.heightOld, tela.height), converteTelaCheia(555, tela.widthOld, tela.width), converteTelaCheia(37, tela.heightOld, tela.height));
         ctx.strokeStyle = "black";
@@ -447,6 +482,11 @@
         ctx.strokeText("Teleporte Inicial Level: [" + (levelAtual.teleporteFinalLevel.gy) + "][" + (levelAtual.teleporteFinalLevel.gx) + "]", converteTelaCheia(tela.widthOld/2, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
         ctx.fillText("Teleporte Inicial Level: [" + (levelAtual.teleporteFinalLevel.gy) + "][" + (levelAtual.teleporteFinalLevel.gx) + "]", converteTelaCheia(tela.widthOld/2, tela.widthOld, tela.width), converteTelaCheia(340, tela.heightOld, tela.height));
       }
+    }
+    
+    function escreveTexto (ctx, texto, x, y) {
+      ctx.strokeText(texto, x, y);
+      ctx.fillText(texto, x, y);
     }
 
     // Conversão de escalas para o canvas ocupando a tela toda
