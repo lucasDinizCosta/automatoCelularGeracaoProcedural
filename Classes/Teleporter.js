@@ -58,48 +58,56 @@ Teleporter.prototype.teleportar = function(player){
 Teleporter.prototype.desenhar = function(ctx){
   switch(this.type){
     case 0:                     // Início de fase
-      ctx.strokeStyle = "dark green";
-      ctx.fillStyle = "green";
-      ctx.linewidth = 10;
-      ctx.save();
-      ctx.globalAlpha = 0.40;         //Transparência
-      ctx.translate(this.x, this.y);
-      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.restore();
+      {
+        ctx.strokeStyle = "dark green";
+        ctx.fillStyle = "green";
+        ctx.linewidth = 10;
+        ctx.save();
+        ctx.globalAlpha = 0.40;         //Transparência
+        ctx.translate(this.x, this.y);
+        ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
+        ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
+        ctx.restore();
+      }
       break;
     case 1:                     // Final de fase
-      ctx.strokeStyle = "purple";
-      ctx.fillStyle = "rgb(84, 98, 139)";
-      ctx.linewidth = 10;
-      ctx.save();
-      ctx.globalAlpha = 0.60;         //Transparência
-      ctx.translate(this.x, this.y);
-      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.restore();
+      {
+        ctx.strokeStyle = "purple";
+        ctx.fillStyle = "rgb(84, 98, 139)";
+        ctx.linewidth = 10;
+        ctx.save();
+        ctx.globalAlpha = 0.60;         //Transparência
+        ctx.translate(this.x, this.y);
+        ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
+        ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
+        ctx.restore(); 
+      }
       break;
     case 2:                           // Teleporte Inicial room
-      ctx.strokeStyle = "dark blue";
-      ctx.fillStyle = "blue";
-      ctx.linewidth = 10;
-      ctx.save(); 
-      ctx.globalAlpha = 0.60;         //Transparência
-      ctx.translate(this.x, this.y);
-      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.restore();
+      {
+        ctx.strokeStyle = "dark blue";
+        ctx.fillStyle = "blue";
+        ctx.linewidth = 10;
+        ctx.save(); 
+        ctx.globalAlpha = 0.60;         //Transparência
+        ctx.translate(this.x, this.y);
+        ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
+        ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
+        ctx.restore();
+      }
       break;
     case 3:                         // Teleporte final room
-      ctx.strokeStyle = "Yellow";
-      ctx.fillStyle = "Orange";
-      ctx.linewidth = 10;
-      ctx.save();
-      ctx.globalAlpha = 0.40;         //Transparência
-      ctx.translate(this.x, this.y);
-      ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
-      ctx.restore();
+      { 
+        ctx.strokeStyle = "Yellow";
+        ctx.fillStyle = "Orange";
+        ctx.linewidth = 10;
+        ctx.save();
+        ctx.globalAlpha = 0.40;         //Transparência
+        ctx.translate(this.x, this.y);
+        ctx.fillRect(-this.s/2, -this.s/2, this.s, this.s);
+        ctx.strokeRect(-this.s/2, -this.s/2, this.s, this.s);
+        ctx.restore();
+      }
       break;
     default:
       console.log("Sprite type is wrong!!!");

@@ -173,76 +173,8 @@ Map.prototype.desenhar = function (ctx) {
         case 1:   // Bloqueado -- Muro
           assetsMng.drawSize(ctx, "brick_gray", c * this.s, l * this.s, this.s, this.s);
           break;
-        case 2:   // Local de saida
-          ctx.strokeStyle = "darkBlue";
-          ctx.fillStyle = "lightBlue";
-          ctx.linewidth = 10;
-          ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
-          ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
-          break;
-        case 3:   // local de chegada
-          ctx.strokeStyle = "Yellow";
-          ctx.fillStyle = "orange";
-          ctx.linewidth = 10;
-          assetsMng.drawSize(ctx, "floor_sand", c * this.s, l * this.s, this.s, this.s);
-          ctx.save();
-          ctx.globalAlpha = 0.40;         //Transparência
-          ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
-          ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
-          ctx.restore();
-        case 4:   // Tesouro a pegar
-          assetsMng.drawSize(ctx, "floor_sand", c * this.s, l * this.s, this.s, this.s);
-          ctx.fillStyle = "yellow";
-          ctx.strokeStyle = "grey";
-          ctx.fillRect(c * this.s + this.s / 3, l * this.s + this.s / 3, this.s / 3, this.s / 3);
-          ctx.strokeRect(c * this.s + this.s / 3, l * this.s + this.s / 3, this.s / 3, this.s / 3);
-          break;
-        case 5:   // Caverna
+        case 2:   // Caverna
           assetsMng.drawClipSize(ctx, "rockBlock", 0, 0, 32, 32, c * this.s, l * this.s, this.s, this.s);
-          break;
-        case 6:   // areaSafe - Recuperar a energia
-          ctx.strokeStyle = "Yellow";
-          ctx.fillStyle = "orange";
-          ctx.linewidth = 10;
-          assetsMng.drawSize(ctx, "floor_sand", c * this.s, l * this.s, this.s, this.s);
-          ctx.save();
-          ctx.globalAlpha = 0.40;         //Transparência
-          ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
-          ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
-          ctx.restore();
-          break;
-        case 7:   // Teleporte
-          ctx.strokeStyle = "darkGreen";
-          ctx.fillStyle = "lightGreen";
-          ctx.linewidth = 10;
-          //assetsMng.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
-          ctx.save();
-          ctx.globalAlpha = 0.40;         //Transparência
-          ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
-          ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
-          ctx.restore();
-          break;
-        case 8:   //Bloco lento
-          ctx.strokeStyle = "purple";
-          ctx.fillStyle = "purple";
-          ctx.linewidth = 10;
-          //assetsMng.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
-          ctx.save();
-          ctx.globalAlpha = 0.60;         //Transparência
-          ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
-          ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
-          ctx.restore();
-          break;
-        case 9:   //Bloqueio com espinho
-          //assetsMng.drawSize(ctx, "sandGround", c*this.s, l*this.s, this.s, this.s);
-          //assetsMng.drawSize(ctx, "tijoloEspinho", c*this.s, l*this.s, this.s, this.s);
-          break;
-        case 10:  //Posição do inimigo    
-          ctx.strokeStyle = "darkgrey";
-          ctx.fillStyle = "grey";
-          ctx.linewidth = 10;
-          ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
-          ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
           break;
         default:
           console.log("Wrong index map element");

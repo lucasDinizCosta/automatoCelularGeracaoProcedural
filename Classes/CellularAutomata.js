@@ -1,5 +1,23 @@
-function CellularAutomata(HS, WS, MOORE = 1, r = 0.5, totalRock = 5, floorIndex = 0, rockIndex = 1, wallIndex = 2){
-    this.HS = HS;
+function CellularAutomata(params = {}){
+    let estruturaPadrao = {
+        HS: 0,
+        WS: 0,
+        MOORE: 1,
+        r: 0.5,
+        totalRock: 5,
+        floorIndex: 0,
+        rockIndex: 1,
+        wallIndex: 2,
+        map: null, 
+        map2: null, 
+        rooms: []
+    }
+
+    Object.assign(this, estruturaPadrao, params);
+
+    this.map = this.initMap(this.HS, this.WS, this.floorIndex);
+    this.map2 = this.initMap(this.HS, this.WS, this.floorIndex);
+    /*this.HS = HS;
     this.WS = WS;
     this.MOORE = MOORE;
     this.r = r;
@@ -10,7 +28,7 @@ function CellularAutomata(HS, WS, MOORE = 1, r = 0.5, totalRock = 5, floorIndex 
     this.wallIndex = wallIndex;
     this.map = this.initMap(this.HS, this.WS, this.floorIndex);
     this.map2 = this.initMap(this.HS, this.WS, this.floorIndex);
-    this.rooms = [];
+    this.rooms = [];*/
 }
 //CellularAutomata.prototype = new CellularAutomata();
 CellularAutomata.prototype.constructor = CellularAutomata;

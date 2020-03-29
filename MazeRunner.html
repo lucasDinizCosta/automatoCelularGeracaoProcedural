@@ -135,7 +135,10 @@
     /**
       METODO DA MATRIZ TOTAL
     */
-    var geraFase = new CellularAutomata(heightMap, widthMap, 1, 0.5, 4, 0, 5, 1);//new CellularAutomata(heightMap, widthMap, 2, 0.5, 13, 0, 5, 1);
+    var geraFase = new CellularAutomata({
+      HS: heightMap, WS: widthMap, MOORE: 1, r: 0.5, 
+      totalRock: 4, floorIndex: 0, rockIndex: 2, wallIndex: 1
+    });   //new CellularAutomata(heightMap, widthMap, 2, 0.5, 13, 0, 5, 1);
     // 0 => floor
     // 5 => rock
     // 1 => wall
