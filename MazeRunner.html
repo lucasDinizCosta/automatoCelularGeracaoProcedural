@@ -167,7 +167,14 @@
     levels[0].posicionarPlayer(player);
     levels[0].atualizaMatrizDistancias();       // Em relação aos teleportes inicial da fase e de cada sala
     levels[0].posicionarFireZones(25);          // Posiciona acima de 25 na distancia de firezones
-    levels[0].posicionarTesouros({porcentagem: 80, qtdTesouros: 2});          // Posiciona acima de 25 na distancia de firezones
+    levels[0].posicionarTesouros({
+      porcentagemDistancia: 80, qtdTesouros: 0, porcentagemTesourosPorSala: 8
+
+      /*
+       * qtdTesouros: 0 ==> Posiciona de acordo com o tamanho da sala
+       *
+       */ 
+    });          // Posiciona acima de 25 na distancia de firezones
 
     levels[0].setTempo(10, 125);                // 10 segundos
     levels[0].tesouros = 3;

@@ -8,7 +8,6 @@ Treasure.prototype = new Sprite();              // Define que o Player é um Spr
 Treasure.prototype.constructor = Treasure;
 
 Treasure.prototype.desenhar = function(ctx){
-    //ctx.fillRect(this.x - this.s/2, this.y - this.s/2, this.s, this.s);
     ctx.fillStyle = "yellow";
     ctx.strokeStyle = "black";
     ctx.linewidth = 1;

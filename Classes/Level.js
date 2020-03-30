@@ -535,30 +535,61 @@ Level.prototype.posicionarFireZonesTeleportes = function(valor){
 
 Level.prototype.posicionarTesouros = function(params){
 
-  let terminouPosicionamento = false;
-  let indiceSala = 0;
-  while(!terminouPosicionamento){
-    let auxRoom = this.rooms[indiceSala];
-    let listaCelulas = auxRoom.getEmptyCellsByPercentageBetweenMaxDist({option: 3, porcentagem: params.porcentagem});            //auxRoom.getCellByDist(valor, 1);
-    let celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
+  if(params.porcentagemTesourosPorSala != 0){     // Utiliza o tamanho da sala como referencia posicionar os elementos
+    let terminouPosicionamento = false;
+    let indiceSala = 0;
+    while(!terminouPosicionamento){
+      let auxRoom = this.rooms[indiceSala];
+      let listaCelulas = auxRoom.getEmptyCellsByPercentageBetweenMaxDist({option: 3, porcentagem: params.porcentagemDistancia});            //auxRoom.getCellByDist(valor, 1);
+      let celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
+      let qtdTesouros = Math.ceil((params.porcentagemTesourosPorSala * auxRoom.blocks.length)/100);   // Número de tesouros varia conforme o tamanho da sala
 
-    for(let i = 0; i < params.qtdTesouros; i++){
-      let auxTreasure = new Treasure();
-      auxTreasure.gx = celula.coluna;
-      auxTreasure.gy = celula.linha;
-      auxTreasure.x = celula.coluna * this.mapa.s + this.mapa.s/2;
-      auxTreasure.y = celula.linha * this.mapa.s + this.mapa.s/2;
-      auxTreasure.map = this.mapa;
-      auxRoom.treasures.push(auxTreasure);
-      this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 3);     // Recalcula
-      listaCelulas = auxRoom.getEmptyCellsByPercentageBetweenMaxDist({option: 3, porcentagem: params.porcentagem});     // Nova lista de celulas disponiveis         //auxRoom.getCellByDist(valor, 1);
-      celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
+      for(let i = 0; i < qtdTesouros; i++){
+        let auxTreasure = new Treasure();
+        auxTreasure.gx = celula.coluna;
+        auxTreasure.gy = celula.linha;
+        auxTreasure.x = celula.coluna * this.mapa.s + this.mapa.s/2;
+        auxTreasure.y = celula.linha * this.mapa.s + this.mapa.s/2;
+        auxTreasure.map = this.mapa;
+        auxRoom.treasures.push(auxTreasure);
+        this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 3);     // Recalcula
+        listaCelulas = auxRoom.getEmptyCellsByPercentageBetweenMaxDist({option: 3, porcentagem: params.porcentagemDistancia});     // Nova lista de celulas disponiveis         //auxRoom.getCellByDist(valor, 1);
+        celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
+      }
+
+      indiceSala++;
+
+      if(indiceSala >= this.rooms.length){
+        terminouPosicionamento = true;
+      }
     }
+  }
+  else{                             // Posiciona uma quantidade fixa de tesouros em cada sala
+    let terminouPosicionamento = false;
+    let indiceSala = 0;
+    while(!terminouPosicionamento){
+      let auxRoom = this.rooms[indiceSala];
+      let listaCelulas = auxRoom.getEmptyCellsByPercentageBetweenMaxDist({option: 3, porcentagem: params.porcentagemDistancia});            //auxRoom.getCellByDist(valor, 1);
+      let celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
 
-    indiceSala++;
+      for(let i = 0; i < params.qtdTesouros; i++){
+        let auxTreasure = new Treasure();
+        auxTreasure.gx = celula.coluna;
+        auxTreasure.gy = celula.linha;
+        auxTreasure.x = celula.coluna * this.mapa.s + this.mapa.s/2;
+        auxTreasure.y = celula.linha * this.mapa.s + this.mapa.s/2;
+        auxTreasure.map = this.mapa;
+        auxRoom.treasures.push(auxTreasure);
+        this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 3);     // Recalcula
+        listaCelulas = auxRoom.getEmptyCellsByPercentageBetweenMaxDist({option: 3, porcentagem: params.porcentagemDistancia});     // Nova lista de celulas disponiveis         //auxRoom.getCellByDist(valor, 1);
+        celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
+      }
 
-    if(indiceSala >= this.rooms.length){
-      terminouPosicionamento = true;
+      indiceSala++;
+
+      if(indiceSala >= this.rooms.length){
+        terminouPosicionamento = true;
+      }
     }
   }
 }
