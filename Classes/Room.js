@@ -59,6 +59,14 @@ Room.prototype.getCellByDist = function(value, option){
             }
             return null;                // Não encontrou nenhuma celula com a distancia determinada
             break;
+        case 3:             // Tesouros
+            for(let i = 0; i < this.blocks.length; i++){
+                if(this.blocks[i].distTesouros == value){
+                    return this.blocks[i];
+                }
+            }
+            return null;                // Não encontrou nenhuma celula com a distancia determinada
+            break;
     }
 }
 
@@ -75,14 +83,21 @@ Room.prototype.getCellsByDist = function(value, option){
             break;
         case 1:             // Firezones
             for(let i = 0; i < this.blocks.length; i++){
-                if(this.blocks[i].distFirezones == value){
+                if(this.blocks[i].distFirezones >= value){
                     listCells.push(this.blocks[i]);
                 }
             }
             break;
         case 2:             // Inimigos
             for(let i = 0; i < this.blocks.length; i++){
-                if(this.blocks[i].distInimigos == value){
+                if(this.blocks[i].distInimigos >= value){
+                    listCells.push(this.blocks[i]);
+                }
+            }
+            break;
+        case 3:             // Tesouros
+            for(let i = 0; i < this.blocks.length; i++){
+                if(this.blocks[i].distTesouros >= value){
                     listCells.push(this.blocks[i]);
                 }
             }
@@ -122,19 +137,28 @@ Room.prototype.getMaxDist = function(option){
                 }
             }
             break;
+        case 3:                     // Tesouros
+            for(let i = 0; i < this.blocks.length; i++){
+                let bloco = this.blocks[i];
+                if(bloco.distTesouros >= value){
+                    value = bloco.distTesouros;
+                }
+            }
+            break;
     }
     return value;
 }
 
-
-// Desenha os teleportes e as coneções entre eles
+// Desenha os teleportes e as conexões entre eles
 Room.prototype.draw = function(ctx){
     for(let i = 0; i < this.fireZones.length; i++){
         this.fireZones[i].desenhar(ctx);
-        this.fireZones[i].mover(0.16);          //FIXME gol de mão
+        this.fireZones[i].mover(0.16);          //FIXME gol de mão ==== Animação do fogo
     }    
     this.teleporterInitial.desenhar(ctx);    
     this.teleporterFinal.desenhar(ctx);
+    
+    // Ligação entre os teleportes
     if(debugMode == 1){
         ctx.save();
         ctx.strokeStyle = "black";                              // linha de acabamento preta pra facilitar a visualização

@@ -398,16 +398,9 @@ Level.prototype.dadosSalas = function(){
  * Posiciona o player e os teleportes de inicio e final de fase
  */
 Level.prototype.posicionarPlayer = function(p){
-
-  this.startGX = this.teleporteInicioLevel.gx;
-  this.startGY = this.teleporteInicioLevel.gy;
-  this.startX = this.mapa.s * this.startGX + p.s;
-  this.startY = this.mapa.s * this.startGY + p.s;
-
-  this.finishGX = this.teleporteFinalLevel.gx;
-  this.finishGY = this.teleporteFinalLevel.gy;
-  this.finishX = this.mapa.s * this.finishGX + p.s;
-  this.finishY = this.mapa.s * this.finishGY + p.s;
+  p.map = this.mapa;
+  p.x = this.teleporteInicioLevel.x;
+  p.y = this.teleporteInicioLevel.y;
 }
 
 /********************************
@@ -419,10 +412,15 @@ Level.prototype.atualizaMatrizDistancias = function(){
     if(i == (this.teleporteInicioLevel.roomNumber - 1)){
       this.mapa.atualizaDist(this.teleporteInicioLevel.gy, this.teleporteInicioLevel.gx, 0, 1);                   // Firezones
       this.mapa.atualizaDist(this.teleporteInicioLevel.gy, this.teleporteInicioLevel.gx, 0, 2);                   // Inimigos
+      this.mapa.atualizaDist(this.teleporteInicioLevel.gy, this.teleporteInicioLevel.gx, 0, 3);                   // Tesouros
+      this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 1);     // Firezones
+      this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 2);     // Inimigos
+      this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 3);     // Tesouros
     }
     else{
       this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 1);     // Firezones
       this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 2);     // Inimigos
+      this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 3);     // Tesouros
     }
     
   }
@@ -523,6 +521,40 @@ Level.prototype.posicionarFireZonesTeleportes = function(valor){
     auxFireZone.map = this.mapa;
     auxRoom.fireZones.push(auxFireZone);
     this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 1);     //Recalcula
+
+    indiceSala++;
+
+    if(indiceSala >= this.rooms.length){
+      terminouPosicionamento = true;
+    }
+  }
+}
+
+/**
+ * Tesouros
+ */
+
+Level.prototype.posicionarTesouros = function(valor){
+
+  //Posiciona na primeira distancia 35 e depois recalcula
+  let terminouPosicionamento = false;
+  let indiceSala = 0;
+  while(!terminouPosicionamento){
+    let auxRoom = this.rooms[indiceSala];
+    let listaCelulas = auxRoom.getCellsByDist(valor, 3);            //auxRoom.getCellByDist(valor, 1);
+    let celula = listaCelulas[this.getRandomInt(0, listaCelulas.length)];
+
+    while(celula != null){
+      let auxFireZone = new FireZone();
+      auxFireZone.gx = celula.coluna;
+      auxFireZone.gy = celula.linha;
+      auxFireZone.x = celula.coluna * this.mapa.s + auxFireZone.s/2;
+      auxFireZone.y = celula.linha * this.mapa.s + auxFireZone.s/2;
+      auxFireZone.map = this.mapa;
+      auxRoom.fireZones.push(auxFireZone);
+      this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 1);     //Recalcula
+      celula = auxRoom.getCellByDist(valor, 1);                     // valor, codigo para firezones
+    }
 
     indiceSala++;
 

@@ -508,9 +508,7 @@
       levelAtual = new Level(widthMap, heightMap, sizeMap);
       levelAtual.clonarLevel(levels[0]);
       player = new Player(12, "player");
-      player.map = levelAtual.mapa;
-      player.x = levelAtual.teleporteInicioLevel.x;
-      player.y = levelAtual.teleporteInicioLevel.y;
+      levelAtual.posicionarPlayer(player);
     }
 
     function limparTela() {
@@ -527,21 +525,16 @@
           }
           else {
             levelAtual.clonarLevel(levels[player.levelNumber - 1]);
-            player.map = levelAtual.mapa;
-            player.x = levelAtual.teleporteInicioLevel.x;
-            player.y = levelAtual.teleporteInicioLevel.y;
+            levelAtual.posicionarPlayer(player);
             estado = 0;
           }
           break;
         case 1:   //Reload
           levelAtual.clonarLevel(levels[player.levelNumber - 1]);
-          player.map = levelAtual.mapa;
-          player.x = levelAtual.teleporteInicioLevel.x + levelAtual.mapa.s/2;
-          player.y = levelAtual.teleporteInicioLevel.y + levelAtual.mapa.s/2;
+          levelAtual.posicionarPlayer(player);
           estado = 0;
           break;
       }
-      
     }
 
     //FullScreen
@@ -602,7 +595,6 @@
           player.right = true;
           player.sentidoMovimento = 0;
           //}
-
           break;
         case 32:  //Espaco  -- Ativa teleporte
           for(let i = 0; i < levelAtual.rooms.length; i++){
@@ -722,9 +714,7 @@
                 levelAtual = new Level(widthMap, heightMap, sizeMap);
                 levelAtual.clonarLevel(levels[0]);
                 player = new Player(12, "player");
-                player.map = levelAtual.mapa;
-                player.x = levelAtual.teleporteInicioLevel.x;
-                player.y = levelAtual.teleporteInicioLevel.y;
+                levelAtual.posicionarPlayer(player);
                 estado = 0;
               }
               else {
