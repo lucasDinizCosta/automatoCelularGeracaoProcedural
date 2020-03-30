@@ -6,6 +6,7 @@ function Room(number){
     this.endingLevel;                                   // Teleportador que termina a fase
     this.beginLevel;                                    // Teleportador que Inicia a fase
     this.fireZones = [];                                // Area para a recarga do tempo
+    this.treasures = [];                                // Lista de tesouros
 }
 
 //Room.prototype = new Room();

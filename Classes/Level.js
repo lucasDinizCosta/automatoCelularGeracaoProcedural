@@ -1,16 +1,7 @@
 function Level(w, h, s) {
   this.mapa = new Map(w,h,s);
   this.rooms = [];
-  this.tesouros = 0;
-  this.minas = 0;
-  this.startX = 0;
-  this.startY = 0;
-  this.startGX = 0;
-  this.startGY = 0;
-  this.finishX = 0;
-  this.finishY = 0;
-  this.finishGX = 0;
-  this.finishGY = 0;
+  this.tesouros = [];
   this.tempoFase = 0;
   this.tempoTotal = 0;
   this.taxaDiminuicaoTempo = 0;
@@ -18,7 +9,6 @@ function Level(w, h, s) {
   this.inimigos = [];
   this.teleporteInicioLevel = new Teleporter(0);         //(Inicio) mapa
   this.teleporteFinalLevel  = new Teleporter(1);        //(Final) mapa
-  this.itens = [];
 };
 
 /**
@@ -63,20 +53,12 @@ Level.prototype.clonarLevel= function(level){
       this.mapa.cell[l][c].distTeleportes = level.mapa.cell[l][c].distTeleportes;
       this.mapa.cell[l][c].distFirezones = level.mapa.cell[l][c].distFirezones;
       this.mapa.cell[l][c].distInimigos = level.mapa.cell[l][c].distInimigos;
+      this.mapa.cell[l][c].distTesouros = level.mapa.cell[l][c].distTesouros;
       this.mapa.cell[l][c].linha = level.mapa.cell[l][c].linha;
       this.mapa.cell[l][c].coluna = level.mapa.cell[l][c].coluna;
     }
   }
   this.tesouros = level.tesouros;
-  this.minas = level.minas;
-  this.startX = level.startX;
-  this.startY = level.startY;
-  this.startGX = level.startGX;
-  this.startGY = level.startGY;
-  this.finishX = level.finishX;
-  this.finishY = level.finishY;
-  this.finishGX = level.finishGX;
-  this.finishGY = level.finishGY;
   this.stateCollectedItens = level.stateCollectedItens;
   this.tempoFase = level.tempoFase;
   this.tempoTotal = level.tempoTotal;
@@ -84,12 +66,8 @@ Level.prototype.clonarLevel= function(level){
   this.teleporteInicioLevel.copyTeleporte(level.teleporteInicioLevel);
   this.teleporteFinalLevel.copyTeleporte(level.teleporteFinalLevel);
   this.inimigos.length = 0;  
-  this.itens.length = 0;
   for (var i = 0; i < level.inimigos.length; i++) {
     this.inimigos.push(level.inimigos[i]);
-  }
-  for (var i = 0; i < level.itens.length; i++) {
-    this.itens.push(level.itens[i]);
   }
   this.copiaSalasComReferencia(level.rooms);
 }

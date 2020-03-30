@@ -425,6 +425,7 @@
           default:
             break;
         }
+
         // Desenha padrão dados celulas
         ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
         ctx.strokeStyle = "rgba(238, 255, 0, 0.5)";
@@ -457,7 +458,7 @@
         escreveTexto(ctx, "Tipo", infoBox.x + infoBox.width/2 + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y + converteTelaCheia(15, tela.heightOld, tela.height) + 12);
         escreveTexto(ctx, "Room", infoBox.x + infoBox.width/2 + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y + converteTelaCheia(30, tela.heightOld, tela.height) + 12);
         escreveTexto(ctx, "Distancia", infoBox.x + infoBox.width/2 + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y + converteTelaCheia(45, tela.heightOld, tela.height) + 12);
-        
+
         // Desenha menu lateral debaixo
         ctx.font = "13px Arial Black"; 
         ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
@@ -508,8 +509,8 @@
       levelAtual.clonarLevel(levels[0]);
       player = new Player(12, "player");
       player.map = levelAtual.mapa;
-      player.x = levelAtual.startX;
-      player.y = levelAtual.startY;
+      player.x = levelAtual.teleporteInicioLevel.x;
+      player.y = levelAtual.teleporteInicioLevel.y;
     }
 
     function limparTela() {
@@ -525,16 +526,18 @@
             estado = 1;
           }
           else {
-            player.x = levels[player.levelNumber - 1].startX;
-            player.y = levels[player.levelNumber - 1].startY;
             levelAtual.clonarLevel(levels[player.levelNumber - 1]);
+            player.map = levelAtual.mapa;
+            player.x = levelAtual.teleporteInicioLevel.x;
+            player.y = levelAtual.teleporteInicioLevel.y;
             estado = 0;
           }
           break;
         case 1:   //Reload
-          player.x = levels[player.levelNumber - 1].startX;
-          player.y = levels[player.levelNumber - 1].startY;
           levelAtual.clonarLevel(levels[player.levelNumber - 1]);
+          player.map = levelAtual.mapa;
+          player.x = levelAtual.teleporteInicioLevel.x + levelAtual.mapa.s/2;
+          player.y = levelAtual.teleporteInicioLevel.y + levelAtual.mapa.s/2;
           estado = 0;
           break;
       }
@@ -718,11 +721,10 @@
               if (stateMainMenu == 0) {
                 levelAtual = new Level(widthMap, heightMap, sizeMap);
                 levelAtual.clonarLevel(levels[0]);
-                //levelAtual.updateGradeSalas();
                 player = new Player(12, "player");
                 player.map = levelAtual.mapa;
-                player.x = levelAtual.startX;
-                player.y = levelAtual.startY;
+                player.x = levelAtual.teleporteInicioLevel.x;
+                player.y = levelAtual.teleporteInicioLevel.y;
                 estado = 0;
               }
               else {

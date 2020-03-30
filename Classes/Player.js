@@ -125,15 +125,13 @@ Player.prototype.tratarAnimacao = function(){
 }
 
 Player.prototype.desenhar = function(ctx){
-  //this.sprite.desenhar(ctx);
   ctx.linewidth = 1;
-  ctx.fillStyle = "rgba(10,10,10,0.4)";
-  ctx.strokeStyle = "rgba(10,10,10,0.4)";
+  ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
+  ctx.strokeStyle = "rgba(10, 10, 10, 0.4)";
   ctx.save();
   ctx.translate(this.x, this.y);
   ctx.beginPath();
   ctx.ellipse(-this.s/2+1, -this.s/4+2, this.s-2, this.s/2-2, 0, 0, 2*Math.PI, false);
-  //ctx.ellipse(this.s/2, this.s/4, this.s, this.s/2, 0, 0, 2*Math.PI, false);
   ctx.closePath();
   ctx.fill();
   ctx.stroke();
