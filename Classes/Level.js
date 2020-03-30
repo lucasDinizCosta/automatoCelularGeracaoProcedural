@@ -422,7 +422,6 @@ Level.prototype.atualizaMatrizDistancias = function(){
       this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 2);     // Inimigos
       this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 3);     // Tesouros
     }
-    
   }
 }
 
@@ -437,7 +436,7 @@ Level.prototype.posicionarFireZones = function(valor){
   while(!terminouPosicionamento){
     let auxRoom = this.rooms[indiceSala];
     let listaCelulas = auxRoom.getCellsByDist(valor, 1);            //auxRoom.getCellByDist(valor, 1);
-    let celula = listaCelulas[this.getRandomInt(0, listaCelulas.length)];
+    let celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
 
     while(celula != null){
       let auxFireZone = new FireZone();
@@ -534,26 +533,26 @@ Level.prototype.posicionarFireZonesTeleportes = function(valor){
  * Tesouros
  */
 
-Level.prototype.posicionarTesouros = function(valor){
+Level.prototype.posicionarTesouros = function(params){
 
-  //Posiciona na primeira distancia 35 e depois recalcula
   let terminouPosicionamento = false;
   let indiceSala = 0;
   while(!terminouPosicionamento){
     let auxRoom = this.rooms[indiceSala];
-    let listaCelulas = auxRoom.getCellsByDist(valor, 3);            //auxRoom.getCellByDist(valor, 1);
-    let celula = listaCelulas[this.getRandomInt(0, listaCelulas.length)];
+    let listaCelulas = auxRoom.getEmptyCellsByPercentageBetweenMaxDist({option: 3, porcentagem: params.porcentagem});            //auxRoom.getCellByDist(valor, 1);
+    let celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
 
-    while(celula != null){
-      let auxFireZone = new FireZone();
-      auxFireZone.gx = celula.coluna;
-      auxFireZone.gy = celula.linha;
-      auxFireZone.x = celula.coluna * this.mapa.s + auxFireZone.s/2;
-      auxFireZone.y = celula.linha * this.mapa.s + auxFireZone.s/2;
-      auxFireZone.map = this.mapa;
-      auxRoom.fireZones.push(auxFireZone);
-      this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 1);     //Recalcula
-      celula = auxRoom.getCellByDist(valor, 1);                     // valor, codigo para firezones
+    for(let i = 0; i < params.qtdTesouros; i++){
+      let auxTreasure = new Treasure();
+      auxTreasure.gx = celula.coluna;
+      auxTreasure.gy = celula.linha;
+      auxTreasure.x = celula.coluna * this.mapa.s + this.mapa.s/2;
+      auxTreasure.y = celula.linha * this.mapa.s + this.mapa.s/2;
+      auxTreasure.map = this.mapa;
+      auxRoom.treasures.push(auxTreasure);
+      this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 3);     // Recalcula
+      listaCelulas = auxRoom.getEmptyCellsByPercentageBetweenMaxDist({option: 3, porcentagem: params.porcentagem});     // Nova lista de celulas disponiveis         //auxRoom.getCellByDist(valor, 1);
+      celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
     }
 
     indiceSala++;

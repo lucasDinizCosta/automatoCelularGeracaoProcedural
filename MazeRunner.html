@@ -10,13 +10,14 @@
   <script src="Classes/Sprite.js"></script>
   <script src="Classes/Player.js"></script>
   <script src="Classes/Teleporter.js"></script>
+  <script src="Classes/Treasure.js"></script>
+  <script src="Classes/FireZone.js"></script>
   <!--
     <script src="Classes/ImageLibrary.js"></script>
     <script src="Classes/AudioLibrary.js"></script>
   -->
   <script src="Classes/AssetsManager.js"></script>
   <script src="Classes/CellularAutomata.js"></script>
-  <script src="Classes/FireZone.js"></script>
   <script src="Classes/SeedGenerator.js"></script>
 
   <link rel="stylesheet" href="CSS/default.css">
@@ -166,6 +167,7 @@
     levels[0].posicionarPlayer(player);
     levels[0].atualizaMatrizDistancias();       // Em relação aos teleportes inicial da fase e de cada sala
     levels[0].posicionarFireZones(25);          // Posiciona acima de 25 na distancia de firezones
+    levels[0].posicionarTesouros({porcentagem: 80, qtdTesouros: 2});          // Posiciona acima de 25 na distancia de firezones
 
     levels[0].setTempo(10, 125);                // 10 segundos
     levels[0].tesouros = 3;

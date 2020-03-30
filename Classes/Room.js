@@ -7,6 +7,7 @@ function Room(number){
     this.beginLevel;                                    // Teleportador que Inicia a fase
     this.fireZones = [];                                // Area para a recarga do tempo
     this.treasures = [];                                // Lista de tesouros
+    this.enemies = [];                                  // Lista de inimigos
 }
 
 //Room.prototype = new Room();
@@ -107,6 +108,67 @@ Room.prototype.getCellsByDist = function(value, option){
     return listCells;
 }
 
+// Retorma somente celulas que não tem nenhum outro elemento
+// Procura LISTA de celulas da sala que possui distancia DENTRO DO INTERVALO DA MAIOR DISTANCIA
+Room.prototype.getEmptyCellsByPercentageBetweenMaxDist = function(params){
+    let listCells = [];
+    let maxDist;
+    let minimalValue;                                   // Menor elemento dentro da porcentagem correspondente
+    switch(params.option){
+        case 0:             // Teleportes
+            maxDist = this.getMaxDist(0);
+            minimalValue =  Math.floor((params.porcentagem * maxDist)/100);                 // Menor elemento no intervalo
+            for(let i = 0; i < this.blocks.length; i++){
+                if(this.blocks[i].distFirezones !== 0 && this.blocks[i].distInimigos !== 0 
+                    && this.blocks[i].distTesouros !== 0){   // Descarta celulas com outros elementos
+                    if(this.blocks[i].distTeleportes >= minimalValue){
+                        listCells.push(this.blocks[i]);
+                    }
+                }
+            }
+            break;
+        case 1:             // Firezones
+            maxDist = this.getMaxDist(1);
+            minimalValue =  Math.floor((params.porcentagem * maxDist)/100);                 // Menor elemento no intervalo
+            for(let i = 0; i < this.blocks.length; i++){
+                if(this.blocks[i].distTeleportes !== 0 && this.blocks[i].distInimigos !== 0 
+                    && this.blocks[i].distTesouros !== 0){   // Descarta celulas com outros elementos
+                    if(this.blocks[i].distFirezones >= minimalValue){
+                        listCells.push(this.blocks[i]);
+                    }
+                }
+            }
+            break;
+        case 2:             // Inimigos
+            maxDist = this.getMaxDist(2);
+            minimalValue =  Math.floor((params.porcentagem * maxDist)/100);                 // Menor elemento no intervalo
+            for(let i = 0; i < this.blocks.length; i++){
+                if(this.blocks[i].distTeleportes !== 0 && this.blocks[i].distFirezones !== 0 
+                    && this.blocks[i].distTesouros !== 0){   // Descarta celulas com outros elementos
+                    if(this.blocks[i].distInimigos >= minimalValue){
+                        listCells.push(this.blocks[i]);
+                    }
+                }
+            }
+            break;
+        case 3:             // Tesouros
+            maxDist = this.getMaxDist(3);
+            minimalValue =  Math.floor((params.porcentagem * maxDist)/100);                 // Menor elemento no intervalo
+            for(let i = 0; i < this.blocks.length; i++){
+                if(this.blocks[i].distTeleportes !== 0 && this.blocks[i].distFirezones !== 0 
+                    && this.blocks[i].distInimigos !== 0){   // Descarta celulas com outros elementos
+                    if(this.blocks[i].distTesouros >= minimalValue){
+                        listCells.push(this.blocks[i]);
+                    }
+                }
+            }
+            break;
+    }
+
+    return listCells;
+}
+
+
 /**
  * Retorna a maior distancia na matriz dentre os atributos determinados
  */
@@ -157,6 +219,10 @@ Room.prototype.draw = function(ctx){
     }    
     this.teleporterInitial.desenhar(ctx);    
     this.teleporterFinal.desenhar(ctx);
+
+    for(let i = 0; i < this.treasures.length; i++){
+        this.treasures[i].desenhar(ctx);
+    }  
     
     // Ligação entre os teleportes
     if(debugMode == 1){
@@ -211,6 +277,7 @@ Room.prototype.copyByLevelGeneration = function(room, mapa){
         this.blocks.push(aux);
     }
     this.copyFireZones(room);
+    this.copyTreasures(room);
 }
 
 // Copia os dados da sala toda mas o vetor de blocos salva REFERENCIA PRA MATRIZ DO MAPA
@@ -227,6 +294,7 @@ Room.prototype.copyWithReference = function(room, mapa){
         this.blocks.push(aux);
     }
     this.copyFireZones(room);
+    this.copyTreasures(room);
 }
 
 Room.prototype.copyFireZones = function(room){
@@ -235,5 +303,14 @@ Room.prototype.copyFireZones = function(room){
         let newFireZone = new FireZone();
         newFireZone.copy(aux);
         this.fireZones.push(newFireZone);
+    }
+}
+
+Room.prototype.copyTreasures = function(room){
+    for(let i = 0; i < room.treasures.length; i++){
+        let aux = room.treasures[i];
+        let newTreasure = new Treasure();
+        newTreasure.copy(aux);
+        this.treasures.push(newTreasure);
     }
 }
