@@ -85,7 +85,7 @@ Teleporter.prototype.desenhar = function(ctx){
       break;
     case 2:                           // Teleporte Inicial room
       {
-        ctx.strokeStyle = "dark blue";
+        ctx.strokeStyle = "darkblue";
         ctx.fillStyle = "blue";
         ctx.linewidth = 10;
         ctx.save(); 
@@ -100,7 +100,7 @@ Teleporter.prototype.desenhar = function(ctx){
       { 
         ctx.strokeStyle = "Yellow";
         ctx.fillStyle = "Orange";
-        ctx.linewidth = 10;
+        ctx.linewidth = 100;
         ctx.save();
         ctx.globalAlpha = 0.40;         //Transparência
         ctx.translate(this.x, this.y);

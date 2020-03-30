@@ -2,11 +2,11 @@ function Level(w, h, s) {
   this.mapa = new Map(w,h,s);
   this.rooms = [];
   this.tesouros = [];
+  this.inimigos = [];
   this.tempoFase = 0;
   this.tempoTotal = 0;
   this.taxaDiminuicaoTempo = 0;
   this.stateCollectedItens = false;
-  this.inimigos = [];
   this.teleporteInicioLevel = new Teleporter(0);         //(Inicio) mapa
   this.teleporteFinalLevel  = new Teleporter(1);        //(Final) mapa
 };
