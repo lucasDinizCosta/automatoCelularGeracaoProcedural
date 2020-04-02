@@ -5,7 +5,6 @@ function Player(size, nomeImagem) {
    */
   Sprite.call(this, size);            
 
-  //this.sprite = new Sprite(size, 0);
   this.timeWalkSound = 0.5;
   this.levelNumber = 1;
   this.vidas = 3;

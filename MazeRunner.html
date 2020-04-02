@@ -11,6 +11,7 @@
   <script src="Classes/Player.js"></script>
   <script src="Classes/Teleporter.js"></script>
   <script src="Classes/Treasure.js"></script>
+  <script src="Classes/Enemy.js"></script>
   <script src="Classes/FireZone.js"></script>
   <!--
     <script src="Classes/ImageLibrary.js"></script>
@@ -153,14 +154,14 @@
     levels[0].setTeleporters_2({
       porcentagem: 80, opcaoTeleporteInicio: 1, opcaoTeleporteFinal: 1
 
-      /*********************************************************************
-       * Posiciona os teleportes com base na DISTANCIA entre eles
-       * opcaoTeleporteInicio:
-       *  0 => Posicionamento na SALA 1;  1 => Posicionamento Aleatório;
-       * 
-       * opcaoTeleporteFinal:
-       *  0 => Final poder ficar na mesma sala do teleporte inicial; 
-       *  1 => Final na sala diferente do teleporte inicial;
+      /**********************************************************************
+       * Posiciona os teleportes com base na DISTANCIA entre eles           *
+       * opcaoTeleporteInicio:                                              *
+       *  0 => Posicionamento na SALA 1;  1 => Posicionamento Aleatório;    *
+       *                                                                    *
+       * opcaoTeleporteFinal:                                               *
+       *  0 => Final poder ficar na mesma sala do teleporte inicial;        *
+       *  1 => Final na sala diferente do teleporte inicial;                *
        *********************************************************************/
     });
     levels[0].atualizaGradeTeleportes(dt);
@@ -169,6 +170,14 @@
     levels[0].posicionarFireZones(25);          // Posiciona acima de 25 na distancia de firezones
     levels[0].posicionarTesouros({
       porcentagemDistancia: 80, qtdTesouros: 0, porcentagemTesourosPorSala: 4
+
+      /*
+       * porcentagemTesourosPorSala != 0 ==> Posiciona de acordo com o tamanho da sala
+       */ 
+    });          // Posiciona acima de 25 na distancia de firezones
+
+    levels[0].posicionarInimigos({
+      porcentagemDistancia: 80, qtdTesouros: 0, porcentagemInimigosPorSala: 4
 
       /*
        * porcentagemTesourosPorSala != 0 ==> Posiciona de acordo com o tamanho da sala
@@ -186,30 +195,30 @@
 
     var teasuresCollected = 0;    
 
-    //Tempo
+    // Tempo
     var tempoRectExt = new Sprite();
     var tempoRectInt = new Sprite();
-    tempoRectExt.w = 127; //102
+    tempoRectExt.w = 127;
     tempoRectExt.h = 15;
     tempoRectExt.colorBG = "black";
     tempoRectExt.colorBorder = "white";
     tempoRectExt.x = 95;
     tempoRectExt.y = 7;
-    tempoRectInt.w = 127; //100
+    tempoRectInt.w = 127;
     tempoRectInt.h = 15;
     tempoRectInt.x = 96;
     tempoRectInt.y = 8;
     tempoRectInt.colorBG = "rgb(170,120,0)";
     tempoRectInt.borderSize = 0;
 
-    //Main Menu campos
+    // Main Menu campos
     var fontMainMenu = "30px Arial Black";
     var wordsColor = "white";
     var alignMainMenu = "center";
     var stateMainMenu = 0;
 
     /******************************************************************************
-    *   ---------------------------- DEBUG MODE --------------------------------  *
+    *   ---------------------------- DEBUG MODE ------------------------------    *
     *                                                                             *
     *       0 => Normal;                                                          *
     *       1 => Centro Player;                                                   *
@@ -324,7 +333,7 @@
             treasuresCount = 0;
             teasuresCollected = 0;
             player.levelNumber = player.levelNumber + 1;
-            loadLevel(0);       //Load new level
+            loadLevel(0);       // Load new level
             break;
           case 5:     // Recarregar fase
             tempoRectInt.w = 127;

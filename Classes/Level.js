@@ -608,6 +608,71 @@ Level.prototype.posicionarTesouros = function(params){
   }
 }
 
+/**
+ * Inimigos
+ */
+
+ Level.prototype.posicionarInimigos = function(params){
+
+  if(params.porcentagemInimigosPorSala != 0){     // Utiliza o tamanho da sala como referencia posicionar os elementos
+    let terminouPosicionamento = false;
+    let indiceSala = 0;
+    while(!terminouPosicionamento){
+      let auxRoom = this.rooms[indiceSala];
+      let listaCelulas = auxRoom.getEmptyCellsByPercentageBetweenMaxDist({option: 2, porcentagem: params.porcentagemInimigosPorSala});            //auxRoom.getCellByDist(valor, 1);
+      let celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
+      let qtdInimigos = Math.ceil((params.porcentagemInimigosPorSala * auxRoom.blocks.length)/100);   // Número de tesouros varia conforme o tamanho da sala
+
+      for(let i = 0; i < qtdInimigos; i++){
+        let auxEnemy = new Enemy();
+        auxEnemy.gx = celula.coluna;
+        auxEnemy.gy = celula.linha;
+        auxEnemy.x = celula.coluna * this.mapa.s + this.mapa.s/2;
+        auxEnemy.y = celula.linha * this.mapa.s + this.mapa.s/2;
+        auxEnemy.map = this.mapa;
+        auxRoom.enemies.push(auxEnemy);
+        this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 2);     // Recalcula
+        listaCelulas = auxRoom.getEmptyCellsByPercentageBetweenMaxDist({option: 2, porcentagem: params.porcentagemDistancia});     // Nova lista de celulas disponiveis         //auxRoom.getCellByDist(valor, 1);
+        celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
+      }
+
+      indiceSala++;
+
+      if(indiceSala >= this.rooms.length){
+        terminouPosicionamento = true;
+      }
+    }
+  }
+  else{                             // Posiciona uma quantidade fixa de inimigos em cada sala
+    let terminouPosicionamento = false;
+    let indiceSala = 0;
+    while(!terminouPosicionamento){
+      let auxRoom = this.rooms[indiceSala];
+      let listaCelulas = auxRoom.getEmptyCellsByPercentageBetweenMaxDist({option: 2, porcentagem: params.porcentagemDistancia});            //auxRoom.getCellByDist(valor, 1);
+      let celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
+
+      for(let i = 0; i < params.qtdInimigos; i++){            // Quantidade de inimigos passadas pelo parametro
+        let auxEnemy = new Treasure();
+        auxEnemy.gx = celula.coluna;
+        auxEnemy.gy = celula.linha;
+        auxEnemy.x = celula.coluna * this.mapa.s + this.mapa.s/2;
+        auxEnemy.y = celula.linha * this.mapa.s + this.mapa.s/2;
+        auxEnemy.map = this.mapa;
+        auxRoom.enemies.push(auxEnemy);
+        this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 2);     // Recalcula
+        listaCelulas = auxRoom.getEmptyCellsByPercentageBetweenMaxDist({option: 2, porcentagem: params.porcentagemDistancia});     // Nova lista de celulas disponiveis         //auxRoom.getCellByDist(valor, 1);
+        celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
+      }
+
+      indiceSala++;
+
+      if(indiceSala >= this.rooms.length){
+        terminouPosicionamento = true;
+      }
+    }
+  }
+}
+
 /*Level.prototype.toggleLevel = function(l){
   this = JSON.parse(JSON.stringify(l));  //Copia matriz
 
@@ -646,12 +711,10 @@ Level.prototype.desenhar = function(ctx) {
 
 // Testa as colisões do player com as firezones
 Level.prototype.colisaoFireZones = function(player){
-  let verificaColisao = false;
   for(let i = 0; i < this.rooms.length; i++){
     let auxFireZones = this.rooms[i].fireZones;
     for(let j = 0; j < auxFireZones.length; j++){
       if(player.colidiuCom2(auxFireZones[j])){
-        verificaColisao = true;
         this.tempo.w = this.larguraBarra;
         break;
       }

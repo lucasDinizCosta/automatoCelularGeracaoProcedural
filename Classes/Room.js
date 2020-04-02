@@ -222,6 +222,10 @@ Room.prototype.draw = function(ctx){
 
     for(let i = 0; i < this.treasures.length; i++){
         this.treasures[i].desenhar(ctx);
+    }
+
+    for(let i = 0; i < this.enemies.length; i++){
+        this.enemies[i].desenhar(ctx);
     }  
     
     // Ligação entre os teleportes
@@ -295,6 +299,7 @@ Room.prototype.copyWithReference = function(room, mapa){
     }
     this.copyFireZones(room);
     this.copyTreasures(room);
+    this.copyEnemies(room);
 }
 
 Room.prototype.copyFireZones = function(room){
@@ -312,5 +317,14 @@ Room.prototype.copyTreasures = function(room){
         let newTreasure = new Treasure();
         newTreasure.copy(aux);
         this.treasures.push(newTreasure);
+    }
+}
+
+Room.prototype.copyEnemies = function(room){
+    for(let i = 0; i < room.enemies.length; i++){
+        let aux = room.enemies[i];
+        let newEnemy = new Enemy();
+        newEnemy.copy(aux);
+        this.enemies.push(newEnemy);
     }
 }
