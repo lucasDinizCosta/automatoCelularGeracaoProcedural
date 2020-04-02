@@ -131,16 +131,15 @@ Player.prototype.desenhar = function(ctx){
   ctx.save();
   ctx.translate(this.x, this.y);
   ctx.beginPath();
-  ctx.ellipse(-this.s/2+1, -this.s/4+2, this.s-2, this.s/2-2, 0, 0, 2*Math.PI, false);
+  ctx.ellipse(-this.s/2 + 1, -this.s/4 + 2, this.s - 2, this.s/2 - 2, 0, 0, 2 * Math.PI, false);
   ctx.closePath();
   ctx.fill();
   ctx.stroke();
   //ctx, key, sx, sy, w, h, dx, dy, dw, dh
   assetsMng.drawClipSize({ctx: ctx, key: this.nomeImagem, 
     sx: (this.sizeImagem * (this.animationState % this.qtdAnimacoes)),
-    sy: (this.sizeImagem * this.pose),
-    w: this.sizeImagem, h: this.sizeImagem, dx: (-6 - this.sizeImagem/2), dy: (4 - this.sizeImagem),  
-    dw: this.sizeImagem, dh: this.sizeImagem
+    sy: (this.sizeImagem * this.pose), w: this.sizeImagem, h: this.sizeImagem, 
+    dx: (-6 - this.sizeImagem/2), dy: (4 - this.sizeImagem),  dw: this.sizeImagem, dh: this.sizeImagem
   });
   ctx.restore();
   if(debugMode == 1){

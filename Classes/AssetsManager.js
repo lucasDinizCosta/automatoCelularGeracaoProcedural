@@ -153,13 +153,15 @@ AssetsManager.prototype.pause = function (key) {
     }
   };
 
+
 /****************************************************************************
  *                      FUNÇÕES DE DESENHO AUXILIARES:                      *
  ****************************************************************************/
 
 /**
  *  Desenha a imagem toda em seu tamanho padrão
- *  (ctx, key, x, y)
+ * 
+ *  ctx, key, x, y
  */
 
 AssetsManager.prototype.draw = function (params = {}) {
@@ -168,6 +170,7 @@ AssetsManager.prototype.draw = function (params = {}) {
 
 /**
  *  Desenha a imagem toda com um altura e largura definidos
+ * 
  *  ctx, key, x, y, w, h
  */
 
@@ -177,6 +180,7 @@ AssetsManager.prototype.drawSize = function (params = {}) {
 
 /**
  *  Desenha a imagem toda com uma angulação determinada
+ * 
  *  ctx, key, x, y, ang
  */
 
@@ -200,6 +204,7 @@ AssetsManager.prototype.drawClip = function(params = {}){
 
 /**
  *  Desenha parte da imagem e define a largura e altura que será desenhados na tela
+ * 
  *  ctx, key, sx, sy, w, h, dx, dy, dw, dh
  */
 
@@ -212,6 +217,7 @@ AssetsManager.prototype.drawClipSize = function(params = {}){
 
 /**
  *  Desenha parte da imagem e uma angulação é atribuida
+ * 
  *  ctx, key, sx, sy, w, h, dx, dy, ang
  */
 

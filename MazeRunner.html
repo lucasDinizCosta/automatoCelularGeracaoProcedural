@@ -168,19 +168,17 @@
     levels[0].atualizaMatrizDistancias();       // Em relação aos teleportes inicial da fase e de cada sala
     levels[0].posicionarFireZones(25);          // Posiciona acima de 25 na distancia de firezones
     levels[0].posicionarTesouros({
-      porcentagemDistancia: 80, qtdTesouros: 0, porcentagemTesourosPorSala: 8
+      porcentagemDistancia: 80, qtdTesouros: 0, porcentagemTesourosPorSala: 4
 
       /*
        * porcentagemTesourosPorSala != 0 ==> Posiciona de acordo com o tamanho da sala
-       *
        */ 
     });          // Posiciona acima de 25 na distancia de firezones
 
-    levels[0].setTempo(10, 125);                // 10 segundos
+    levels[0].setTempo(10);                // 10 segundos
     levels[0].tesouros = 3;
 
     var tempoGameOver = 2;
-    var tempoTransicaoFase = 1;                 // Tempo que decai um pouco da barra
     var playerVel = 300;
 
     levelAtual.clonarLevel(levels[0]);
@@ -255,18 +253,8 @@
             }*/
             player.moverCompleto(dt);
             levelAtual.colisaoFireZones(player);
-            if(levelAtual.tempoFase >= 0){
-              controleTempo();
-            }
-            else{
-              if(debugMode != 0){
-                player.moverCompleto(dt);
-              }
-              else{
-                estado = 5;
-                limparTela();
-              }
-            }
+            controleTempo();
+
             ctx.save();
             ctx.scale(escala, escala);
             ctx.translate(-player.x + tela.width/4 , - player.y + tela.height/4);            
@@ -334,8 +322,6 @@
           case 4:       // Passou de fase
             tempoRectInt.w = 127;
             treasuresCount = 0;
-            minesCount = 0;
-            tempoTransicaoFase = 1;
             teasuresCollected = 0;
             player.levelNumber = player.levelNumber + 1;
             loadLevel(0);       //Load new level
@@ -343,8 +329,6 @@
           case 5:     // Recarregar fase
             tempoRectInt.w = 127;
             treasuresCount = 0;
-            minesCount = 0;
-            tempoTransicaoFase = 1;
             teasuresCollected = 0;
             player.vidas--;
             if(player.vidas < 0){       // Game over
@@ -364,24 +348,21 @@
 
     //  A cada 1 segundo ele executa uma diminuição na barra de tempo
     function controleTempo(){
-      if(tempoTransicaoFase < 0){
-        tempoTransicaoFase = 1;
-        if(player.morre){
-          tempoRectInt.w = tempoRectInt.w - levelAtual.taxaDiminuicaoTempo;  
-          levelAtual.updateTempo(player);
+      if(debugMode == 0){
+        tempoRectInt.w = tempoRectInt.w - levelAtual.taxaDiminuicaoTempo;  
+        levelAtual.updateTempo()
+        /*if(player.morre){
+          console.log("FFFFF");
+          ;
         }
         else{
           tempoRectInt.w = 127;
-        }
+          levelAtual.tempoFase = levelAtual.tempoTotal;
+        }*/
         if(tempoRectInt.w <= 0){
           tempoRectInt.w = 0;
-        }
-      }
-      else{
-        tempoTransicaoFase -= dt;        
-        if(!player.morre){
-          tempoRectInt.w = 127;
-          levelAtual.tempoFase = levelAtual.tempoTotal;
+          estado = 5;
+          limparTela();
         }
       }
     }
@@ -518,6 +499,7 @@
       levelAtual.clonarLevel(levels[0]);
       player = new Player(12, "player");
       levelAtual.posicionarPlayer(player);
+      levelAtual.setTaxaDiminuicaoTempo(dt, tempoRectInt);        // Atualiza o decaimento da barra
     }
 
     function limparTela() {
@@ -534,13 +516,16 @@
           }
           else {
             levelAtual.clonarLevel(levels[player.levelNumber - 1]);
+            //player = new Player(12, "player");
             levelAtual.posicionarPlayer(player);
+            levelAtual.setTaxaDiminuicaoTempo(dt, tempoRectInt);        // Atualiza o decaimento da barra
             estado = 0;
           }
           break;
         case 1:   //Reload
           levelAtual.clonarLevel(levels[player.levelNumber - 1]);
           levelAtual.posicionarPlayer(player);
+          levelAtual.setTaxaDiminuicaoTempo(dt, tempoRectInt);        // Atualiza o decaimento da barra
           estado = 0;
           break;
       }
@@ -720,10 +705,7 @@
           case 32:    //Space bar
             if (estado != 2) {
               if (stateMainMenu == 0) {
-                levelAtual = new Level(widthMap, heightMap, sizeMap);
-                levelAtual.clonarLevel(levels[0]);
-                player = new Player(12, "player");
-                levelAtual.posicionarPlayer(player);
+                loadLevel(0);               //Carregamento de level
                 estado = 0;
               }
               else {

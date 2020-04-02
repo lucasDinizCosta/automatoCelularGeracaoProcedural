@@ -168,6 +168,7 @@ Map.prototype.desenhar = function (ctx) {
     for (var c = Math.max(0, player.gx - MAPA_AREA); c < Math.min(this.w, player.gx + MAPA_AREA); c++) {
       switch (this.cell[l][c].tipo) {
         case 0:   // Vazio     -- Chão
+
           // ctx, key, x, y, w, h
           assetsMng.drawSize({ctx: ctx, key: "floor_sand", x: (c * this.s), 
           y: (l * this.s), w: this.s, h: this.s});
@@ -177,6 +178,7 @@ Map.prototype.desenhar = function (ctx) {
             y: (l * this.s), w: this.s, h: this.s});
           break;
         case 2:   // Caverna
+        
           // ctx, key, sx, sy, w, h, dx, dy, dw, dh
           assetsMng.drawClipSize(
             {ctx: ctx, key: "rockBlock", sx: 0, sy: 0, w: 32, h: 32,

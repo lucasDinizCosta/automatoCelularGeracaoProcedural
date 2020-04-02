@@ -6,6 +6,8 @@ function Level(w, h, s) {
   this.tempoFase = 0;
   this.tempoTotal = 0;
   this.taxaDiminuicaoTempo = 0;
+  this.tempo = undefined;
+  this.larguraBarra = 127;
   this.stateCollectedItens = false;
   this.teleporteInicioLevel = new Teleporter(0);         //(Inicio) mapa
   this.teleporteFinalLevel  = new Teleporter(1);        //(Final) mapa
@@ -19,13 +21,23 @@ function Level(w, h, s) {
 //Level.prototype = new Level();
 Level.prototype.constructor = Level;
 
-Level.prototype.setTempo = function(tempo, larguraBarra){
+Level.prototype.setTempo = function(tempo){
   this.tempoFase = tempo;
   this.tempoTotal = tempo;
-  this.taxaDiminuicaoTempo = Math.floor(larguraBarra/tempo);
+  //this.taxaDiminuicaoTempo = Math.floor(larguraBarra/tempo);
 };
 
-Level.prototype.updateTempo = function(player){
+Level.prototype.setTaxaDiminuicaoTempo = function(dt, barra){
+  /**
+   * tempoTotal --- larguraBarra  |    X = (larguraBarra * dt)/tempoTotal
+   *     dt     ---     X         |
+   */
+  this.tempo = barra;
+  this.larguraBarra = barra.w;
+  this.taxaDiminuicaoTempo = (this.larguraBarra * dt)/this.tempoTotal; // Math.floor(larguraBarra/tempo);
+};
+
+Level.prototype.updateTempo = function(){
   this.tempoFase = this.tempoFase - 1;
 }
 
@@ -63,6 +75,8 @@ Level.prototype.clonarLevel= function(level){
   this.tempoFase = level.tempoFase;
   this.tempoTotal = level.tempoTotal;
   this.taxaDiminuicaoTempo = level.taxaDiminuicaoTempo;
+  this.larguraBarra = level.larguraBarra;
+  this.tempo = level.tempo;                       // Referencia na memoria pra barra de tempo
   this.teleporteInicioLevel.copyTeleporte(level.teleporteInicioLevel);
   this.teleporteFinalLevel.copyTeleporte(level.teleporteFinalLevel);
   this.inimigos.length = 0;  
@@ -638,16 +652,18 @@ Level.prototype.colisaoFireZones = function(player){
     for(let j = 0; j < auxFireZones.length; j++){
       if(player.colidiuCom2(auxFireZones[j])){
         verificaColisao = true;
+        this.tempo.w = this.larguraBarra;
         break;
       }
     }
   }
 
-  if(verificaColisao){
+  /*if(verificaColisao){
     player.morre = false;
     this.tempoFase = this.tempoTotal;
+
   }
   else{
     player.morre = true;
-  }
+  }*/
 }
