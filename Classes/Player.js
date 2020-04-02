@@ -135,9 +135,13 @@ Player.prototype.desenhar = function(ctx){
   ctx.closePath();
   ctx.fill();
   ctx.stroke();
-  assetsMng.drawClipSize(ctx, this.nomeImagem, 
-    this.sizeImagem * (this.animationState % this.qtdAnimacoes), this.sizeImagem * this.pose, this.sizeImagem, this.sizeImagem, 
-    -6-this.sizeImagem/2, 4-this.sizeImagem, this.sizeImagem, this.sizeImagem);
+  //ctx, key, sx, sy, w, h, dx, dy, dw, dh
+  assetsMng.drawClipSize({ctx: ctx, key: this.nomeImagem, 
+    sx: (this.sizeImagem * (this.animationState % this.qtdAnimacoes)),
+    sy: (this.sizeImagem * this.pose),
+    w: this.sizeImagem, h: this.sizeImagem, dx: (-6 - this.sizeImagem/2), dy: (4 - this.sizeImagem),  
+    dw: this.sizeImagem, dh: this.sizeImagem
+  });
   ctx.restore();
   if(debugMode == 1){
     this.desenharCell(ctx);         //Debug mode Grid

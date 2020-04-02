@@ -159,69 +159,81 @@ AssetsManager.prototype.pause = function (key) {
 
 /**
  *  Desenha a imagem toda em seu tamanho padrão
+ *  (ctx, key, x, y)
  */
 
-AssetsManager.prototype.draw = function (ctx, key, x, y) {
-    ctx.drawImage(this.images[key], x, y);
+AssetsManager.prototype.draw = function (params = {}) {
+  params.ctx.drawImage(this.images[params.key], params.x, params.y);
 };
 
 /**
  *  Desenha a imagem toda com um altura e largura definidos
+ *  ctx, key, x, y, w, h
  */
 
-AssetsManager.prototype.drawSize = function (ctx, key, x, y, w, h) {
-    ctx.drawImage(this.images[key], x, y, w, h);
+AssetsManager.prototype.drawSize = function (params = {}) {
+  params.ctx.drawImage(this.images[params.key], params.x, params.y, params.w, params.h);
 };
 
 /**
  *  Desenha a imagem toda com uma angulação determinada
+ *  ctx, key, x, y, ang
  */
 
-AssetsManager.prototype.drawAngle = function(ctx, key, x, y, ang){
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(ang * Math.PI/180);
-    ctx.drawImage(this.images[key], -this.images[key].width/2, -this.images[key].height/2);
-    ctx.restore();
+AssetsManager.prototype.drawAngle = function(params = {}){
+  params.ctx.save();
+  params.ctx.translate(params.x, params.y);
+  params.ctx.rotate(params.ang * Math.PI/180);
+  params.ctx.drawImage(this.images[params.key], -this.images[params.key].width/2, -this.images[params.key].height/2);
+  params.ctx.restore();
 }
 
 /**
  *  Desenha uma parte da imagem mantendo a mesma proporção na tela
+ * 
+ *  ctx, key, sx, sy, w, h, dx, dy
  */
 
-AssetsManager.prototype.drawClip = function(ctx, key, sx, sy, w, h, dx, dy){
-    ctx.drawImage(this.images[key], sx, sy, w, h, dx, dy, w, h);
+AssetsManager.prototype.drawClip = function(params = {}){
+  params.ctx.drawImage(this.images[params.key], params.sx, params.sy, params.w, params.h, params.dx, params.dy, params.w, params.h);
 }
 
 /**
  *  Desenha parte da imagem e define a largura e altura que será desenhados na tela
+ *  ctx, key, sx, sy, w, h, dx, dy, dw, dh
  */
 
-AssetsManager.prototype.drawClipSize = function(ctx, key, sx, sy, w, h, dx, dy, dw, dh){
+AssetsManager.prototype.drawClipSize = function(params = {}){
     //sx, sy, w, h dentro da imagem - w e h são para a parte da imagem que irá pegar
     //dx, dy, dw, dh onde irá desenhar e em que proporção
-    ctx.drawImage(this.images[key], sx, sy, w, h, dx, dy, dw, dh);
+
+  params.ctx.drawImage(this.images[params.key], params.sx, params.sy, params.w, params.h, params.dx, params.dy, params.dw, params.dh);
 }
 
 /**
  *  Desenha parte da imagem e uma angulação é atribuida
+ *  ctx, key, sx, sy, w, h, dx, dy, ang
  */
 
-AssetsManager.prototype.drawClipAngle = function(ctx, key, sx, sy, w, h, dx, dy, ang){
-    ctx.save();
-    ctx.translate(dx, dy);
-    ctx.rotate(ang * Math.PI/180);
-    ctx.drawImage(this.images[key], sx, sy, w, h, -w/2, -h/2, w, h);
-    ctx.restore();
+AssetsManager.prototype.drawClipAngle = function(params = {}){
+  params.ctx.save();
+  params.ctx.translate(params.dx, params.dy);
+  cparams.tx.rotate(params.ang * Math.PI/180);
+  params.ctx.drawImage(this.images[params.key], params.sx, params.sy, params.w, 
+                      params.h, -params.w/2, -params.h/2, params.w, params.h);
+  params.ctx.restore();
 }
 
 /**
  *  Desenha parte da imagem, com altura, largura e angulação definidos
+ *  ctx, key, sx, sy, w, h, dx, dy, dw, dh, ang
  */
-AssetsManager.prototype.drawClipSizeAngle = function(ctx, key, sx, sy, w, h, dx, dy, dw, dh, ang){
-    ctx.save();
-    ctx.translate(dx, dy);
-    ctx.rotate(ang * Math.PI/180);
-    ctx.drawImage(this.images[key], sx, sy, w, h, -w/2, -h/2, dw, dh);
-    ctx.restore();
+
+AssetsManager.prototype.drawClipSizeAngle = function(params = {}){
+  params.ctx.save();
+  params.ctx.translate(params.dx, params.dy);
+  params.ctx.rotate(params.ang * Math.PI/180);
+  params.ctx.drawImage(this.images[params.key], params.sx, params.sy, params.w, params.h, 
+                -params.w/2, -params.h/2, params.dw, params.dh);
+  params.ctx.restore();
 }

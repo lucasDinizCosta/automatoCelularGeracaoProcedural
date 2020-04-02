@@ -25,7 +25,14 @@ FireZone.prototype.desenhar = function (ctx) {
     ctx.closePath();
     ctx.stroke();
     ctx.globalAlpha = 1.00;         //Transparência
-    assetsMng.drawClip(ctx, "flames", Math.floor(this.pose) * 16, 0, 16, 24, -8, -12, 16, 24);
+
+    //ctx, key, sx, sy, w, h, dx, dy
+    assetsMng.drawClip({ctx: ctx, key: "flames", 
+        sx: (Math.floor(this.pose) * 16),
+        sy: 0,
+        w: 16, h: 24, dx: -8,  
+        dy: -12
+    });
     ctx.restore();
     if(debugMode == 1){
         //this.desenharCell(ctx);         //Debug mode Grid

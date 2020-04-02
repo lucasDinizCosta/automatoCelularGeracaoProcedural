@@ -168,13 +168,19 @@ Map.prototype.desenhar = function (ctx) {
     for (var c = Math.max(0, player.gx - MAPA_AREA); c < Math.min(this.w, player.gx + MAPA_AREA); c++) {
       switch (this.cell[l][c].tipo) {
         case 0:   // Vazio     -- Chão
-          assetsMng.drawSize(ctx, "floor_sand", c * this.s, l * this.s, this.s, this.s);
+          // ctx, key, x, y, w, h
+          assetsMng.drawSize({ctx: ctx, key: "floor_sand", x: (c * this.s), 
+          y: (l * this.s), w: this.s, h: this.s});
           break;
         case 1:   // Bloqueado -- Muro
-          assetsMng.drawSize(ctx, "brick_gray", c * this.s, l * this.s, this.s, this.s);
+          assetsMng.drawSize({ctx: ctx, key: "brick_gray", x: (c * this.s), 
+            y: (l * this.s), w: this.s, h: this.s});
           break;
         case 2:   // Caverna
-          assetsMng.drawClipSize(ctx, "rockBlock", 0, 0, 32, 32, c * this.s, l * this.s, this.s, this.s);
+          // ctx, key, sx, sy, w, h, dx, dy, dw, dh
+          assetsMng.drawClipSize(
+            {ctx: ctx, key: "rockBlock", sx: 0, sy: 0, w: 32, h: 32,
+            dx: (c * this.s), dy: (l * this.s), dw: this.s, dh: this.s});
           break;
         default:
           console.log("Wrong index map element");
