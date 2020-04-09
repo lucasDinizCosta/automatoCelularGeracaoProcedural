@@ -704,11 +704,11 @@ Level.prototype.copiaSalasComReferencia = function(rooms){
 
 Level.prototype.desenhar = function(ctx) {
   this.mapa.desenhar(ctx);
-  this.teleporteInicioLevel.desenhar(ctx);
-  this.teleporteFinalLevel.desenhar(ctx);
   for(let i = 0; i < this.rooms.length; i++){
     this.rooms[i].draw(ctx);
   }
+  this.teleporteInicioLevel.desenhar(ctx);
+  this.teleporteFinalLevel.desenhar(ctx);
 };
 
 /************
@@ -717,19 +717,19 @@ Level.prototype.desenhar = function(ctx) {
 
 Level.prototype.colisaoFireZones = function(player){
   
-  /*for(let i = 0; i < this.rooms.length; i++){
+  for(let i = 0; i < this.rooms.length; i++){
     let auxRoom = this.rooms[i];
     if(auxRoom.collisionFirezones(player)){           // Checa colisão com as firezones
       this.tempo.w = this.larguraBarra;
       break;
     }
-  }*/
+  }
 
-  let auxRoom = this.rooms[player.room - 1];          // Checar somente a sala onde o player se encontra
+  /*let auxRoom = this.rooms[player.room - 1];          // Checar somente a sala onde o player se encontra
   //console.log(auxRoom);
   if(auxRoom.collisionFirezones(player)){             // Checa colisão com as firezones
     this.tempo.w = this.larguraBarra;
-  }
+  }*/
 }
 
 // Testa as colisões do player com as firezones
@@ -743,8 +743,23 @@ Level.prototype.colisaoInimigos = function(player){
     }
   }*/
   let auxRoom = this.rooms[player.room - 1];          // Checar somente a sala onde o player se encontra
-  if(auxRoom.collisionEnemies(player)){           // Checa colisão com as firezones
+  if(auxRoom.collisionEnemies(player)){           
     player.vivo = false;
-    //console.log("Colidiu com inimigos");
+    console.log("Colidiu com inimigos");
   }
+}
+
+Level.prototype.colisaoTesouros = function(player){
+  /*for(let i = 0; i < this.rooms.length; i++){
+   let auxRoom = this.rooms[i];
+   if(auxRoom.collisionEnemies(player)){           // Checa colisão com as firezones
+     //player.vivo = false;
+     //console.log("Colidiu com inimigos");
+     console.log(i);
+   }
+ }*/
+ let auxRoom = this.rooms[player.room - 1];          // Checar somente a sala onde o player se encontra
+ if(auxRoom.collisionTreasures(player)){             
+   console.log("Colidiu com tesouros");
+ }
 }

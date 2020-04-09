@@ -272,6 +272,15 @@ Room.prototype.collisionEnemies = function(player){
     return false;
 }
 
+Room.prototype.collisionTreasures = function(player){
+    for(let j = 0; j < this.treasures.length; j++){
+        if(player.colidiuCom2(this.treasures[j])){
+           return true;
+        }
+    }
+    return false;
+}
+
 // Copia os dados da sala toda mas o vetor de blocos salva a linha e coluna apenas
 Room.prototype.copy = function(room){
     //console.log("Copy -- Room: ");

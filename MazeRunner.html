@@ -174,15 +174,15 @@
       /*
        * porcentagemTesourosPorSala != 0 ==> Posiciona de acordo com o tamanho da sala
        */ 
-    });          // Posiciona acima de 25 na distancia de firezones
+    });          
 
     levels[0].posicionarInimigos({
       porcentagemDistancia: 80, qtdTesouros: 0, porcentagemInimigosPorSala: 4
 
       /*
-       * porcentagemTesourosPorSala != 0 ==> Posiciona de acordo com o tamanho da sala
+       * porcentagemInimigosPorSala != 0 ==> Posiciona de acordo com o tamanho da sala
        */ 
-    });          // Posiciona acima de 25 na distancia de firezones
+    });          
 
     levels[0].setTempo(10);                // 10 segundos
     levels[0].tesouros = 3;
@@ -263,6 +263,7 @@
             player.moverCompleto(dt);
             levelAtual.colisaoFireZones(player);
             levelAtual.colisaoInimigos(player);
+            levelAtual.colisaoTesouros(player);
             //console.log(player.vivo);
             controleTempo();
             ctx.save();
