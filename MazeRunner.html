@@ -208,7 +208,7 @@
     tempoRectInt.h = 15;
     tempoRectInt.x = 96;
     tempoRectInt.y = 8;
-    tempoRectInt.colorBG = "rgb(170,120,0)";
+    tempoRectInt.colorBG = "rgb(170, 120, 0)";
     tempoRectInt.borderSize = 0;
 
     // Main Menu campos
@@ -262,8 +262,9 @@
             }*/
             player.moverCompleto(dt);
             levelAtual.colisaoFireZones(player);
+            levelAtual.colisaoInimigos(player);
+            //console.log(player.vivo);
             controleTempo();
-
             ctx.save();
             ctx.scale(escala, escala);
             ctx.translate(-player.x + tela.width/4 , - player.y + tela.height/4);            
@@ -271,6 +272,9 @@
             player.desenhar(ctx);
             ctx.restore();
             desenharHUD(ctx);
+            /*if(!player.vivo){
+              estado = 5;
+            }*/
             break;
           case 1:         // Main menu
             limparTela();
@@ -360,14 +364,6 @@
       if(debugMode == 0){
         tempoRectInt.w = tempoRectInt.w - levelAtual.taxaDiminuicaoTempo;  
         levelAtual.updateTempo()
-        /*if(player.morre){
-          console.log("FFFFF");
-          ;
-        }
-        else{
-          tempoRectInt.w = 127;
-          levelAtual.tempoFase = levelAtual.tempoTotal;
-        }*/
         if(tempoRectInt.w <= 0){
           tempoRectInt.w = 0;
           estado = 5;
@@ -509,6 +505,7 @@
       player = new Player(12, "player");
       levelAtual.posicionarPlayer(player);
       levelAtual.setTaxaDiminuicaoTempo(dt, tempoRectInt);        // Atualiza o decaimento da barra
+      player.restart();
     }
 
     function limparTela() {
@@ -528,6 +525,7 @@
             //player = new Player(12, "player");
             levelAtual.posicionarPlayer(player);
             levelAtual.setTaxaDiminuicaoTempo(dt, tempoRectInt);        // Atualiza o decaimento da barra
+            player.restart();
             estado = 0;
           }
           break;
@@ -535,6 +533,7 @@
           levelAtual.clonarLevel(levels[player.levelNumber - 1]);
           levelAtual.posicionarPlayer(player);
           levelAtual.setTaxaDiminuicaoTempo(dt, tempoRectInt);        // Atualiza o decaimento da barra
+          player.restart();
           estado = 0;
           break;
       }

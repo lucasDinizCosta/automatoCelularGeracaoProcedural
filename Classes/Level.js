@@ -414,15 +414,17 @@ Level.prototype.dadosSalas = function(){
 Level.prototype.posicionarPlayer = function(p){
   p.map = this.mapa;
   p.x = this.teleporteInicioLevel.x;
-  p.y = this.teleporteInicioLevel.y;
+  p.y = this.teleporteInicioLevel.y;      
+  p.gx = this.teleporteInicioLevel.gx;            // Coluna
+  p.gy = this.teleporteInicioLevel.gy;            // Linha
 }
 
-/********************************
- * Calcula a matriz de distancias
- ********************************/
+/**********************************
+ * Calcula a matriz de distancias *
+ **********************************/
 
 Level.prototype.atualizaMatrizDistancias = function(){
-  for(let i = 0; i < this.rooms.length; i++){        //Começa a analisar a partir da próxima sala
+  for(let i = 0; i < this.rooms.length; i++){        // Começa a analisar a partir da próxima sala
     if(i == (this.teleporteInicioLevel.roomNumber - 1)){
       this.mapa.atualizaDist(this.teleporteInicioLevel.gy, this.teleporteInicioLevel.gx, 0, 1);                   // Firezones
       this.mapa.atualizaDist(this.teleporteInicioLevel.gy, this.teleporteInicioLevel.gx, 0, 2);                   // Inimigos
@@ -709,24 +711,29 @@ Level.prototype.desenhar = function(ctx) {
   }
 };
 
-// Testa as colisões do player com as firezones
+/************
+ * Colisões *
+ ************/
+
 Level.prototype.colisaoFireZones = function(player){
   for(let i = 0; i < this.rooms.length; i++){
-    let auxFireZones = this.rooms[i].fireZones;
-    for(let j = 0; j < auxFireZones.length; j++){
-      if(player.colidiuCom2(auxFireZones[j])){
-        this.tempo.w = this.larguraBarra;
-        break;
-      }
+    let auxRoom = this.rooms[i];
+    if(auxRoom.collisionFirezones(player)){           // Checa colisão com as firezones
+      this.tempo.w = this.larguraBarra;
+      break;
     }
   }
+}
 
-  /*if(verificaColisao){
-    player.morre = false;
-    this.tempoFase = this.tempoTotal;
-
+// Testa as colisões do player com as firezones
+Level.prototype.colisaoInimigos = function(player){
+  for(let i = 0; i < this.rooms.length; i++){
+    let auxRoom = this.rooms[i];
+    if(auxRoom.collisionEnemies(player)){           // Checa colisão com as firezones
+      //player.vivo = false;
+      //console.log("Colidiu com inimigos");
+      console.log(i);
+    }
   }
-  else{
-    player.morre = true;
-  }*/
+  //console.log(player.vivo);
 }

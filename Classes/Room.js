@@ -250,6 +250,28 @@ Room.prototype.draw = function(ctx){
     }
 }
 
+/**********************
+ * Testes de colisões *
+ **********************/
+
+Room.prototype.collisionFirezones = function(player){
+    for(let j = 0; j < this.fireZones.length; j++){
+        if(player.colidiuCom2(this.fireZones[j])){
+           return true;
+        }
+    }
+    return false;
+}
+
+Room.prototype.collisionEnemies = function(player){
+    for(let j = 0; j < this.enemies.length; j++){
+        if(player.colidiuCom2(this.enemies[j])){
+           return true;
+        }
+    }
+    return false;
+}
+
 // Copia os dados da sala toda mas o vetor de blocos salva a linha e coluna apenas
 Room.prototype.copy = function(room){
     //console.log("Copy -- Room: ");

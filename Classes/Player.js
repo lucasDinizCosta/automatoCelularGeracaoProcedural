@@ -8,7 +8,8 @@ function Player(size, nomeImagem) {
   this.timeWalkSound = 0.5;
   this.levelNumber = 1;
   this.vidas = 3;
-  this.morre = true;
+  this.vivo = true;
+  this.room = -1;
 
   //Mapa das teclas pressionadas
   this.up = false;
@@ -82,9 +83,19 @@ Player.prototype.criarAnimacoes = function(){
   this.animation[7].speedAnimation = 160;
 }
 
+Player.prototype.restart = function(){
+  this.vivo = true;
+  this.setRoom();
+}
+
+Player.prototype.setRoom = function(){
+  this.room = this.map.cell[this.gy][this.gx].room;
+}
+
 Player.prototype.moverCompleto = function(dt){
   this.tratarAnimacao();
   this.mover(dt);
+  
 }
 
 Player.prototype.tratarAnimacao = function(){
@@ -131,10 +142,16 @@ Player.prototype.desenhar = function(ctx){
   ctx.translate(this.x, this.y);
   ctx.beginPath();
   ctx.ellipse(-this.s/2 + 1, -this.s/4 + 2, this.s - 2, this.s/2 - 2, 0, 0, 2 * Math.PI, false);
+  //ctx.ellipse( 0, 0, this.s - 2, this.s/2 - 2, 0, 0, 2 * Math.PI, false);  // x, y, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise
   ctx.closePath();
   ctx.fill();
   ctx.stroke();
   //ctx, key, sx, sy, w, h, dx, dy, dw, dh
+  /*assetsMng.drawClipSize({ctx: ctx, key: this.nomeImagem, 
+    sx: (this.sizeImagem * (this.animationState % this.qtdAnimacoes)),
+    sy: (this.sizeImagem * this.pose), w: this.sizeImagem, h: this.sizeImagem, 
+    dx: (-6 - this.sizeImagem/2), dy: (4 - this.sizeImagem),  dw: this.sizeImagem, dh: this.sizeImagem
+  });*/
   assetsMng.drawClipSize({ctx: ctx, key: this.nomeImagem, 
     sx: (this.sizeImagem * (this.animationState % this.qtdAnimacoes)),
     sy: (this.sizeImagem * this.pose), w: this.sizeImagem, h: this.sizeImagem, 
