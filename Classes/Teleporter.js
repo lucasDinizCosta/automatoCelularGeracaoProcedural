@@ -49,6 +49,9 @@ Teleporter.prototype.teleportar = function(player){
     assetsMng.play("teleporte");
     player.x = this.proximoTeleporte.x;
     player.y = this.proximoTeleporte.y;
+    player.gx = this.proximoTeleporte.gx;
+    player.gy = this.proximoTeleporte.gy;
+    player.room = this.proximoTeleporte.roomNumber;
   }
   else{
     console.log("prximoTeleporte eh undefined !!!");

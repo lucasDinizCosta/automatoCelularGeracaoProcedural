@@ -599,7 +599,14 @@
           //}
           break;
         case 32:  //Espaco  -- Ativa teleporte
-          for(let i = 0; i < levelAtual.rooms.length; i++){
+          let auxRoom = player.room;
+          if(levelAtual.rooms[auxRoom - 1].teleporterInitial.colidiuCom2(player)){
+            levelAtual.rooms[auxRoom - 1].teleporterInitial.teleportar(player);
+          }
+          else if(levelAtual.rooms[auxRoom - 1].teleporterFinal.colidiuCom2(player)){
+            levelAtual.rooms[auxRoom - 1].teleporterFinal.teleportar(player);
+          }
+          /*for(let i = 0; i < levelAtual.rooms.length; i++){
             if(levelAtual.rooms[i].teleporterInitial.colidiuCom2(player)){
               levelAtual.rooms[i].teleporterInitial.teleportar(player);
               break;
@@ -608,8 +615,8 @@
               levelAtual.rooms[i].teleporterFinal.teleportar(player);
               break;
             }
-          }
-          player.moverCompleto(dt);
+          }*/
+          //player.moverCompleto(dt);
           break;
         case 17:  //Left CTRL
           player.atacando = 1;  
