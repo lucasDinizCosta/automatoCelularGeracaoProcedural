@@ -654,7 +654,7 @@ Level.prototype.posicionarTesouros = function(params){
       let celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
 
       for(let i = 0; i < params.qtdInimigos; i++){            // Quantidade de inimigos passadas pelo parametro
-        let auxEnemy = new Treasure();
+        let auxEnemy = new Enemy();
         auxEnemy.gx = celula.coluna;
         auxEnemy.gy = celula.linha;
         auxEnemy.x = celula.coluna * this.mapa.s + this.mapa.s/2;
