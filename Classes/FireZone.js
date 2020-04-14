@@ -5,13 +5,34 @@ function FireZone() {
      */
     Sprite.call(this, 16);    
 
-    this.qtdAnimacoes = 3;
+    this.animation = [];
+    this.qtdAnimacoes = 12;
+    this.speedAnimation = 1.2;
+    this.matrizImagem = {
+        linhas: 3,
+        colunas: 4
+    }
     this.h = 24;
+    this.criarAnimacoes();
 }
 
 // Heranca
 FireZone.prototype = new Sprite();                          // Define que o Player é um Sprite
 FireZone.prototype.constructor = FireZone;
+
+FireZone.prototype.criarAnimacoes = function(){
+    for(let i = 0; i < this.matrizImagem.linhas; i++){
+        for(let j = 0; j < this.matrizImagem.colunas; j++){
+            let animationFrame = {
+                sizeImagem: this.s,
+                pose: (i + j * this.matrizImagem.colunas),
+                sx: 16 * j,
+                sy: 24 * i,
+            };
+            this.animation.push(animationFrame);
+        }
+    }
+}
 
 FireZone.prototype.desenhar = function (ctx) {
     ctx.save();
@@ -27,9 +48,15 @@ FireZone.prototype.desenhar = function (ctx) {
     ctx.globalAlpha = 1.00;         //Transparência
 
     //ctx, key, sx, sy, w, h, dx, dy
-    assetsMng.drawClip({ctx: ctx, key: "flames", 
+    /*assetsMng.drawClip({ctx: ctx, key: "flames", 
         sx: (Math.floor(this.pose) * 16),
         sy: 0,
+        w: 16, h: 24, dx: -8,  
+        dy: -12
+    });*/
+    assetsMng.drawClip({ctx: ctx, key: "flames", 
+        sx: this.animation[Math.floor(this.pose) % this.qtdAnimacoes].sx,
+        sy: this.animation[Math.floor(this.pose) % this.qtdAnimacoes].sy,
         w: 16, h: 24, dx: -8,  
         dy: -12
     });
@@ -45,8 +72,7 @@ FireZone.prototype.desenhar = function (ctx) {
 }
 
 FireZone.prototype.mover = function (dt) {
-    this.pose += 4 * dt;
-    this.pose = this.pose > 4 ? 0 : this.pose;
+    this.pose = this.pose + this.speedAnimation * dt;
     this.x = this.gx * this.map.s + this.s;             // Centraliza a firezone na celula
     this.y = this.gy * this.map.s + this.s;
 }
