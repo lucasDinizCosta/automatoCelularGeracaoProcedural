@@ -305,9 +305,11 @@ Sprite.prototype.desenharCaixaColisao = function(ctx){
   ctx.fillStyle = "red";
   ctx.strokeStyle = "black";
   ctx.lineWidth = 1;
-  ctx.fillRect(this.x - this.s/2, this.y - this.s/2, this.s, this.s);
-  ctx.fillStyle = "red";
-  ctx.fillRect(this.x, this.y, 1, 1);
+  ctx.save();
+  ctx.translate(this.x, this.y);
+  ctx.fillRect(- this.s/2,- this.s/2, this.s, this.s);
+  ctx.strokeRect(- this.s/2, - this.s/2, this.s, this.s);
+  ctx.restore();
 }
 
 Sprite.prototype.desenharTempo = function (ctx) {
