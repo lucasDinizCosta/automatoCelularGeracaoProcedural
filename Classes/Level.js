@@ -489,8 +489,8 @@ Level.prototype.posicionarFireZonesTeleportes = function(valor){
   let auxFireZone = new FireZone();
   auxFireZone.gx = celula.coluna;
   auxFireZone.gy = celula.linha;
-  auxFireZone.x = celula.coluna * this.mapa.s + auxFireZone.s/2;
-  auxFireZone.y = celula.linha * this.mapa.s + auxFireZone.s/2;
+  auxFireZone.x = this.teleporteInicioLevel.x;
+  auxFireZone.y = this.teleporteInicioLevel.y;
   auxFireZone.map = this.mapa;
   auxRoom.fireZones.push(auxFireZone);
   this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 1);     //Recalcula
@@ -500,8 +500,8 @@ Level.prototype.posicionarFireZonesTeleportes = function(valor){
   auxFireZone = new FireZone();
   auxFireZone.gx = celula.coluna;
   auxFireZone.gy = celula.linha;
-  auxFireZone.x = celula.coluna * this.mapa.s + auxFireZone.s/2;
-  auxFireZone.y = celula.linha * this.mapa.s + auxFireZone.s/2;
+  auxFireZone.x = this.teleporteFinalLevel.x;
+  auxFireZone.y = this.teleporteFinalLevel.y;
   auxFireZone.map = this.mapa;
   auxRoom.fireZones.push(auxFireZone);
   this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 1);     //Recalcula

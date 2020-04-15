@@ -337,7 +337,7 @@ Room.prototype.copyFireZones = function(room){
     for(let i = 0; i < room.fireZones.length; i++){
         let aux = room.fireZones[i];
         let newFireZone = new FireZone();
-        newFireZone.copy(aux);
+        newFireZone.copyWithAnimation(aux);
         this.fireZones.push(newFireZone);
     }
 }

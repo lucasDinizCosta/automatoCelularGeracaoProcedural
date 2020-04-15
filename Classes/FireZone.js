@@ -3,14 +3,16 @@ function FireZone() {
      * Estabelece a relação de Herança entre Player e Sprite:
      *  -> Sprite é pai e player é filho
      */
-    Sprite.call(this, 16);    
+    Sprite.call(this, 32);    
 
     this.animation = [];
     this.qtdAnimacoes = 12;
     this.speedAnimation = 1.2;
     this.matrizImagem = {
         linhas: 3,
-        colunas: 4
+        colunas: 4,
+        widthImagem: 16,
+        heightImagem: 24
     }
     this.h = 24;
     this.criarAnimacoes();
@@ -42,7 +44,8 @@ FireZone.prototype.desenhar = function (ctx) {
     ctx.globalAlpha = 0.20;         //Transparência
     ctx.translate(this.x, this.y);
     ctx.beginPath();
-    ctx.ellipse(0, 0, this.s * 0.7, this.s * 0.7, 0, 0, Math.PI * 2, false);
+    //ctx.ellipse(0, 0, this.s * 0.7, this.s * 0.7, 0, 0, Math.PI * 2, false);
+    ctx.ellipse(0, 0, this.matrizImagem.widthImagem * 0.7, this.matrizImagem.widthImagem * 0.7, 0, 0, Math.PI * 2, false);
     ctx.closePath();
     ctx.stroke();
     ctx.globalAlpha = 1.00;         //Transparência
@@ -73,6 +76,27 @@ FireZone.prototype.desenhar = function (ctx) {
 
 FireZone.prototype.mover = function (dt) {
     this.pose = this.pose + this.speedAnimation * dt;
-    this.x = this.gx * this.map.s + this.s;             // Centraliza a firezone na celula
-    this.y = this.gy * this.map.s + this.s;
+    //this.x = this.gx * this.map.s + this.s;             // Centraliza a firezone na celula
+    //this.y = this.gy * this.map.s + this.s;
+}
+
+FireZone.prototype.copyWithAnimation = function(firezone){
+    this.copy(firezone);
+    for(let i = 0; i < firezone.animation.length; i++){
+        let animationFrame = {
+            sizeImagem: firezone.animation[i].sizeImagem,
+            pose: firezone.animation[i].pose,
+            sx: firezone.animation[i].sx,
+            sy: firezone.animation[i].sy,
+        };
+        this.animation.push(animationFrame);
+    }
+    this.qtdAnimacoes = firezone.qtdAnimacoes;
+    this.speedAnimation = firezone.speedAnimation;
+    this.matrizImagem = {
+        linhas: firezone.matrizImagem.linhas,
+        colunas: firezone.matrizImagem.colunas,
+        widthImagem: firezone.matrizImagem.widthImagem,
+        heightImagem: firezone.matrizImagem.heightImagem
+    }
 }
