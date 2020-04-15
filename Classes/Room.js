@@ -317,9 +317,6 @@ Room.prototype.copyByLevelGeneration = function(room, mapa){
 
 // Copia os dados da sala toda mas o vetor de blocos salva REFERENCIA PRA MATRIZ DO MAPA
 Room.prototype.copyWithReference = function(room, mapa){
-    
-    //console.log("ROOM.copyWithReference():");
-    //console.log(mapa);
     this.number = room.number;
     this.teleporterInitial.copyTeleporte(room.teleporterInitial);
     this.teleporterFinal.copyTeleporte(room.teleporterFinal);
