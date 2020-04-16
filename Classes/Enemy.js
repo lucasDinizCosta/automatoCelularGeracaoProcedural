@@ -1,5 +1,5 @@
 function Enemy() {
-    Sprite.call(this, 12);            
+    Sprite.call(this, {s: 12, w: 12, h: 12});            
     this.roomNumber = -1;
     this.nomeImagem = "Enemy";
 }

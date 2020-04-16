@@ -3,7 +3,7 @@ function Teleporter(type){
    * Estabelece a relação de Herança entre Player e Sprite:
    *  -> Sprite é pai e player é filho
    */
-  Sprite.call(this, 32);     
+  Sprite.call(this, {s: 32, w: 32, h: 32});     
 
   this.proximoTeleporte = undefined;
   this.type = type;

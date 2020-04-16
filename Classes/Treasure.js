@@ -1,5 +1,5 @@
 function Treasure(){
-    Sprite.call(this, 8);     
+    Sprite.call(this, {s: 8, w: 8, h: 8});     
     this.roomNumber = -1;
 }
   

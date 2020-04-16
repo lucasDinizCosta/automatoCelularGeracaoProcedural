@@ -72,11 +72,15 @@
     // Carregamento das imagens do jogo
     assetsMng.loadImage("brick_gray", "Assets/Imagens/brick_gray.png");
     assetsMng.loadImage("brick_dark_Tp_0", "Assets/Imagens/brick_dark0.png");
+    assetsMng.loadImage("coin_copper", "Assets/Imagens/coin_copper.png");    
+    assetsMng.loadImage("coin_gold", "Assets/Imagens/coin_gold.png");    
+    assetsMng.loadImage("coin_silver", "Assets/Imagens/coin_silver.png");    
+    assetsMng.loadImage("flames", "Assets/Imagens/flames.png");    
     assetsMng.loadImage("floor_sand", "Assets/Imagens/floor_sand_stone0.png");
-    assetsMng.loadImage("rockBlock", "Assets/Imagens/rock.png");
     assetsMng.loadImage("grass_full", "Assets/Imagens/grass_full.png");
     assetsMng.loadImage("player", "Assets/Imagens/player-sprite.png");    
-    assetsMng.loadImage("flames", "Assets/Imagens/flames.png");    
+    assetsMng.loadImage("rockBlock", "Assets/Imagens/rock.png");
+    assetsMng.loadImage("slime", "Assets/Imagens/slime.png");    
 
     // Carregamento dos audios presentes no jogo
     assetsMng.loadAudio("teleporte", "Assets/Audios/Teleport.wav");
@@ -89,7 +93,7 @@
       seedValueURL = seedValueURL.substring(aux.length, seedValueURL.length);
       seedValueURL = parseInt(seedValueURL);
     }
-    else{                                           //sEED ALEATÓRIA
+    else{                                           //SEED ALEATÓRIA
       let maxValue = 5000000;
       let minValue = 500000;
       seedValueURL = (Math.floor(Math.random() * (maxValue - minValue)) + minValue);
@@ -105,7 +109,7 @@
     var escala = 1.8;
     var K = 1;
     var debugMode = 0; 
-    var player = new Player(16, "player");
+    var player = new Player({size: 26});
 
     var levelAtual = new Level(widthMap, heightMap, sizeMap);
     var levels = [];

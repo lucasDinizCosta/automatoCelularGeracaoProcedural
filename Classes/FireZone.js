@@ -3,7 +3,7 @@ function FireZone() {
      * Estabelece a relação de Herança entre Player e Sprite:
      *  -> Sprite é pai e player é filho
      */
-    Sprite.call(this, 32);    
+    Sprite.call(this, {s: 32, w: 32, h: 32});    
 
     this.animation = [];
     this.qtdAnimacoes = 12;
@@ -19,7 +19,7 @@ function FireZone() {
 }
 
 // Heranca
-FireZone.prototype = new Sprite();                          // Define que o Player é um Sprite
+FireZone.prototype = new Sprite();                          // Define que o Firezone é um Sprite
 FireZone.prototype.constructor = FireZone;
 
 FireZone.prototype.criarAnimacoes = function(){

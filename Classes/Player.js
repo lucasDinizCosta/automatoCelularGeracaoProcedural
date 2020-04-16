@@ -1,34 +1,41 @@
-function Player(size, nomeImagem) {
+function Player(params) {
   /**
    * Estabelece a relação de Herança entre Player e Sprite:
    *  -> Sprite é pai e player é filho
    */
-  Sprite.call(this, size);            
+  Sprite.call(this, {s: params.size});            
 
-  this.timeWalkSound = 0.5;
-  this.levelNumber = 1;
-  this.vidas = 3;
-  this.vivo = true;
-  this.room = -1;
+  let exemplo = {
+    timeWalkSound: 0.5,
+    levelNumber: 1,
+    vidas: 3,
+    vivo: true,
+    room: -1,
 
-  //Mapa das teclas pressionadas
-  this.up = false;
-  this.down = false;
-  this.right = false;
-  this.left = false;
-  this.ctrl = false;
-  this.space = false;
+    // Mapa das teclas pressionadas
+    up: false,
+    down: false,
+    right: false,
+    left: false,
+    ctrl: false,
+    space: false,
 
-  //AnimationStates
-  this.sentidoMovimento = 0;          //0 => direita, 1 => baixo, 2 => esquerda, 3 => cima
-  this.atacando = 0;                  //0 => Não, 1 => Sim
-  this.estadoAnimacaoAtual = 3;
-  this.poseAtual = 0;
-  this.animation = [];
-  this.numAnimacoes = 8;
+    // AnimationStates
+    sentidoMovimento: 0,          //0 => direita, 1 => baixo, 2 => esquerda, 3 => cima
+    atacando: 0,                  //0 => Não, 1 => Sim
+    estadoAnimacaoAtual: 3,
+    poseAtual: 0,
+    animation: [],
+    numAnimacoes: 8,
+    nomeImagem: "player"
+  }
+
+  Object.assign(this, exemplo, params);   // Sobrescreve os atributos de params e exemplo na classe
+
+  this.w = params.size;
+  this.h = params.size;
 
   this.criarAnimacoes();
-  this.nomeImagem = nomeImagem;
 }
 
 //Player.prototype = new Player();
@@ -45,6 +52,7 @@ Player.prototype.criarAnimacoes = function(){
   this.animation[0].pose = 8;
   this.animation[0].qtdAnimacoes = 8;
   this.animation[0].typeAnimation = 0;
+
   this.animation[1].sizeImagem = 64;
   this.animation[1].pose = 9;
   this.animation[1].qtdAnimacoes = 8;
@@ -95,7 +103,6 @@ Player.prototype.setRoom = function(){
 Player.prototype.moverCompleto = function(dt){
   this.tratarAnimacao();
   this.mover(dt);
-  
 }
 
 Player.prototype.tratarAnimacao = function(){
@@ -135,27 +142,33 @@ Player.prototype.tratarAnimacao = function(){
 }
 
 Player.prototype.desenhar = function(ctx){
+  
+  let elipse = {
+    x: -this.sizeImagem/8 + 7,
+    y: -this.sizeImagem/16 + 6,
+    radiusX: this.sizeImagem/4 - 2,
+    radiusY: this.sizeImagem/8 - 2,
+    rotation: 0,
+    startAngle: 0,
+    endAngle: 2 * Math.PI,
+    anticlockwise: false
+  }
   ctx.linewidth = 1;
   ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
   ctx.strokeStyle = "rgba(10, 10, 10, 0.4)";
   ctx.save();
   ctx.translate(this.x, this.y);
   ctx.beginPath();
-  ctx.ellipse(-this.s/2 + 1, -this.s/4 + 2, this.s - 2, this.s/2 - 2, 0, 0, 2 * Math.PI, false);
-  //ctx.ellipse( 0, 0, this.s - 2, this.s/2 - 2, 0, 0, 2 * Math.PI, false);  // x, y, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise
+  ctx.ellipse(elipse.x, elipse.y, elipse.radiusX, elipse.radiusY, elipse.rotation, elipse.startAngle, 
+    elipse.endAngle, elipse.anticlockwise); //ctx.ellipse(-this.s/2 + 7, -this.s/4 + 6, this.s - 2, this.s/2 - 2, 0, 0, 2 * Math.PI, false);
   ctx.closePath();
   ctx.fill();
   ctx.stroke();
   //ctx, key, sx, sy, w, h, dx, dy, dw, dh
-  /*assetsMng.drawClipSize({ctx: ctx, key: this.nomeImagem, 
-    sx: (this.sizeImagem * (this.animationState % this.qtdAnimacoes)),
-    sy: (this.sizeImagem * this.pose), w: this.sizeImagem, h: this.sizeImagem, 
-    dx: (-6 - this.sizeImagem/2), dy: (4 - this.sizeImagem),  dw: this.sizeImagem, dh: this.sizeImagem
-  });*/
   assetsMng.drawClipSize({ctx: ctx, key: this.nomeImagem, 
     sx: (this.sizeImagem * (this.animationState % this.qtdAnimacoes)),
     sy: (this.sizeImagem * this.pose), w: this.sizeImagem, h: this.sizeImagem, 
-    dx: (-6 - this.sizeImagem/2), dy: (4 - this.sizeImagem),  dw: this.sizeImagem, dh: this.sizeImagem
+    dx: (- this.sizeImagem/2), dy: (8 - this.sizeImagem),  dw: this.sizeImagem, dh: this.sizeImagem
   });
   ctx.restore();
   if(debugMode == 1){
@@ -167,3 +180,114 @@ Player.prototype.desenhar = function(ctx){
     this.desenharCaixaColisao(ctx);
   }
 }
+
+Player.prototype.mover = function (dt) {
+  this.gx = Math.floor(this.x/this.map.s);
+  this.gy = Math.floor(this.y/this.map.s);
+
+  if(debugMode === 0 || debugMode === 2){
+    if(this.gx === 0 || this.gx === (this.map.w - 1))  // Trata casos extremos do mapa =>{gx <= 0, gx >= gxMapa}
+    {
+      if(this.gx === 0){
+        if(this.vx < 0){
+          var limite = (this.gx) * this.map.s;
+          var maxDx = limite - (this.x - this.w/2);
+          var Dx = this.vx * dt;
+          this.x += Math.max(Dx, maxDx);
+        } else if( this.vx > 0 && this.map.cell[this.gy][this.gx + 1].tipo === 1){
+          var limite = (this.gx + 1) * this.map.s;
+          var maxDx = limite-(this.x + this.w/2);
+          var Dx = this.vx * dt;
+          this.x += Math.min(Dx, maxDx);
+        }else {
+          this.x += this.vx * dt;
+        }
+      }
+      else{
+        if(this.vx < 0 && this.map.cell[this.gy][this.gx - 1].tipo === 1){
+          var limite = (this.gx) * this.map.s;
+          var maxDx = limite - (this.x - this.w/2);
+          var Dx = this.vx * dt;
+          this.x += Math.max(Dx, maxDx);
+        } else if( this.vx > 0){
+          var limite = (this.gx + 1) * this.map.s;
+          var maxDx = limite - (this.x + this.w/2);
+          var Dx = this.vx * dt;
+          this.x += Math.min(Dx, maxDx);
+        }else {
+          this.x += this.vx * dt;
+        }
+      }
+    }
+    else{
+      if(this.vx < 0 && this.map.cell[this.gy][this.gx - 1].tipo === 1){
+        var limite = (this.gx) * this.map.s;
+        var maxDx = limite - (this.x - this.w/2);
+        var Dx = this.vx * dt;
+        this.x += Math.max(Dx, maxDx);
+      } else if( this.vx > 0 && this.map.cell[this.gy][this.gx + 1].tipo === 1){
+        var limite = (this.gx + 1) * this.map.s;
+        var maxDx = limite - (this.x + this.w/2);
+        var Dx = this.vx * dt;
+        this.x += Math.min(Dx, maxDx);
+      }else {
+        this.x += this.vx * dt;
+      }
+    }
+
+    if(this.gy === 0 || this.gy === (this.map.h - 1))  // Trata casos extremos do mapa =>{gy <= 0, gy >= gyMapa}
+    {
+      if(this.gy === 0){
+        if(this.vy < 0){
+          var limite = (this.gy) * this.map.s;
+          var maxDy = limite - (this.y - this.h/2);
+          var Dy = (this.vy) * dt;
+          this.y += Math.max(Dy, maxDy);
+        } else if((this.vy) > 0 && this.map.cell[this.gy + 1][this.gx].tipo !== 0){
+          var limite = (this.gy + 1) * this.map.s;
+          var maxDy = limite - (this.y + this.h/2);
+          var Dy = (this.vy) * dt;
+          this.y += Math.min(Dy, maxDy);
+        }else {
+          this.y += (this.vy) * dt;
+        }
+      }
+      else{
+        if((this.vy) < 0 && this.map.cell[this.gy - 1][this.gx].tipo !== 0){
+          var limite = (this.gy) * this.map.s;
+          var maxDy = limite - (this.y - this.h/2);
+          var Dy = (this.vy) * dt;
+          this.y += Math.max(Dy, maxDy);
+        } else if((this.vy) > 0){
+          var limite = (this.gy + 1) * this.map.s;
+          var maxDy = limite - (this.y + this.h/2);
+          var Dy = (this.vy) * dt;
+          this.y += Math.min(Dy, maxDy);
+        }else {
+          this.y += (this.vy) * dt;
+        }
+      }
+    }
+    else{
+      if((this.vy) < 0 && this.map.cell[this.gy - 1][this.gx].tipo !== 0){
+        var limite = (this.gy) * this.map.s;
+        var maxDy = limite - (this.y - this.h/2);
+        var Dy = (this.vy) * dt;
+        this.y += Math.max(Dy, maxDy);
+      } else if((this.vy) > 0 && this.map.cell[this.gy + 1][this.gx].tipo !== 0){
+        var limite = (this.gy + 1) * this.map.s;
+        var maxDy = limite - (this.y + this.h/2);
+        var Dy = (this.vy) * dt;
+        this.y += Math.min(Dy, maxDy);
+      }else {
+        this.y += (this.vy) * dt;
+      }
+    }
+  }
+  else{ //Debug mode => Colision is not detected
+    this.x += (this.vx) * dt;
+    this.y += (this.vy) * dt;
+  }
+
+  this.animationController();
+};

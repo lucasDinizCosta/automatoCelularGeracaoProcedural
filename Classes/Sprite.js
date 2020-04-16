@@ -1,33 +1,38 @@
-function Sprite(s = 16) {
-  //Atibutos da Fisica
-  this.x = 0;
-  this.vx = 0;
-  this.y = 0;
-  this.vy = 0;
-  this.w = 0;
-  this.h = 0;
+function Sprite(params = {s: 16}) {
 
-  //Atributos de grade
-  this.gx = 0;
-  this.gy = 0;
-  this.s = s;
-  this.map;
+  let exemplo = {
+    //Atibutos da Fisica
+    x: 0,
+    vx: 0,
+    y: 0,
+    vy: 0,
+    w: 0,
+    h: 0,
 
-  //Atributos da imagem
-  this.nomeImagem = "";
-  this.wImagem = 0;
-  this.hImagem = 0;
-  this.sx = 0;
-  this.sy = 0;
-  this.sizeImagem = this.s;
-  this.wImagem = this.s;
-  this.hImagem = this.s;
-  this.pose = 0;
-  this.qtdAnimacoes = 0;
-  this.animationState = 0;
-  this.frameTimeAnimation = 12;
-  this.speedAnimation = 160;
-  this.typeAnimation = 0;     //0 => Walking, 1 => Atacking
+    //Atributos de grade
+    gx: 0,
+    gy: 0,
+    s: params.s,
+    map: undefined,
+
+    //Atributos da imagem
+    nomeImagem: "",
+    wImagem: 0,
+    hImagem: 0,
+    sx: 0,
+    sy: 0,
+    sizeImagem: params.s,
+    wImagem: params.s,
+    hImagem: params.s,
+    pose: 0,
+    qtdAnimacoes: 0,
+    animationState: 0,
+    frameTimeAnimation: 12,
+    speedAnimation: 160,
+    typeAnimation: 0,     //0 => Walking, 1 => Atacking
+  }
+
+  Object.assign(this, exemplo, params);   // Sobrescreve os atributos de params e exemplo na classe
 
   this.colorBG;
   this.colorBorder;
@@ -36,6 +41,11 @@ function Sprite(s = 16) {
 
 Sprite.prototype = new Sprite();
 Sprite.prototype.constructor = Sprite;
+
+
+/**
+ * O limite de movimentação é com base em this.s
+ */
 
 Sprite.prototype.mover = function (dt) {
   this.gx = Math.floor(this.x/this.map.s);
@@ -139,7 +149,7 @@ Sprite.prototype.mover = function (dt) {
         var maxDy = limite-(this.y-this.s/2);
         var Dy = (this.vy)*dt;
         this.y += Math.max(Dy, maxDy);
-      } else if((this.vy) >0 && this.map.cell[this.gy+1][this.gx].tipo!==0){
+      } else if((this.vy) > 0 && this.map.cell[this.gy+1][this.gx].tipo!==0){
         var limite = (this.gy+1)*this.map.s;
         var maxDy = limite-(this.y+this.s/2);
         var Dy = (this.vy)*dt;
