@@ -256,7 +256,7 @@ Room.prototype.draw = function(ctx){
 
 Room.prototype.collisionFirezones = function(player){
     for(let j = 0; j < this.fireZones.length; j++){
-        if(player.colidiuCom2(this.fireZones[j])){
+        if(player.colidiuCom3(this.fireZones[j])){
            return true;
         }
     }
@@ -265,7 +265,7 @@ Room.prototype.collisionFirezones = function(player){
 
 Room.prototype.collisionEnemies = function(player){
     for(let j = 0; j < this.enemies.length; j++){
-        if(player.colidiuCom2(this.enemies[j])){
+        if(player.colidiuCom3(this.enemies[j])){
            return true;
         }
     }
@@ -274,7 +274,7 @@ Room.prototype.collisionEnemies = function(player){
 
 Room.prototype.collisionTreasures = function(player){
     for(let j = 0; j < this.treasures.length; j++){
-        if(player.colidiuCom2(this.treasures[j])){
+        if(player.colidiuCom3(this.treasures[j])){
            return true;
         }
     }

@@ -268,13 +268,12 @@ Sprite.prototype.copy = function(sprite){
   this.colorBG = sprite.colorBG;
   this.colorBorder = sprite.colorBorder;
   this.borderSize = sprite.borderSize;
-  this.typeSprite = sprite.typeSprite;
 }
 
 Sprite.prototype.desenharCentro = function(ctx){
   ctx.fillStyle = "blue";
   ctx.lineWidth = 1;
-  ctx.fillRect(this.x-1, this.y-1, 3, 3);
+  ctx.fillRect(this.x - 1, this.y - 1, 3, 3);
   ctx.fillStyle = "red";
   ctx.fillRect(this.x, this.y, 1, 1);
 }
@@ -285,7 +284,7 @@ Sprite.prototype.desenharCaixaColisao = function(ctx){
   ctx.lineWidth = 1;
   ctx.save();
   ctx.translate(this.x, this.y);
-  ctx.fillRect(- this.s/2,- this.s/2, this.s, this.s);
+  ctx.fillRect(- this.s/2, - this.s/2, this.s, this.s);
   ctx.strokeRect(- this.s/2, - this.s/2, this.s, this.s);
   ctx.restore();
 }
@@ -343,7 +342,7 @@ Sprite.prototype.colidiuCom = function (alvo) {
 };
 
 /** 
- * ColidiuCom2s possui o ponto central do sprite no centro
+ * ColidiuCom2 possui o ponto central do sprite no centro (TRABALHA COM SIZE)
 */
 
 Sprite.prototype.colidiuCom2 = function (alvo) {
@@ -351,5 +350,17 @@ Sprite.prototype.colidiuCom2 = function (alvo) {
   if(alvo.x > this.x + this.s/2) return false;
   if(alvo.y + alvo.s/2 < this.y - this.s/2) return false;
   if(alvo.y > this.y + this.s/2) return false;
+  return true;
+};
+
+/** 
+ * ColidiuCom3 possui o ponto central do sprite no centro (TRABALHA COM WIDTH E HEIGHT)
+*/
+
+Sprite.prototype.colidiuCom3 = function (alvo) {
+  if(alvo.x + alvo.w/2 < this.x - this.w/2) return false;
+  if(alvo.x > this.x + this.w/2) return false;
+  if(alvo.y + alvo.h/2 < this.y - this.h/2) return false;
+  if(alvo.y > this.y + this.h/2) return false;
   return true;
 };

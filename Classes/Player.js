@@ -3,7 +3,7 @@ function Player(params) {
    * Estabelece a relação de Herança entre Player e Sprite:
    *  -> Sprite é pai e player é filho
    */
-  Sprite.call(this, {s: params.size});            
+  Sprite.call(this, {s: params.s, w: 16, h: 16});            
 
   let exemplo = {
     timeWalkSound: 0.5,
@@ -32,8 +32,8 @@ function Player(params) {
 
   Object.assign(this, exemplo, params);   // Sobrescreve os atributos de params e exemplo na classe
 
-  this.w = params.size;
-  this.h = params.size;
+  //this.w = params.size;
+  //this.h = params.size;
 
   this.criarAnimacoes();
 }
@@ -144,8 +144,8 @@ Player.prototype.tratarAnimacao = function(){
 Player.prototype.desenhar = function(ctx){
   
   let elipse = {
-    x: -this.sizeImagem/8 + 7,
-    y: -this.sizeImagem/16 + 6,
+    x: -this.sizeImagem/8 + 8,
+    y: -this.sizeImagem/16 + 3,
     radiusX: this.sizeImagem/4 - 2,
     radiusY: this.sizeImagem/8 - 2,
     rotation: 0,
@@ -168,7 +168,7 @@ Player.prototype.desenhar = function(ctx){
   assetsMng.drawClipSize({ctx: ctx, key: this.nomeImagem, 
     sx: (this.sizeImagem * (this.animationState % this.qtdAnimacoes)),
     sy: (this.sizeImagem * this.pose), w: this.sizeImagem, h: this.sizeImagem, 
-    dx: (- this.sizeImagem/2), dy: (8 - this.sizeImagem),  dw: this.sizeImagem, dh: this.sizeImagem
+    dx: (- this.sizeImagem/2 ), dy: (5 - this.sizeImagem),  dw: this.sizeImagem, dh: this.sizeImagem
   });
   ctx.restore();
   if(debugMode == 1){
@@ -181,6 +181,9 @@ Player.prototype.desenhar = function(ctx){
   }
 }
 
+/**
+ * Mover que usa WIDTH e HEIGHT como referência no movimento
+ */
 Player.prototype.mover = function (dt) {
   this.gx = Math.floor(this.x/this.map.s);
   this.gy = Math.floor(this.y/this.map.s);
@@ -291,3 +294,14 @@ Player.prototype.mover = function (dt) {
 
   this.animationController();
 };
+
+Player.prototype.desenharCaixaColisao = function(ctx){
+  ctx.fillStyle = "red";
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 1;
+  ctx.save();
+  ctx.translate(this.x, this.y);
+  ctx.fillRect(- this.w/2, - this.h/2, this.w, this.h);
+  ctx.strokeRect(- this.w/2, - this.h/2, this.w, this.h);
+  ctx.restore();
+}

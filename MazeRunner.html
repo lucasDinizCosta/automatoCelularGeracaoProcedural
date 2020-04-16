@@ -54,7 +54,7 @@
   <script>
     var tela = document.getElementById("canvas");
     
-    //Ocupa a janela toda
+    // Ocupa a janela toda
     tela.width  = window.innerWidth;
     tela.height = window.innerHeight;
     tela.widthOld = 600;
@@ -109,7 +109,7 @@
     var escala = 1.8;
     var K = 1;
     var debugMode = 0; 
-    var player = new Player({size: 26});
+    var player = new Player({s: 16, w: 27, h: 11});
 
     var levelAtual = new Level(widthMap, heightMap, sizeMap);
     var levels = [];
