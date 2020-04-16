@@ -283,10 +283,6 @@ Room.prototype.collisionTreasures = function(player){
 
 // Copia os dados da sala toda mas o vetor de blocos salva a linha e coluna apenas
 Room.prototype.copy = function(room){
-    //console.log("Copy -- Room: ");
-    //console.log(this.number + " (this.number)--(Room.number) " + room.number);
-    //console.log("ROOM.copy():");
-
     this.number = room.number;
     this.teleporterInitial.copy(room.teleporterInitial);
     this.teleporterFinal.copy(room.teleporterFinal);
@@ -300,9 +296,6 @@ Room.prototype.copy = function(room){
 
 // Copia os dados da sala toda mas o vetor de blocos salva a linha e coluna apenas
 Room.prototype.copyByLevelGeneration = function(room, mapa){
-    //console.log("Copy -- Room: ");
-    //console.log(this.number + " (this.number)--(Room.number) " + room.number);
-    //console.log("ROOM.copyByLevelGeneration():");
     this.number = room.number;
     this.teleporterInitial.copy(room.teleporterInitial);
     this.teleporterFinal.copy(room.teleporterFinal);

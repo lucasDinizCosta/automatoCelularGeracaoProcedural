@@ -335,9 +335,10 @@ Sprite.prototype.impoeLimites = function(x, y, w, h){
 
 Sprite.prototype.colidiuCom = function (alvo) {
   if(alvo.x + alvo.w < this.x) return false;
-  if(alvo.x > this.x + this.w) return false;
+  if(alvo.x - alvo.w > this.x + this.w) return false;
+
   if(alvo.y + alvo.h < this.y) return false;
-  if(alvo.y > this.y + this.h) return false;
+  if(alvo.y + alvo.h > this.y + this.h) return false;
   return true;
 };
 
@@ -347,9 +348,10 @@ Sprite.prototype.colidiuCom = function (alvo) {
 
 Sprite.prototype.colidiuCom2 = function (alvo) {
   if(alvo.x + alvo.s/2 < this.x - this.s/2) return false;
-  if(alvo.x > this.x + this.s/2) return false;
+  if(alvo.x - alvo.s/2 > this.x + this.s/2) return false;
+
   if(alvo.y + alvo.s/2 < this.y - this.s/2) return false;
-  if(alvo.y > this.y + this.s/2) return false;
+  if(alvo.y - alvo.s/2 > this.y + this.s/2) return false;
   return true;
 };
 
@@ -358,9 +360,11 @@ Sprite.prototype.colidiuCom2 = function (alvo) {
 */
 
 Sprite.prototype.colidiuCom3 = function (alvo) {
-  if(alvo.x + alvo.w/2 < this.x - this.w/2) return false;
-  if(alvo.x > this.x + this.w/2) return false;
-  if(alvo.y + alvo.h/2 < this.y - this.h/2) return false;
-  if(alvo.y > this.y + this.h/2) return false;
+  if(alvo.x + alvo.w/2 < this.x - this.w/2){ return false; }
+  if(alvo.x - alvo.w/2 > this.x + this.w/2){ return false; }
+
+  if(alvo.y + alvo.h/2 < this.y - this.h/2){ return false; }
+  if(alvo.y - alvo.h/2 > this.y + this.h/2){ return false; }  
+  
   return true;
 };

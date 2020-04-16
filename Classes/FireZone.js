@@ -14,7 +14,7 @@ function FireZone() {
         widthImagem: 16,
         heightImagem: 24
     }
-    this.h = 24;
+    //this.h = 24;
     this.criarAnimacoes();
 }
 
@@ -99,4 +99,15 @@ FireZone.prototype.copyWithAnimation = function(firezone){
         widthImagem: firezone.matrizImagem.widthImagem,
         heightImagem: firezone.matrizImagem.heightImagem
     }
+}
+
+FireZone.prototype.desenharCaixaColisao = function(ctx){
+  ctx.fillStyle = "red";
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 1;
+  ctx.save();
+  ctx.translate(this.x, this.y);
+  ctx.fillRect(- this.w/2, - this.h/2, this.w, this.h);
+  ctx.strokeRect(- this.w/2, - this.h/2, this.w, this.h);
+  ctx.restore();
 }
