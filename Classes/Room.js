@@ -337,7 +337,7 @@ Room.prototype.copyTreasures = function(room){
     for(let i = 0; i < room.treasures.length; i++){
         let aux = room.treasures[i];
         let newTreasure = new Treasure();
-        newTreasure.copy(aux);
+        newTreasure.copyWithAnimation(aux);
         this.treasures.push(newTreasure);
     }
 }

@@ -1,7 +1,8 @@
 function Enemy() {
-    Sprite.call(this, {s: 12, w: 12, h: 12});            
+    Sprite.call(this, {s: 12, w: 12, h: 12, nomeImagem: "Enemy"});            
     this.roomNumber = -1;
-    this.nomeImagem = "Enemy";
+    // w = 20
+    // h = 22
 }
 
 // Heranca

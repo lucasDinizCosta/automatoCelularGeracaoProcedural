@@ -55,29 +55,11 @@ Treasure.prototype.mover = function (dt) {
 }
 
 Treasure.prototype.desenhar = function(ctx){
-  
-  /*let elipse = {
-    x: -this.sizeImagem/8 + 8,
-    y: -this.sizeImagem/16 + 3,
-    radiusX: this.sizeImagem/4 - 2,
-    radiusY: this.sizeImagem/8 - 2,
-    rotation: 0,
-    startAngle: 0,
-    endAngle: 2 * Math.PI,
-    anticlockwise: false
-  }*/
   ctx.linewidth = 1;
   ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
   ctx.strokeStyle = "rgba(10, 10, 10, 0.4)";
   ctx.save();
   ctx.translate(this.x, this.y);
-  /*ctx.beginPath();
-  ctx.ellipse(elipse.x, elipse.y, elipse.radiusX, elipse.radiusY, elipse.rotation, elipse.startAngle, 
-    elipse.endAngle, elipse.anticlockwise); //ctx.ellipse(-this.s/2 + 7, -this.s/4 + 6, this.s - 2, this.s/2 - 2, 0, 0, 2 * Math.PI, false);
-  ctx.closePath();
-  ctx.fill();
-  ctx.stroke();*/
-  //ctx, key, sx, sy, w, h, dx, dy, dw, dh
   assetsMng.drawClip({ctx: ctx, key: this.nomeImagem, 
     sx: this.animation[Math.floor(this.pose) % this.qtdAnimacoes].sx,
     sy: this.animation[Math.floor(this.pose) % this.qtdAnimacoes].sy,
