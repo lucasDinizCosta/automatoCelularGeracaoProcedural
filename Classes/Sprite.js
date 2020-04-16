@@ -284,8 +284,8 @@ Sprite.prototype.desenharCaixaColisao = function(ctx){
   ctx.lineWidth = 1;
   ctx.save();
   ctx.translate(this.x, this.y);
-  ctx.fillRect(- this.s/2, - this.s/2, this.s, this.s);
-  ctx.strokeRect(- this.s/2, - this.s/2, this.s, this.s);
+  ctx.fillRect(- this.w/2, - this.h/2, this.w, this.h);
+  ctx.strokeRect(- this.w/2, - this.h/2, this.w, this.h);
   ctx.restore();
 }
 

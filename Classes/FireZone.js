@@ -3,7 +3,7 @@ function FireZone() {
      * Estabelece a relação de Herança entre Player e Sprite:
      *  -> Sprite é pai e player é filho
      */
-    Sprite.call(this, {s: 32, w: 32, h: 32});    
+    Sprite.call(this, {s: 32, w: 32, h: 32, nomeImagem: "flames"});    
 
     this.animation = [];
     this.qtdAnimacoes = 12;
@@ -57,7 +57,7 @@ FireZone.prototype.desenhar = function (ctx) {
         w: 16, h: 24, dx: -8,  
         dy: -12
     });*/
-    assetsMng.drawClip({ctx: ctx, key: "flames", 
+    assetsMng.drawClip({ctx: ctx, key: this.nomeImagem, 
         sx: this.animation[Math.floor(this.pose) % this.qtdAnimacoes].sx,
         sy: this.animation[Math.floor(this.pose) % this.qtdAnimacoes].sy,
         w: 16, h: 24, dx: -8,  
@@ -76,8 +76,6 @@ FireZone.prototype.desenhar = function (ctx) {
 
 FireZone.prototype.mover = function (dt) {
     this.pose = this.pose + this.speedAnimation * dt;
-    //this.x = this.gx * this.map.s + this.s;             // Centraliza a firezone na celula
-    //this.y = this.gy * this.map.s + this.s;
 }
 
 FireZone.prototype.copyWithAnimation = function(firezone){

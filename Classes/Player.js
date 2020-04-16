@@ -41,8 +41,8 @@ Player.prototype.constructor = Player;
 
 Player.prototype.criarAnimacoes = function(){
   for(let i = 0; i < this.numAnimacoes; i++){
-    this.animation.push(new Sprite({sizeImagem: 64}));
-    /*let animationFrame = {
+    //this.animation.push(new Sprite({sizeImagem: 64}));
+    let animationFrame = {
       sizeImagem: 64,
       pose: 0,
       qtdAnimacoes: 0,
@@ -51,45 +51,41 @@ Player.prototype.criarAnimacoes = function(){
       //sx: 16 * j,
       //sy: 24 * i,
     };
-    this.animation.push(animationFrame);*/
+    this.animation.push(animationFrame);
   }
-  //this.animation[0].sizeImagem = 64;
   this.animation[0].pose = 8;                   // Localização do sprite na spriteSheet
   this.animation[0].qtdAnimacoes = 8;
   this.animation[0].typeAnimation = 0;
 
-  //this.animation[1].sizeImagem = 64;
   this.animation[1].pose = 9;
   this.animation[1].qtdAnimacoes = 8;
   this.animation[1].typeAnimation = 0;
 
-  //this.animation[2].sizeImagem = 64;
   this.animation[2].pose = 10;
   this.animation[2].qtdAnimacoes = 8;
   this.animation[2].typeAnimation = 0;
   
-  //this.animation[3].sizeImagem = 64;
   this.animation[3].pose = 11;
   this.animation[3].qtdAnimacoes = 8;
   this.animation[3].typeAnimation = 0;
 
   // Ataques
-  //this.animation[4].sizeImagem = 64;
+
   this.animation[4].pose = 12;
   this.animation[4].qtdAnimacoes = 6;
   this.animation[4].typeAnimation = 1;
   this.animation[4].speedAnimation = 160;
-  //this.animation[5].sizeImagem = 64;
+
   this.animation[5].pose = 13;
   this.animation[5].qtdAnimacoes = 6;
   this.animation[5].typeAnimation = 1;
   this.animation[5].speedAnimation = 160;
-  //this.animation[6].sizeImagem = 64;
+
   this.animation[6].pose = 14;
   this.animation[6].qtdAnimacoes = 6;
   this.animation[6].typeAnimation = 1;
   this.animation[6].speedAnimation = 160;
-  //this.animation[7].sizeImagem = 64;
+
   this.animation[7].pose = 15;
   this.animation[7].qtdAnimacoes = 6;
   this.animation[7].typeAnimation = 1;
@@ -143,7 +139,6 @@ Player.prototype.tratarAnimacao = function(){
   this.pose = this.animation[this.estadoAnimacaoAtual].pose;
   this.typeAnimation = this.animation[this.estadoAnimacaoAtual].typeAnimation;
   this.speedAnimation = this.animation[this.estadoAnimacaoAtual].speedAnimation;
-  //this.poseAtual = this.animation[this.estadoAnimacaoAtual].pose;
 }
 
 Player.prototype.desenhar = function(ctx){
