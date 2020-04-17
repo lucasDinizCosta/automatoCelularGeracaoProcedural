@@ -11,6 +11,7 @@ function Player(params) {
     vidas: 3,
     vivo: true,
     room: -1,
+    tesourosColetados: 0,
 
     // Mapa das teclas pressionadas
     up: false,
@@ -94,6 +95,7 @@ Player.prototype.criarAnimacoes = function(){
 
 Player.prototype.restart = function(){
   this.vivo = true;
+  this.tesourosColetados = 0;
   this.setRoom();
 }
 
@@ -142,7 +144,6 @@ Player.prototype.tratarAnimacao = function(){
 }
 
 Player.prototype.desenhar = function(ctx){
-  
   let elipse = {
     x: -this.sizeImagem/8 + 8,
     y: -this.sizeImagem/16 + 3,

@@ -331,22 +331,21 @@
               limparDados();
               estado = 1;
             }
-
             break;
           case 3:       // Tela preta == Jogo finalizado
             limparTela();
             break;
           case 4:       // Passou de fase
             tempoRectInt.w = 127;
-            treasuresCount = 0;
-            teasuresCollected = 0;
+            /*treasuresCount = 0;
+            teasuresCollected = 0;*/
             player.levelNumber = player.levelNumber + 1;
             loadLevel(0);       // Load new level
             break;
           case 5:     // Recarregar fase
             tempoRectInt.w = 127;
-            treasuresCount = 0;
-            teasuresCollected = 0;
+            /*treasuresCount = 0;
+            teasuresCollected = 0;*/
             player.vidas--;
             if(player.vidas < 0){       // Game over
               estado = 2;
@@ -395,8 +394,8 @@
       ctx.fillText("Tempo: ", converteTelaCheia(55, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
       ctx.strokeText("Vidas: " + player.vidas, converteTelaCheia(300, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
       ctx.fillText("Vidas: " + player.vidas, converteTelaCheia(300, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
-      ctx.strokeText("Tesouros: " + teasuresCollected, converteTelaCheia(430, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
-      ctx.fillText("Tesouros: " + teasuresCollected, converteTelaCheia(430, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
+      ctx.strokeText("Tesouros: " + player.tesourosColetados, converteTelaCheia(430, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
+      ctx.fillText("Tesouros: " + player.tesourosColetados, converteTelaCheia(430, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
       ctx.strokeText("Level: " + player.levelNumber, converteTelaCheia(545, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
       ctx.fillText("Level: " + player.levelNumber, converteTelaCheia(545, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
 
@@ -506,7 +505,6 @@
     function limparDados() {
       levelAtual = new Level(widthMap, heightMap, sizeMap);
       levelAtual.clonarLevel(levels[0]);
-      player = new Player(12, "player");
       levelAtual.posicionarPlayer(player);
       levelAtual.setTaxaDiminuicaoTempo(dt, tempoRectInt);        // Atualiza o decaimento da barra
       player.restart();
@@ -526,7 +524,6 @@
           }
           else {
             levelAtual.clonarLevel(levels[player.levelNumber - 1]);
-            //player = new Player(12, "player");
             levelAtual.posicionarPlayer(player);
             levelAtual.setTaxaDiminuicaoTempo(dt, tempoRectInt);        // Atualiza o decaimento da barra
             player.restart();
@@ -610,17 +607,6 @@
           else if(levelAtual.rooms[auxRoom - 1].teleporterFinal.colidiuCom2(player)){
             levelAtual.rooms[auxRoom - 1].teleporterFinal.teleportar(player);
           }
-          /*for(let i = 0; i < levelAtual.rooms.length; i++){
-            if(levelAtual.rooms[i].teleporterInitial.colidiuCom2(player)){
-              levelAtual.rooms[i].teleporterInitial.teleportar(player);
-              break;
-            }
-            if(levelAtual.rooms[i].teleporterFinal.colidiuCom2(player)){
-              levelAtual.rooms[i].teleporterFinal.teleportar(player);
-              break;
-            }
-          }*/
-          //player.moverCompleto(dt);
           break;
         case 17:  //Left CTRL
           player.atacando = 1;  
