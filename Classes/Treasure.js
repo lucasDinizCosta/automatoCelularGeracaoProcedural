@@ -55,9 +55,6 @@ Treasure.prototype.mover = function (dt) {
 }
 
 Treasure.prototype.desenhar = function(ctx){
-  ctx.linewidth = 1;
-  ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
-  ctx.strokeStyle = "rgba(10, 10, 10, 0.4)";
   ctx.save();
   ctx.translate(this.x, this.y);
   assetsMng.drawClip({ctx: ctx, key: this.nomeImagem, 

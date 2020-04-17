@@ -227,6 +227,7 @@ Room.prototype.draw = function(ctx){
 
     for(let i = 0; i < this.enemies.length; i++){
         this.enemies[i].desenhar(ctx);
+        this.enemies[i].mover(0.16);          //FIXME gol de mão ==== Animação do fogo
     }  
     
     // Ligação entre os teleportes
