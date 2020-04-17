@@ -7,7 +7,7 @@ function FireZone() {
 
     this.animation = [];
     this.qtdAnimacoes = 12;
-    this.speedAnimation = 11.49;//1.2;
+    this.speedAnimation = 11.49;
     this.matrizImagem = {
         linhas: 3,
         colunas: 4,
