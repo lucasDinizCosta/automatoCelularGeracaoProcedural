@@ -45,6 +45,9 @@ Enemy.prototype.criarAnimacoes = function(){
             this.animation[i].animationFrame.push(animationFrame);
         }
     }
+
+    this.pose = seedGen.getRandomIntMethod_1(0,10);             // Sorteia uma posição inicial para que os 
+                                                                // inimigos não fiquem sincronizados
 }
 
 Enemy.prototype.desenhar = function(ctx){
