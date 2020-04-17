@@ -702,6 +702,12 @@ Level.prototype.copiaSalasComReferencia = function(rooms){
   }
 }
 
+Level.prototype.mover = function(dt) {
+  for(let i = 0; i < this.rooms.length; i++){
+    this.rooms[i].move(dt);
+  }
+};
+
 Level.prototype.desenhar = function(ctx) {
   this.mapa.desenhar(ctx);
   for(let i = 0; i < this.rooms.length; i++){

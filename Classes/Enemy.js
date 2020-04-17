@@ -3,7 +3,7 @@ function Enemy() {
     this.roomNumber = -1;
     this.animation = [];
     this.qtdAnimacoes = {types: 2, lines: [0, 1], qtd: [9, 3]/* atacking: 9, normal: 3*/};
-    this.speedAnimation = 1.2;
+    this.speedAnimation = 11.49;//1.2;
     this.type = 0;
     this.pose = 0;
     this.matrizImagem = {
@@ -46,7 +46,7 @@ Enemy.prototype.criarAnimacoes = function(){
         }
     }
 
-    this.pose = seedGen.getRandomIntMethod_1(0,10);             // Sorteia uma posição inicial para que os 
+    this.pose = seedGen.getRandomIntMethod_1(0,50);             // Sorteia uma posição inicial para que os 
                                                                 // inimigos não fiquem sincronizados
 }
 

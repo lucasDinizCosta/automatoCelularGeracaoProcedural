@@ -211,23 +211,34 @@ Room.prototype.getMaxDist = function(option){
     return value;
 }
 
+Room.prototype.move = function(dt){
+    for(let i = 0; i < this.fireZones.length; i++){
+        this.fireZones[i].mover(dt);       
+    } 
+
+    for(let i = 0; i < this.treasures.length; i++){
+        this.treasures[i].mover(dt);       
+    }
+
+    for(let i = 0; i < this.enemies.length; i++){
+        this.enemies[i].mover(dt);         
+    }    
+} 
+
 // Desenha os teleportes e as conexões entre eles
 Room.prototype.draw = function(ctx){
     for(let i = 0; i < this.fireZones.length; i++){
         this.fireZones[i].desenhar(ctx);
-        this.fireZones[i].mover(0.16);          //FIXME gol de mão ==== Animação do fogo
     }    
     this.teleporterInitial.desenhar(ctx);    
     this.teleporterFinal.desenhar(ctx);
 
     for(let i = 0; i < this.treasures.length; i++){
         this.treasures[i].desenhar(ctx);
-        this.treasures[i].mover(0.16);          //FIXME gol de mão ==== Animação do fogo
     }
 
     for(let i = 0; i < this.enemies.length; i++){
         this.enemies[i].desenhar(ctx);
-        this.enemies[i].mover(0.16);          //FIXME gol de mão ==== Animação do fogo
     }  
     
     // Ligação entre os teleportes

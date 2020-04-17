@@ -267,7 +267,7 @@
             levelAtual.colisaoFireZones(player);
             levelAtual.colisaoInimigos(player);
             levelAtual.colisaoTesouros(player);
-            //console.log(player.vivo);
+            levelAtual.mover(dt);
             controleTempo();
             ctx.save();
             ctx.scale(escala, escala);

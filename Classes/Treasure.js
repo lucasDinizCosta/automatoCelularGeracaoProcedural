@@ -3,7 +3,7 @@ function Treasure(){
     this.roomNumber = -1;
     this.animation = [];
     this.qtdAnimacoes = 8;
-    this.speedAnimation = 1.5;  // 1.2
+    this.speedAnimation = 14;//1.5;  // 1.2
     this.matrizImagem = {
         linhas: 1,
         colunas: 8,
@@ -48,6 +48,9 @@ Treasure.prototype.criarAnimacoes = function(){
             this.animation.push(animationFrame);
         }
     }
+
+    this.pose = seedGen.getRandomIntMethod_1(0,20);             // Sorteia uma posição inicial para que os 
+                                                                // Firezones não fiquem sincronizados
 }
 
 Treasure.prototype.mover = function (dt) {

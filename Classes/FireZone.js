@@ -7,7 +7,7 @@ function FireZone() {
 
     this.animation = [];
     this.qtdAnimacoes = 12;
-    this.speedAnimation = 1.2;
+    this.speedAnimation = 11.49;//1.2;
     this.matrizImagem = {
         linhas: 3,
         colunas: 4,
@@ -34,6 +34,13 @@ FireZone.prototype.criarAnimacoes = function(){
             this.animation.push(animationFrame);
         }
     }
+
+    this.pose = seedGen.getRandomIntMethod_1(0,20);             // Sorteia uma posição inicial para que os 
+                                                                // Firezones não fiquem sincronizados
+}
+
+FireZone.prototype.mover = function (dt) {
+    this.pose = this.pose + this.speedAnimation * dt;
 }
 
 FireZone.prototype.desenhar = function (ctx) {
@@ -72,10 +79,6 @@ FireZone.prototype.desenhar = function (ctx) {
         //this.desenharCell(ctx);         //Debug mode Grid
         this.desenharCaixaColisao(ctx);
     }
-}
-
-FireZone.prototype.mover = function (dt) {
-    this.pose = this.pose + this.speedAnimation * dt;
 }
 
 FireZone.prototype.copyWithAnimation = function(firezone){
