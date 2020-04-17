@@ -1,9 +1,9 @@
 function Enemy() {
-    Sprite.call(this, {s: 22, w: 22, h: 22, nomeImagem: "slime"});            
+    Sprite.call(this, {s: 22, w: 22, h: 10, nomeImagem: "slime", sizeImagem: 22});            
     this.roomNumber = -1;
     this.animation = [];
     this.qtdAnimacoes = {types: 2, lines: [0, 1], qtd: [9, 3]/* atacking: 9, normal: 3*/};
-    this.speedAnimation = 0.8;
+    this.speedAnimation = 1.2;
     this.type = 0;
     this.pose = 0;
     this.matrizImagem = {
@@ -34,7 +34,6 @@ Enemy.prototype.criarAnimacoes = function(){
         this.animation.push(auxAnimation);
     }
 
-    //let contPoses = 0;
     for(let i = 0; i < this.animation.length; i++){             // Animações
         for(let j = 0; j < this.animation[i].qtdFrames; j++){   // Frames
             let animationFrame = {
@@ -65,13 +64,33 @@ Enemy.prototype.desenhar = function(ctx){
     else if(debugMode == 2){
         this.desenharCaixaColisao(ctx);
     }*/
+
+    let elipse = {
+        x: 0,
+        y: 0,
+        radiusX: this.sizeImagem/2 - 0.8,
+        radiusY: this.sizeImagem/3 - 2.2,
+        rotation: 0,
+        startAngle: 0,
+        endAngle: 2 * Math.PI,
+        anticlockwise: false
+    }
+    ctx.linewidth = 1;
+    ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
+    ctx.strokeStyle = "rgba(10, 10, 10, 0.4)";
     ctx.save();
     ctx.translate(this.x, this.y);
+    ctx.beginPath();
+    ctx.ellipse(elipse.x, elipse.y, elipse.radiusX, elipse.radiusY, elipse.rotation, elipse.startAngle, 
+    elipse.endAngle, elipse.anticlockwise); //ctx.ellipse(-this.s/2 + 7, -this.s/4 + 6, this.s - 2, this.s/2 - 2, 0, 0, 2 * Math.PI, false);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
     assetsMng.drawClip({ctx: ctx, key: this.nomeImagem, 
         sx: this.animation[this.type].animationFrame[Math.floor(this.pose) % this.animation[this.type].qtdFrames].sx,
         sy: this.animation[this.type].animationFrame[Math.floor(this.pose) % this.animation[this.type].qtdFrames].sy,
         w: this.matrizImagem.widthImagem, h: 22, dx: -this.matrizImagem.widthImagem/2,  
-        dy: -this.matrizImagem.heightImagem/2 /*- this.matrizImagem.heightImagem/2*/
+        dy: -this.matrizImagem.heightImagem/2 - 8/*- this.matrizImagem.heightImagem/2*/
     });
     ctx.restore();
     if(debugMode == 1){
