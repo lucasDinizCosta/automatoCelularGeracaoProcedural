@@ -269,9 +269,9 @@ Room.prototype.draw = function(ctx){
 
 Room.prototype.collisionFirezones = function(player){
     for(let j = 0; j < this.fireZones.length; j++){
-        if(player.colidiuCom3(this.fireZones[j])){
-           return true;
-        }
+        if(this.fireZones[j].colidiuCom3(player))
+            return true;
+        
     }
     return false;
 }
@@ -279,7 +279,7 @@ Room.prototype.collisionFirezones = function(player){
 Room.prototype.collisionEnemies = function(player){
     for(let j = 0; j < this.enemies.length; j++){
         if(player.colidiuCom3(this.enemies[j])){
-           return true;
+            return true;
         }
     }
     return false;
@@ -288,7 +288,9 @@ Room.prototype.collisionEnemies = function(player){
 Room.prototype.collisionTreasures = function(player){
     for(let j = 0; j < this.treasures.length; j++){
         if(player.colidiuCom3(this.treasures[j])){
-           return true;
+            player.tesourosColetados++;
+            this.treasures.splice(j, 1);
+            return true;
         }
     }
     return false;
