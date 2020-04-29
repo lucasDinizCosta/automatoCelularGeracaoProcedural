@@ -15,6 +15,13 @@ function Sprite(params = {s: 16}) {
     s: params.s,
     map: undefined,
 
+    hitBox: {
+      x: 0,
+      y: 0,
+      w: 5,
+      h: 5,
+    },
+
     //Atributos da imagem
     nomeImagem: "",
     wImagem: 0,
@@ -276,6 +283,14 @@ Sprite.prototype.desenharCentro = function(ctx){
   ctx.fillRect(this.x - 1, this.y - 1, 3, 3);
   ctx.fillStyle = "white";
   ctx.fillRect(this.x, this.y, 1, 1);
+}
+
+Sprite.prototype.desenharCentroHitBox = function(ctx){
+  ctx.fillStyle = "black";
+  ctx.lineWidth = 1;
+  ctx.fillRect(this.hitBox.x - 1, this.hitBox.y - 1, 3, 3);
+  ctx.fillStyle = "white";
+  ctx.fillRect(this.hitBox.x, this.hitBox.y, 1, 1);
 }
 
 Sprite.prototype.desenharCaixaColisao = function(ctx){

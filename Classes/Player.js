@@ -3,7 +3,14 @@ function Player(params) {
    * Estabelece a relação de Herança entre Player e Sprite:
    *  -> Sprite é pai e player é filho
    */
-  Sprite.call(this, {s: params.s, w: 16, h: 16});            
+  Sprite.call(this, {s: params.s, w: 16, h: 16,
+    hitBox: {
+      x: 0,
+      y: 0,
+      w: 16,
+      h: 16,
+    },
+  });            
 
   let exemplo = {
     timeWalkSound: 0.5,
@@ -28,7 +35,7 @@ function Player(params) {
     poseAtual: 0,
     animation: [],
     numAnimacoes: 8,
-    cooldown: 5,                  
+    cooldown: 5,                  //Tempo do personagem travado até terminar o ataque            
     nomeImagem: "player"
   }
 
@@ -136,15 +143,23 @@ Player.prototype.tratarAnimacao = function(){
   switch (this.sentidoMovimento) {  //Movimento
     case 0:     //Direita
       this.estadoAnimacaoAtual = 3;
+      this.hitBox.x = this.x + this.w/2;
+      this.hitBox.y = this.y;
       break;
     case 1:     //Baixo
       this.estadoAnimacaoAtual = 2;
+      this.hitBox.x = this.x;
+      this.hitBox.y = this.y + this.h/2;
       break;
     case 2:     //Esquerda
       this.estadoAnimacaoAtual = 1;
+      this.hitBox.x = this.x - this.w/2;
+      this.hitBox.y = this.y;
       break;
     case 3:     //Cima
       this.estadoAnimacaoAtual = 0;
+      this.hitBox.x = this.x;
+      this.hitBox.y = this.y - this.h/2;
       break;
     default:
       break;
@@ -199,11 +214,53 @@ Player.prototype.desenhar = function(ctx){
   if(debugMode == 1){
     this.desenharCell(ctx);         //Debug mode Grid
     this.desenharCentro(ctx);
+    this.desenharCentroHitBox(ctx);
   }
   else if(debugMode == 2){
     this.desenharCell(ctx);         //Debug mode Grid    
     this.desenharCaixaColisao(ctx);
     this.desenharCentro(ctx);
+    this.desenharCentroHitBox(ctx);
+  }
+}
+
+Player.prototype.desenharCaixaColisao = function(ctx){
+  // hurt box => danifica o personagem
+  ctx.fillStyle = "red";
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 1;
+  ctx.save();
+  ctx.translate(this.x, this.y);
+  ctx.fillRect(- this.w/2, - this.h/2, this.w, this.h);
+  ctx.strokeRect(- this.w/2, - this.h/2, this.w, this.h);
+  ctx.restore();
+  
+  if(this.atacando){
+    // hurt box => danifica o personagem
+    ctx.fillStyle = "blue";
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 1;
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.fillRect(this.w/2, this.h/2, -this.w, this.h);
+    ctx.strokeRect(this.w/2, this.h/2, -this.w, this.h);
+    ctx.restore();
+    /*switch (this.sentidoMovimento) {  //Movimento
+      case 0:     //Direita
+        this.estadoAnimacaoAtual = 3;
+        break;
+      case 1:     //Baixo
+        this.estadoAnimacaoAtual = 2;
+        break;
+      case 2:     //Esquerda
+        this.estadoAnimacaoAtual = 1;
+        break;
+      case 3:     //Cima
+        this.estadoAnimacaoAtual = 0;
+        break;
+      default:
+        break;
+    }*/
   }
 }
 
@@ -313,21 +370,10 @@ Player.prototype.mover = function (dt) {
       }
     }
   }
-  else{ //Debug mode => Colision is not detected
+  else{   // Debug mode => Colision is not detected
     this.x += (this.vx) * dt;
     this.y += (this.vy) * dt;
   }
 
   this.animationController();
 };
-
-Player.prototype.desenharCaixaColisao = function(ctx){
-  ctx.fillStyle = "red";
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 1;
-  ctx.save();
-  ctx.translate(this.x, this.y);
-  ctx.fillRect(- this.w/2, - this.h/2, this.w, this.h);
-  ctx.strokeRect(- this.w/2, - this.h/2, this.w, this.h);
-  ctx.restore();
-}
