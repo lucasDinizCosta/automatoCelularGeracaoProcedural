@@ -13,6 +13,7 @@ Link Github io: https://lucasdinizcosta.github.io/automatoCelularGeracaoProcedur
 ##  Links das imagens:
 - coin: https://opengameart.org/content/animated-coins
 - slime: https://opengameart.org/content/slime-sprite-sheet
+- flames: https://opengameart.org/content/lpc-flames
 
 ##  Links dos audios:
 - coin: http://soundbible.com/2081-Coin-Drop.html

@@ -28,6 +28,7 @@ function Player(params) {
     poseAtual: 0,
     animation: [],
     numAnimacoes: 8,
+    cooldown: 5,                  
     nomeImagem: "player"
   }
 
@@ -41,8 +42,31 @@ Player.prototype = new Sprite();              // Define que o Player é um Sprit
 Player.prototype.constructor = Player;
 
 Player.prototype.criarAnimacoes = function(){
+  // Cria a lista de tipos de animações
+  /*for(let i = 0; i < this.qtdAnimacoes.types; i++){
+    let auxAnimation = {
+        animationFrame: [],
+        type: i,
+        qtdFrames: this.qtdAnimacoes.qtd[i]
+    }
+    this.animation.push(auxAnimation);
+  }
+
+  for(let i = 0; i < this.animation.length; i++){             // Animações
+      for(let j = 0; j < this.animation[i].qtdFrames; j++){   // Frames
+          let animationFrame = {
+              sizeImagem: this.s,
+              pose: j,
+              sx: 1 + 23 * j,
+              sy: 1 + 23 * this.qtdAnimacoes.lines[i],
+          };
+          this.animation[i].animationFrame.push(animationFrame);
+      }
+  }*/
+
+
+
   for(let i = 0; i < this.numAnimacoes; i++){
-    //this.animation.push(new Sprite({sizeImagem: 64}));
     let animationFrame = {
       sizeImagem: 64,
       pose: 0,
@@ -55,19 +79,19 @@ Player.prototype.criarAnimacoes = function(){
     this.animation.push(animationFrame);
   }
   this.animation[0].pose = 8;                   // Localização do sprite na spriteSheet
-  this.animation[0].qtdAnimacoes = 8;
+  this.animation[0].qtdAnimacoes = 9;   //8
   this.animation[0].typeAnimation = 0;
 
   this.animation[1].pose = 9;
-  this.animation[1].qtdAnimacoes = 8;
+  this.animation[1].qtdAnimacoes = 9;
   this.animation[1].typeAnimation = 0;
 
   this.animation[2].pose = 10;
-  this.animation[2].qtdAnimacoes = 8;
+  this.animation[2].qtdAnimacoes = 9;
   this.animation[2].typeAnimation = 0;
   
   this.animation[3].pose = 11;
-  this.animation[3].qtdAnimacoes = 8;
+  this.animation[3].qtdAnimacoes = 9;
   this.animation[3].typeAnimation = 0;
 
   // Ataques
@@ -177,8 +201,9 @@ Player.prototype.desenhar = function(ctx){
     this.desenharCentro(ctx);
   }
   else if(debugMode == 2){
-    this.desenharCell(ctx);         //Debug mode Grid
+    this.desenharCell(ctx);         //Debug mode Grid    
     this.desenharCaixaColisao(ctx);
+    this.desenharCentro(ctx);
   }
 }
 
@@ -200,7 +225,7 @@ Player.prototype.mover = function (dt) {
           this.x += Math.max(Dx, maxDx);
         } else if( this.vx > 0 && this.map.cell[this.gy][this.gx + 1].tipo === 1){
           var limite = (this.gx + 1) * this.map.s;
-          var maxDx = limite-(this.x + this.w/2);
+          var maxDx = limite - (this.x + this.w/2);
           var Dx = this.vx * dt;
           this.x += Math.min(Dx, maxDx);
         }else {

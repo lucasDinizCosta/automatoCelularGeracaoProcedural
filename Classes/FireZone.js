@@ -78,6 +78,7 @@ FireZone.prototype.desenhar = function (ctx) {
     else if(debugMode == 2){
         //this.desenharCell(ctx);         //Debug mode Grid
         this.desenharCaixaColisao(ctx);
+        this.desenharCentro(ctx);
     }
 }
 

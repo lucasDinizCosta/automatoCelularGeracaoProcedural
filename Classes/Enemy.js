@@ -1,6 +1,7 @@
 function Enemy() {
     Sprite.call(this, {s: 22, w: 22, h: 10, nomeImagem: "slime", sizeImagem: 22});            
     this.roomNumber = -1;
+    this.hp = 200;
     this.animation = [];
     this.qtdAnimacoes = {types: 2, lines: [0, 1], qtd: [9, 3]/* atacking: 9, normal: 3*/};
     this.speedAnimation = 11.49;//1.2;
@@ -69,9 +70,9 @@ Enemy.prototype.desenhar = function(ctx){
     ctx.beginPath();
     ctx.ellipse(elipse.x, elipse.y, elipse.radiusX, elipse.radiusY, elipse.rotation, elipse.startAngle, 
     elipse.endAngle, elipse.anticlockwise); //ctx.ellipse(-this.s/2 + 7, -this.s/4 + 6, this.s - 2, this.s/2 - 2, 0, 0, 2 * Math.PI, false);
-    ctx.closePath();
     ctx.fill();
     ctx.stroke();
+    ctx.closePath();
     assetsMng.drawClip({ctx: ctx, key: this.nomeImagem, 
         sx: this.animation[this.type].animationFrame[Math.floor(this.pose) % this.animation[this.type].qtdFrames].sx,
         sy: this.animation[this.type].animationFrame[Math.floor(this.pose) % this.animation[this.type].qtdFrames].sy,
@@ -79,10 +80,22 @@ Enemy.prototype.desenhar = function(ctx){
         dy: -this.matrizImagem.heightImagem/2 - 8/*- this.matrizImagem.heightImagem/2*/
     });
     ctx.restore();
+    this.desenharHP();
     if(debugMode == 1){
         this.desenharCentro(ctx);
     }
     else if(debugMode == 2){
         this.desenharCaixaColisao(ctx);
+        this.desenharCentro(ctx);
     }
-}  
+} 
+
+Enemy.prototype.desenharHP = function(){
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 1;
+    ctx.fillRect(this.x - this.w/2, this.y - this.h * 2.5, this.w, 4);         // Fundo
+    ctx.fillStyle = "red";
+    ctx.fillRect(this.x - this.w/2, this.y - this.h * 2.5, this.w, 4);         // Quantidade de HP
+    ctx.strokeRect(this.x - this.w/2, this.y - this.h * 2.5, this.w, 4);       // Borda
+}

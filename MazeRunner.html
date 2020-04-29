@@ -110,7 +110,7 @@
     var K = 1;
     var debugMode = 0; 
     var player = new Player({s: 27, w: 27, h: 11});
-    var playerVel = 180;      
+    var playerVel = 100;      
 
     var levelAtual = new Level(widthMap, heightMap, sizeMap);
     var levels = [];
@@ -608,8 +608,9 @@
             levelAtual.rooms[auxRoom - 1].teleporterFinal.teleportar(player);
           }
           break;
-        case 17:  //Left CTRL
+        case 17:  //Left CTRL -- Ataque
           player.atacando = 1;  
+          player.cooldown = 5;
           break;
         case 38:
           //if(player.left === false && player.down === false && player.right === false){

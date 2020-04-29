@@ -321,6 +321,7 @@ Room.prototype.copyByLevelGeneration = function(room, mapa){
     }
     this.copyFireZones(room);
     this.copyTreasures(room);
+    this.copyEnemies(room);
 }
 
 // Copia os dados da sala toda mas o vetor de blocos salva REFERENCIA PRA MATRIZ DO MAPA

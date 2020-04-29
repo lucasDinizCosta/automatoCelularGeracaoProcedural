@@ -171,7 +171,7 @@ Sprite.prototype.mover2 = function(dt){
   this.gx = Math.floor(this.x/this.map.s);
   this.gy = Math.floor(this.y/this.map.s);
 
-  if(debugMode == 0){
+  if(debugMode == 0 || debugMode == 2){
     this.adicionaRestricaoMovimento(dt);
   }
   else{
@@ -274,7 +274,7 @@ Sprite.prototype.desenharCentro = function(ctx){
   ctx.fillStyle = "blue";
   ctx.lineWidth = 1;
   ctx.fillRect(this.x - 1, this.y - 1, 3, 3);
-  ctx.fillStyle = "red";
+  ctx.fillStyle = "white";
   ctx.fillRect(this.x, this.y, 1, 1);
 }
 
