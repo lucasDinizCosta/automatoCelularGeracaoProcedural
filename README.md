@@ -7,6 +7,7 @@ Link Github io: https://lucasdinizcosta.github.io/automatoCelularGeracaoProcedur
 - <p align="justify"> <b>F</b> : Ativa e desativa a tela cheia (Fullscreen);</p>
 - <p align="justify"> <b>+</b>: Com o Debug mode ativado, este serve para aumentar o Zoom do mapa;</p>
 - <p align="justify"> <b>-</b> : Com o Debug mode ativado, este serve para diminuir o Zoom do mapa;</p>
+- <p align="justify"> <b>SHIFT Esquerdo</b> : Player corre em uma velocidade maior;</p>
 - <p align="justify"> <b>CTRL Esquerdo</b> : Player ataca usando a espada;</p>
 - <p align="justify"> <b>ESC</b> : Retorna ao menu principal e gera um novo Level;</p>
 

@@ -635,6 +635,9 @@
           player.atacando = 1;  
           player.cooldown = 5;
           break;
+        case 16: //Left SHIFT -- Correr
+          playerVel = 180;
+          break;
         case 38:
           if(debugMode === 0){
             if(player.left === false && player.down === false && player.right === false){
@@ -800,6 +803,9 @@
             break;
           case 17:  //Left CTRL
             player.atacando = 0;  
+            break;
+          case 16: //Left SHIFT -- Correr
+            playerVel = 100;
             break;
           default:
             break;
