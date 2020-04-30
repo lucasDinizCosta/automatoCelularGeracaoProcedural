@@ -594,18 +594,18 @@
           }
           break;
         case 37:
-          //if(player.up === false && player.down === false && player.right === false){
-          player.vx = -playerVel;
-          player.left = true;
-          player.sentidoMovimento = 2;
-          //}
+          if(player.up === false && player.down === false && player.right === false){
+            player.vx = -playerVel;
+            player.left = true;
+            player.sentidoMovimento = 2;
+          }
           break;
         case 39:
-          //if(player.up === false && player.down === false && player.left === false){
-          player.vx = +playerVel;
-          player.right = true;
-          player.sentidoMovimento = 0;
-          //}
+          if(player.up === false && player.down === false && player.left === false){
+            player.vx = +playerVel;
+            player.right = true;
+            player.sentidoMovimento = 0;
+          }
           break;
         case 32:  //Espaco  -- Ativa teleporte
           let auxRoom = player.room;
@@ -621,18 +621,18 @@
           player.cooldown = 5;
           break;
         case 38:
-          //if(player.left === false && player.down === false && player.right === false){
+          if(player.left === false && player.down === false && player.right === false){
           player.vy = -playerVel;
           player.up = true;
           player.sentidoMovimento = 3;
-          //}
+          }
           break;
         case 40:
-          //if(player.left === false && player.up === false && player.right === false){
-          player.vy = +playerVel;
-          player.down = true;
-          player.sentidoMovimento = 1;
-          //}
+          if(player.left === false && player.up === false && player.right === false){
+            player.vy = +playerVel;
+            player.down = true;
+            player.sentidoMovimento = 1;
+          }
           break;
         case 27:      //Pressionar o Esq === RETORNA AO MENU PRINCIPAL
           stateMainMenu = 0;

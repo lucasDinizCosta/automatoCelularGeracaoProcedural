@@ -162,7 +162,7 @@ Sprite.prototype.mover = function (dt) {
         var Dy = (this.vy)*dt;
         this.y += Math.min(Dy, maxDy);
       }else {
-        this.y += (this.vy)*dt;
+        this.y += (this.vy) * dt;
       }
     }
   }
@@ -171,7 +171,7 @@ Sprite.prototype.mover = function (dt) {
     this.y += (this.vy)*dt;
   }
 
-  this.animationController();
+  //this.animationController();
 };
 
 Sprite.prototype.mover2 = function(dt){
@@ -226,29 +226,6 @@ Sprite.prototype.adicionaRestricaoMovimento = function(dt){
   }
   if (this.x - this.w / 2 < 0) this.x = 0 + this.w / 2;
   if (this.y - this.h / 2 < 0) this.y = 0 + this.h / 2;
-}
-
-Sprite.prototype.animationController = function(){
-  if(this.typeAnimation == 0){
-    if(this.vx !== 0 || this.vy !== 0){
-      this.frameTimeAnimation = this.frameTimeAnimation - this.speedAnimation*dt;
-      if(this.frameTimeAnimation < 0){
-        this.frameTimeAnimation = 12;
-        this.animationState = this.animationState + 1;
-      }
-    }
-    else{
-      this.frameTimeAnimation = 12;
-      this.animationState = 0;
-    }
-  }
-  else{
-    this.frameTimeAnimation = this.frameTimeAnimation - this.speedAnimation*dt;
-    if(this.frameTimeAnimation < 0){
-      this.frameTimeAnimation = 12;
-      this.animationState = this.animationState + 1;
-    }
-  }
 }
 
 Sprite.prototype.copy = function(sprite){

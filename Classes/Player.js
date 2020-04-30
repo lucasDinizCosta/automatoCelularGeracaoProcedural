@@ -136,9 +136,9 @@ Player.prototype.setRoom = function(){
 
 Player.prototype.moverCompleto = function(dt){
   this.tratarAnimacao();
-  if(this.cooldown < 0){
+  //if(this.cooldown < 0){
     this.mover(dt);
-  }
+  //}
   this.animationController();
 }
 
@@ -266,6 +266,29 @@ Player.prototype.desenharCaixaColisao = function(ctx){
       default:
         break;
     }*/
+  }
+}
+
+Player.prototype.animationController = function(){
+  if(this.typeAnimation == 0){
+    if(this.vx !== 0 || this.vy !== 0){
+      this.frameTimeAnimation = this.frameTimeAnimation - this.speedAnimation*dt;
+      if(this.frameTimeAnimation < 0){
+        this.frameTimeAnimation = 12;
+        this.animationState = this.animationState + 1;
+      }
+    }
+    else{
+      this.frameTimeAnimation = 12;
+      this.animationState = 0;
+    }
+  }
+  else{
+    this.frameTimeAnimation = this.frameTimeAnimation - this.speedAnimation*dt;
+    if(this.frameTimeAnimation < 0){
+      this.frameTimeAnimation = 12;
+      this.animationState = this.animationState + 1;
+    }
   }
 }
 
