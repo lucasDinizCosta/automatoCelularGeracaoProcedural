@@ -9,7 +9,7 @@ function Player(params) {
       y: 0,
       w: 16,
       h: 16,
-    },
+    }
   });            
 
   let exemplo = {
@@ -241,9 +241,11 @@ Player.prototype.desenharCaixaColisao = function(ctx){
     ctx.strokeStyle = "black";
     ctx.lineWidth = 1;
     ctx.save();
-    ctx.translate(this.x, this.y);
-    ctx.fillRect(this.w/2, this.h/2, -this.w, this.h);
-    ctx.strokeRect(this.w/2, this.h/2, -this.w, this.h);
+    ctx.translate(this.hitBox.x, this.hitBox.y);
+    //ctx.fillRect(this.w/2, this.h/2, -this.w, this.h);
+    //ctx.strokeRect(this.w/2, this.h/2, -this.w, this.h);
+    ctx.fillRect(-this.hitBox.w/2, -this.hitBox.h/2, this.hitBox.w, this.hitBox.h);
+    ctx.strokeRect(-this.hitBox.w/2, -this.hitBox.h/2, this.hitBox.w, this.hitBox.h);
     ctx.restore();
     /*switch (this.sentidoMovimento) {  //Movimento
       case 0:     //Direita
