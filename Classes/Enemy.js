@@ -1,7 +1,9 @@
+
 function Enemy() {
     Sprite.call(this, {s: 22, w: 22, h: 10, nomeImagem: "slime", sizeImagem: 22});            
     this.roomNumber = -1;
-    this.hp = 200;
+    this.maxHp = 200;
+    this.hp = 40;
     this.animation = [];
     this.qtdAnimacoes = {types: 2, lines: [0, 1], qtd: [9, 3]/* atacking: 9, normal: 3*/};
     this.speedAnimation = 11.49;//1.2;
@@ -95,7 +97,7 @@ Enemy.prototype.desenharHP = function(){
     ctx.strokeStyle = "black";
     ctx.lineWidth = 1;
     ctx.fillRect(this.x - this.w/2, this.y - this.h * 2.5, this.w, 4);         // Fundo
-    ctx.fillStyle = "red";
-    ctx.fillRect(this.x - this.w/2, this.y - this.h * 2.5, this.w, 4);         // Quantidade de HP
+    ctx.fillStyle = `hsl(${120*this.hp/this.maxHp}, 100%, 50%)`;
+    ctx.fillRect(this.x - this.w/2, this.y - this.h * 2.5, this.w*(Math.max(0,this.hp)/this.maxHp), 4);         // Quantidade de HP
     ctx.strokeRect(this.x - this.w/2, this.y - this.h * 2.5, this.w, 4);       // Borda
 }
