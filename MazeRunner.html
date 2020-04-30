@@ -594,14 +594,29 @@
           }
           break;
         case 37:
-          if(player.up === false && player.down === false && player.right === false){
+          if(debugMode === 0){
+            if(player.up === false && player.down === false && player.right === false){
+              player.vx = -playerVel;
+              player.left = true;
+              player.sentidoMovimento = 2;
+            }
+          }
+          else{
             player.vx = -playerVel;
             player.left = true;
             player.sentidoMovimento = 2;
           }
+          
           break;
         case 39:
-          if(player.up === false && player.down === false && player.left === false){
+          if(debugMode === 0){
+            if(player.up === false && player.down === false && player.left === false){
+              player.vx = +playerVel;
+              player.right = true;
+              player.sentidoMovimento = 0;
+            }
+          }
+          else{
             player.vx = +playerVel;
             player.right = true;
             player.sentidoMovimento = 0;
@@ -621,14 +636,28 @@
           player.cooldown = 5;
           break;
         case 38:
-          if(player.left === false && player.down === false && player.right === false){
-          player.vy = -playerVel;
-          player.up = true;
-          player.sentidoMovimento = 3;
+          if(debugMode === 0){
+            if(player.left === false && player.down === false && player.right === false){
+              player.vy = -playerVel;
+              player.up = true;
+              player.sentidoMovimento = 3;
+            }
+          }
+          else{
+            player.vy = -playerVel;
+            player.up = true;
+            player.sentidoMovimento = 3;
           }
           break;
         case 40:
-          if(player.left === false && player.up === false && player.right === false){
+          if(debugMode === 0){
+            if(player.left === false && player.up === false && player.right === false){
+              player.vy = +playerVel;
+              player.down = true;
+              player.sentidoMovimento = 1;
+            }
+          } 
+          else{
             player.vy = +playerVel;
             player.down = true;
             player.sentidoMovimento = 1;
