@@ -136,7 +136,10 @@ Player.prototype.setRoom = function(){
 
 Player.prototype.moverCompleto = function(dt){
   this.tratarAnimacao();
-  this.mover(dt);
+  if(this.cooldown < 0){
+    this.mover(dt);
+  }
+  this.animationController();
 }
 
 Player.prototype.tratarAnimacao = function(){
@@ -376,6 +379,4 @@ Player.prototype.mover = function (dt) {
     this.x += (this.vx) * dt;
     this.y += (this.vy) * dt;
   }
-
-  this.animationController();
 };
