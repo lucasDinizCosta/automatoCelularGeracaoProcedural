@@ -19,6 +19,8 @@ function Player(params) {
     vivo: true,
     room: -1,
     tesourosColetados: 0,
+    playerVel: 180, // 100
+    cooldownTeleporte: 1,   
 
     // Mapa das teclas pressionadas
     teclas: {
@@ -27,6 +29,7 @@ function Player(params) {
       right: false,
       left: false,
       ctrl: false,
+      shift: false,
       space: false
     },
 
@@ -137,6 +140,7 @@ Player.prototype.setRoom = function(){
 }
 
 Player.prototype.moverCompleto = function(dt){
+  this.cooldownTeleporte = this.cooldownTeleporte - dt;         // Cooldown de teleporte pra não teleportar direto
   this.controlePorTeclas();
   this.tratarAnimacao();
   //if(this.cooldown < 0){
@@ -146,10 +150,16 @@ Player.prototype.moverCompleto = function(dt){
 }
 
 Player.prototype.controlePorTeclas = function(){
-  if(this.teclas.up){this.vy = -playerVel; this.sentidoMovimento = 3;}
-  if(this.teclas.right){this.vx = playerVel; this.sentidoMovimento = 0;}
-  if(this.teclas.down){this.vy = playerVel; this.sentidoMovimento = 1;}
-  if(this.teclas.left){this.vx = -playerVel; this.sentidoMovimento = 2;}
+  // Teclas direcionais
+  if(this.teclas.up){this.vy = - this.playerVel; this.sentidoMovimento = 3;}
+  if(this.teclas.right){this.vx = this.playerVel; this.sentidoMovimento = 0;}
+  if(this.teclas.down){this.vy = this.playerVel; this.sentidoMovimento = 1;}
+  if(this.teclas.left){this.vx = - this.playerVel; this.sentidoMovimento = 2;}
+
+  // Teclas com ações a mais
+  if(this.teclas.ctrl){this.atacando = 1; } else{ this.atacando = 0;}
+  if(this.teclas.shift){this.playerVel = 250;  /* 180*/} else {this.playerVel = 180}
+  //if(this.teclas.space){this.vx = -playerVel; this.sentidoMovimento = 2;}
 
 
   // Condição de parada
@@ -417,4 +427,4 @@ Player.prototype.mover = function (dt) {
     this.x += (this.vx) * dt;
     this.y += (this.vy) * dt;
   }
-};
+}

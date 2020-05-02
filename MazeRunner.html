@@ -116,9 +116,7 @@
         w: 27,
         h: 11,
       }
-    });
-
-    var playerVel = 180;  //100      
+    });  
 
     var levelAtual = new Level(widthMap, heightMap, sizeMap);
     var levels = [];
@@ -271,17 +269,12 @@
             /*if(audioLibrary.isPlaying("BGM")==false){
               audioLibrary.play("BGM");
             }*/
-            player.moverCompleto(dt);
-            levelAtual.colisaoFireZones(player);
-            levelAtual.colisaoInimigos(player);
-            levelAtual.colisaoTesouros(player);
             levelAtual.mover(dt);
             controleTempo();
             ctx.save();
             ctx.scale(escala, escala);
             ctx.translate(-player.x + tela.width/4 , - player.y + tela.height/4);            
             levelAtual.desenhar(ctx);
-            player.desenhar(ctx);
             ctx.restore();
             desenharHUD(ctx);
             /*if(!player.vivo){
@@ -436,7 +429,7 @@
         ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
         ctx.strokeStyle = "rgba(238, 255, 0, 0.5)";
         let infoBox = {
-          x: converteTelaCheia(500, tela.widthOld, tela.width),
+          x: converteTelaCheia(530, tela.widthOld, tela.width),
           y: converteTelaCheia(250, tela.heightOld, tela.height),
           width: converteTelaCheia(60, tela.widthOld, tela.width),
           height: converteTelaCheia(60, tela.heightOld, tela.height)
@@ -465,12 +458,12 @@
         escreveTexto(ctx, "Room", infoBox.x + infoBox.width/2 + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y + converteTelaCheia(30, tela.heightOld, tela.height) + 12);
         escreveTexto(ctx, "Distancia", infoBox.x + infoBox.width/2 + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y + converteTelaCheia(45, tela.heightOld, tela.height) + 12);
 
-        // Desenha menu lateral debaixo
+        // Desenha menu debaixo
         ctx.font = "13px Arial Black"; 
         ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
         ctx.strokeStyle = "rgba(238, 255, 0, 0.5)";
-        ctx.fillRect(converteTelaCheia(5, tela.widthOld, tela.width), converteTelaCheia(310, tela.heightOld, tela.height), converteTelaCheia(555, tela.widthOld, tela.width), converteTelaCheia(37, tela.heightOld, tela.height));
-        ctx.strokeRect(converteTelaCheia(5, tela.widthOld, tela.width), converteTelaCheia(310, tela.heightOld, tela.height), converteTelaCheia(555, tela.widthOld, tela.width), converteTelaCheia(37, tela.heightOld, tela.height));
+        ctx.fillRect(converteTelaCheia(5, tela.widthOld, tela.width), converteTelaCheia(310, tela.heightOld, tela.height), converteTelaCheia(585, tela.widthOld, tela.width), converteTelaCheia(37, tela.heightOld, tela.height));
+        ctx.strokeRect(converteTelaCheia(5, tela.widthOld, tela.width), converteTelaCheia(310, tela.heightOld, tela.height), converteTelaCheia(585, tela.widthOld, tela.width), converteTelaCheia(37, tela.heightOld, tela.height));
         ctx.strokeStyle = "black";
         ctx.fillStyle = "yellow";
         ctx.strokeText("Debug mode ativado!!!", converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(320, tela.heightOld, tela.height));
@@ -499,7 +492,7 @@
     // Conversão de escalas para o canvas ocupando a tela toda
     function converteTelaCheia(valorAntigo, telaAntiga, telaNova){
       let aux = Math.round(((valorAntigo * 100)/telaAntiga) * 100)/ 100;  // Arrendonda a porcentagem para duas casas decimais
-      return parseInt((aux / 100) * telaNova);
+      return Math.floor(parseInt((aux / 100) * telaNova));
     }
 
     // Atualiza o formato do convas ao mudar o formato da janela ou ser redimensionada
@@ -623,7 +616,7 @@
             player.sentidoMovimento = 0;
           }*/
           break;
-          case 38:            // Up Arrow
+        case 38:            // Up Arrow
           player.teclas.up = true;
           /*if(debugMode === 0){
             if(player.left === false && player.down === false && player.right === false){
@@ -632,7 +625,7 @@
               player.sentidoMovimento = 3;
             }
           }
-          else{
+          else{,
             player.vy = -playerVel;
             player.up = true;
             player.sentidoMovimento = 3;
@@ -654,20 +647,13 @@
           }*/
           break;
         case 32:  //Espaco  -- Ativa teleporte
-          let auxRoom = player.room;
-          if(levelAtual.rooms[auxRoom - 1].teleporterInitial.colidiuCom2(player)){
-            levelAtual.rooms[auxRoom - 1].teleporterInitial.teleportar(player);
-          }
-          else if(levelAtual.rooms[auxRoom - 1].teleporterFinal.colidiuCom2(player)){
-            levelAtual.rooms[auxRoom - 1].teleporterFinal.teleportar(player);
-          }
+          player.teclas.space = true;          
           break;
         case 17:            // Left CTRL -- Ataque
-          player.atacando = 1;  
-          player.cooldown = 5;
+          player.teclas.ctrl = true;
           break;
         case 16:            // Left SHIFT -- Correr
-          playerVel = 220;  // 180
+          player.teclas.shift = true;
           break;
         case 27:      //Pressionar o Esq === RETORNA AO MENU PRINCIPAL
           stateMainMenu = 0;
@@ -789,26 +775,25 @@
       if (player != null) {
         switch (e.keyCode) {
           case 37:
-           //player.vx = 0;
             player.teclas.left = false;
             break;
           case 39:
-            //player.vx = 0;
             player.teclas.right = false;
             break;
           case 38:
-            //player.vy = 0;
             player.teclas.up = false;
             break;
           case 40:
-            //player.vy = 0;
             player.teclas.down = false;
             break;
           case 17:  //Left CTRL
-            //player.atacando = 0;  
+            player.teclas.ctrl = false;
+            break
+          case 32:  //Espaco  -- Ativa teleporte
+            player.teclas.space = false;          
             break;
           case 16: //Left SHIFT -- Correr
-            //playerVel = 100;
+            player.teclas.shift = false;
             break;
           default:
             break;

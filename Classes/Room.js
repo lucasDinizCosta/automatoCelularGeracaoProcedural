@@ -240,27 +240,27 @@ Room.prototype.draw = function(ctx){
     for(let i = 0; i < this.enemies.length; i++){
         this.enemies[i].desenhar(ctx);
     }  
-    
+}
+
+Room.prototype.drawTeleportersLine = function(ctx){
     // Ligação entre os teleportes
-    if(debugMode == 1){
-        ctx.save();
-        ctx.strokeStyle = "black";                              // linha de acabamento preta pra facilitar a visualização
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.moveTo(this.teleporterInitial.x, this.teleporterInitial.y);
-        ctx.lineTo(this.teleporterInitial.proximoTeleporte.x, this.teleporterInitial.proximoTeleporte.y);
-        ctx.closePath();
-        ctx.stroke();
-        ctx.strokeStyle = "yellow";
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(this.teleporterInitial.x, this.teleporterInitial.y);
-        ctx.lineTo(this.teleporterInitial.proximoTeleporte.x, this.teleporterInitial.proximoTeleporte.y);
-        ctx.closePath();
-        ctx.stroke();
-        ctx.lineWidth = 1;
-        ctx.restore();
-    }
+    ctx.save();
+    ctx.strokeStyle = "black";                              // linha de acabamento preta pra facilitar a visualização
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(this.teleporterInitial.x, this.teleporterInitial.y);
+    ctx.lineTo(this.teleporterInitial.proximoTeleporte.x, this.teleporterInitial.proximoTeleporte.y);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.strokeStyle = "yellow";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(this.teleporterInitial.x, this.teleporterInitial.y);
+    ctx.lineTo(this.teleporterInitial.proximoTeleporte.x, this.teleporterInitial.proximoTeleporte.y);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.lineWidth = 1;
+    ctx.restore();
 }
 
 /**********************

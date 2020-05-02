@@ -1,16 +1,14 @@
 function Level(w, h, s) {
   this.mapa = new Map(w,h,s);
   this.rooms = [];
-  this.tesouros = [];
-  this.inimigos = [];
   this.tempoFase = 0;
   this.tempoTotal = 0;
   this.taxaDiminuicaoTempo = 0;
   this.tempo = undefined;
   this.larguraBarra = 127;
-  this.stateCollectedItens = false;
   this.teleporteInicioLevel = new Teleporter(0);         //(Inicio) mapa
   this.teleporteFinalLevel  = new Teleporter(1);        //(Final) mapa
+  this.player = undefined;
 };
 
 /**
@@ -70,8 +68,6 @@ Level.prototype.clonarLevel= function(level){
       this.mapa.cell[l][c].coluna = level.mapa.cell[l][c].coluna;
     }
   }
-  this.tesouros = level.tesouros;
-  this.stateCollectedItens = level.stateCollectedItens;
   this.tempoFase = level.tempoFase;
   this.tempoTotal = level.tempoTotal;
   this.taxaDiminuicaoTempo = level.taxaDiminuicaoTempo;
@@ -79,10 +75,7 @@ Level.prototype.clonarLevel= function(level){
   this.tempo = level.tempo;                       // Referencia na memoria pra barra de tempo
   this.teleporteInicioLevel.copyTeleporte(level.teleporteInicioLevel);
   this.teleporteFinalLevel.copyTeleporte(level.teleporteFinalLevel);
-  this.inimigos.length = 0;  
-  for (var i = 0; i < level.inimigos.length; i++) {
-    this.inimigos.push(level.inimigos[i]);
-  }
+  this.player = level.player;
   this.copiaSalasComReferencia(level.rooms);
 }
 
@@ -417,6 +410,9 @@ Level.prototype.posicionarPlayer = function(p){
   p.y = this.teleporteInicioLevel.y;      
   p.gx = this.teleporteInicioLevel.gx;            // Coluna
   p.gy = this.teleporteInicioLevel.gy;            // Linha
+
+  // Referencia ao player para facilitar
+  this.player = p;
 }
 
 /**********************************
@@ -703,6 +699,11 @@ Level.prototype.copiaSalasComReferencia = function(rooms){
 }
 
 Level.prototype.mover = function(dt) {
+  this.player.moverCompleto(dt);
+  this.colisaoTeleportes(this.player);
+  this.colisaoFireZones(this.player);
+  this.colisaoInimigos(this.player);
+  this.colisaoTesouros(this.player);
   for(let i = 0; i < this.rooms.length; i++){
     this.rooms[i].move(dt);
   }
@@ -715,15 +716,35 @@ Level.prototype.desenhar = function(ctx) {
   }
   this.teleporteInicioLevel.desenhar(ctx);
   this.teleporteFinalLevel.desenhar(ctx);
+  this.player.desenhar(ctx);
+  if(debugMode == 1){
+    for(let i = 0; i < this.rooms.length; i++){
+      this.rooms[i].drawTeleportersLine(ctx);
+    }
+  }
 };
 
 /************
  * Colisões *
  ************/
 
+Level.prototype.colisaoTeleportes = function(player){
+  let auxRoom = this.rooms[player.room - 1];          // Checar somente a sala onde o player se encontra
+  if(player.teclas.space){
+    if(player.cooldownTeleporte < 0){
+      if(auxRoom.teleporterInitial.colidiuCom2(player)){
+        auxRoom.teleporterInitial.teleportar(player);
+      }
+      else if(auxRoom.teleporterFinal.colidiuCom2(player)){
+        auxRoom.teleporterFinal.teleportar(player);
+      }
+      player.cooldownTeleporte = 1;
+    }
+  }
+}
+
 Level.prototype.colisaoFireZones = function(player){
   let auxRoom = this.rooms[player.room - 1];          // Checar somente a sala onde o player se encontra
-  auxRoom.collisionFirezones(player);
   if(auxRoom.collisionFirezones(player)){             // Checa colisão com as firezones
     this.tempo.w = this.larguraBarra;
   }
