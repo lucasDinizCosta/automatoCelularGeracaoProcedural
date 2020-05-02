@@ -21,12 +21,14 @@ function Player(params) {
     tesourosColetados: 0,
 
     // Mapa das teclas pressionadas
-    up: false,
-    down: false,
-    right: false,
-    left: false,
-    ctrl: false,
-    space: false,
+    teclas: {
+      up: false,
+      down: false,
+      right: false,
+      left: false,
+      ctrl: false,
+      space: false
+    },
 
     // AnimationStates
     sentidoMovimento: 0,          //0 => direita, 1 => baixo, 2 => esquerda, 3 => cima
@@ -135,11 +137,24 @@ Player.prototype.setRoom = function(){
 }
 
 Player.prototype.moverCompleto = function(dt){
+  this.controlePorTeclas();
   this.tratarAnimacao();
   //if(this.cooldown < 0){
     this.mover(dt);
   //}
   this.animationController();
+}
+
+Player.prototype.controlePorTeclas = function(){
+  if(this.teclas.up){this.vy = -playerVel; this.sentidoMovimento = 3;}
+  if(this.teclas.right){this.vx = playerVel; this.sentidoMovimento = 0;}
+  if(this.teclas.down){this.vy = playerVel; this.sentidoMovimento = 1;}
+  if(this.teclas.left){this.vx = -playerVel; this.sentidoMovimento = 2;}
+
+
+  // Condição de parada
+  if(this.teclas.right === this.teclas.left) { this.vx = 0; }
+  if(this.teclas.up === this.teclas.down) { this.vy = 0; }
 }
 
 Player.prototype.tratarAnimacao = function(){

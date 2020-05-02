@@ -118,7 +118,7 @@
       }
     });
 
-    var playerVel = 100;      
+    var playerVel = 180;  //100      
 
     var levelAtual = new Level(widthMap, heightMap, sizeMap);
     var levels = [];
@@ -370,7 +370,7 @@
       requestAnimationFrame(passo);
     }
 
-    //  A cada 1 segundo ele executa uma diminuição na barra de tempo
+    // A cada 1 segundo ele executa uma diminuição na barra de tempo
     function controleTempo(){
       if(debugMode == 0){
         tempoRectInt.w = tempoRectInt.w - levelAtual.taxaDiminuicaoTempo;  
@@ -593,8 +593,9 @@
             closeFullscreen();
           }
           break;
-        case 37:
-          if(debugMode === 0){
+        case 37:       // Left Arrow
+          player.teclas.left = true;
+          /*if(debugMode === 0){
             if(player.up === false && player.down === false && player.right === false){
               player.vx = -playerVel;
               player.left = true;
@@ -605,11 +606,11 @@
             player.vx = -playerVel;
             player.left = true;
             player.sentidoMovimento = 2;
-          }
-          
+          }*/
           break;
-        case 39:
-          if(debugMode === 0){
+        case 39:      // Right Arrow
+          player.teclas.right = true;
+          /*if(debugMode === 0){
             if(player.up === false && player.down === false && player.left === false){
               player.vx = +playerVel;
               player.right = true;
@@ -620,29 +621,14 @@
             player.vx = +playerVel;
             player.right = true;
             player.sentidoMovimento = 0;
-          }
+          }*/
           break;
-        case 32:  //Espaco  -- Ativa teleporte
-          let auxRoom = player.room;
-          if(levelAtual.rooms[auxRoom - 1].teleporterInitial.colidiuCom2(player)){
-            levelAtual.rooms[auxRoom - 1].teleporterInitial.teleportar(player);
-          }
-          else if(levelAtual.rooms[auxRoom - 1].teleporterFinal.colidiuCom2(player)){
-            levelAtual.rooms[auxRoom - 1].teleporterFinal.teleportar(player);
-          }
-          break;
-        case 17:  //Left CTRL -- Ataque
-          player.atacando = 1;  
-          player.cooldown = 5;
-          break;
-        case 16: //Left SHIFT -- Correr
-          playerVel = 180;
-          break;
-        case 38:
-          if(debugMode === 0){
+          case 38:            // Up Arrow
+          player.teclas.up = true;
+          /*if(debugMode === 0){
             if(player.left === false && player.down === false && player.right === false){
               player.vy = -playerVel;
-              player.up = true;
+              player.up = true;  
               player.sentidoMovimento = 3;
             }
           }
@@ -650,10 +636,11 @@
             player.vy = -playerVel;
             player.up = true;
             player.sentidoMovimento = 3;
-          }
+          }*/
           break;
-        case 40:
-          if(debugMode === 0){
+        case 40:            // Down Arrow
+          player.teclas.down = true;
+          /*if(debugMode === 0){
             if(player.left === false && player.up === false && player.right === false){
               player.vy = +playerVel;
               player.down = true;
@@ -664,7 +651,23 @@
             player.vy = +playerVel;
             player.down = true;
             player.sentidoMovimento = 1;
+          }*/
+          break;
+        case 32:  //Espaco  -- Ativa teleporte
+          let auxRoom = player.room;
+          if(levelAtual.rooms[auxRoom - 1].teleporterInitial.colidiuCom2(player)){
+            levelAtual.rooms[auxRoom - 1].teleporterInitial.teleportar(player);
           }
+          else if(levelAtual.rooms[auxRoom - 1].teleporterFinal.colidiuCom2(player)){
+            levelAtual.rooms[auxRoom - 1].teleporterFinal.teleportar(player);
+          }
+          break;
+        case 17:            // Left CTRL -- Ataque
+          player.atacando = 1;  
+          player.cooldown = 5;
+          break;
+        case 16:            // Left SHIFT -- Correr
+          playerVel = 220;  // 180
           break;
         case 27:      //Pressionar o Esq === RETORNA AO MENU PRINCIPAL
           stateMainMenu = 0;
@@ -786,26 +789,26 @@
       if (player != null) {
         switch (e.keyCode) {
           case 37:
-            player.vx = 0;
-            player.left = false;
+           //player.vx = 0;
+            player.teclas.left = false;
             break;
           case 39:
-            player.vx = 0;
-            player.right = false;
+            //player.vx = 0;
+            player.teclas.right = false;
             break;
           case 38:
-            player.vy = 0;
-            player.up = false;
+            //player.vy = 0;
+            player.teclas.up = false;
             break;
           case 40:
-            player.vy = 0;
-            player.down = false;
+            //player.vy = 0;
+            player.teclas.down = false;
             break;
           case 17:  //Left CTRL
-            player.atacando = 0;  
+            //player.atacando = 0;  
             break;
           case 16: //Left SHIFT -- Correr
-            playerVel = 100;
+            //playerVel = 100;
             break;
           default:
             break;
