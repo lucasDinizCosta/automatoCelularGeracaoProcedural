@@ -66,14 +66,25 @@ Player.prototype.setRoom = function(){
 Player.prototype.moverCompleto = function(dt){
   this.cooldownTeleporte = this.cooldownTeleporte - dt;         // Cooldown de teleporte pra não teleportar direto
   this.tratarAnimacao();
-  this.controlePorTeclas();
   if(this.cooldownAtaque < 0){
+    this.controlePorTeclas();
     this.mover(dt);
   }
   this.animationController();
 }
 
 Player.prototype.criarAnimacoes = function(){
+  /******************************************************************************
+   * Animation: (tipos de animação)                                             *
+   * [animacao de caminhar, animação atacar]                                    *
+   *                                                                            *
+   * elemento dentro do animation: (AnimationPosition)                          *
+   * [vetor com 4 posicoes de sentidos de movimento]                            *
+   *                                                                            *
+   * elemento dentro do AnimationPosition: (AnimationFrame)                     *
+   * [cada frame da animação correspondente]                                    *
+   *                                                                            *
+   ******************************************************************************/
   let typeNames = ["Walk", "Atack"];
 
   // Cria a lista de tipos de animações
@@ -129,56 +140,6 @@ Player.prototype.criarAnimacoes = function(){
       }
     }
   }
-
-  /*for(let i = 0; i < this.numAnimacoes; i++){
-    let animationFrame = {
-      sizeImagem: 64,
-      pose: 0,
-      qtdAnimacoes: 0,
-      typeAnimation: 0,
-      speedAnimation: 160
-      //sx: 16 * j,
-      //sy: 24 * i,
-    };
-    this.animation.push(animationFrame);
-  }
-  this.animation[0].pose = 8;                   // Localização do sprite na spriteSheet
-  this.animation[0].qtdAnimacoes = 9;   //8
-  this.animation[0].typeAnimation = 0;
-
-  this.animation[1].pose = 9;
-  this.animation[1].qtdAnimacoes = 9;
-  this.animation[1].typeAnimation = 0;
-
-  this.animation[2].pose = 10;
-  this.animation[2].qtdAnimacoes = 9;
-  this.animation[2].typeAnimation = 0;
-  
-  this.animation[3].pose = 11;
-  this.animation[3].qtdAnimacoes = 9;
-  this.animation[3].typeAnimation = 0;
-
-  // Ataques
-
-  this.animation[4].pose = 12;
-  this.animation[4].qtdAnimacoes = 6;
-  this.animation[4].typeAnimation = 1;
-  this.animation[4].speedAnimation = 160;
-
-  this.animation[5].pose = 13;
-  this.animation[5].qtdAnimacoes = 6;
-  this.animation[5].typeAnimation = 1;
-  this.animation[5].speedAnimation = 160;
-
-  this.animation[6].pose = 14;
-  this.animation[6].qtdAnimacoes = 6;
-  this.animation[6].typeAnimation = 1;
-  this.animation[6].speedAnimation = 160;
-
-  this.animation[7].pose = 15;
-  this.animation[7].qtdAnimacoes = 6;
-  this.animation[7].typeAnimation = 1;
-  this.animation[7].speedAnimation = 160;*/
 }
 
 Player.prototype.controlePorTeclas = function(){
@@ -201,70 +162,30 @@ Player.prototype.controlePorTeclas = function(){
 
 Player.prototype.tratarAnimacao = function(){
   switch (this.sentidoMovimento) {  //Movimento
-    case 0:     //Direita
-      //this.estadoAnimacaoAtual = 3;
-      this.hitBox.x = this.x + this.w/2;
-      this.hitBox.y = this.y;
-      break;
-    case 1:     //Baixo
-      //this.estadoAnimacaoAtual = 2;
+    case 0:     //Cima
       this.hitBox.x = this.x;
-      this.hitBox.y = this.y + this.h/2;
+      this.hitBox.y = this.y - this.h/2;
+      
       break;
-    case 2:     //Esquerda
-      //this.estadoAnimacaoAtual = 1;
+    case 1:     //Esquerda
       this.hitBox.x = this.x - this.w/2;
       this.hitBox.y = this.y;
       break;
-    case 3:     //Cima
-      //this.estadoAnimacaoAtual = 0;
+    case 2:     //Baixo
       this.hitBox.x = this.x;
-      this.hitBox.y = this.y - this.h/2;
+      this.hitBox.y = this.y + this.h/2;
+      break;
+    case 3:    //Direita 
+      this.hitBox.x = this.x + this.w/2;
+      this.hitBox.y = this.y;
       break;
     default:
       break;
   }
-  switch(this.atacando){
-    case 0:
-      break;
-    case 1:
-      //console.log("Atacando");
-      this.estadoAnimacaoAtual = this.estadoAnimacaoAtual + 4;    
-      break;
-    default:
-      break;
-  }
-
-  /*this.sizeImagem = this.animation[this.estadoAnimacaoAtual].sizeImagem;
-  this.qtdAnimacoes = this.animation[this.estadoAnimacaoAtual].qtdAnimacoes;
-  this.pose = this.animation[this.estadoAnimacaoAtual].pose;
-  this.typeAnimation = this.animation[this.estadoAnimacaoAtual].typeAnimation;
-  this.speedAnimation = this.animation[this.estadoAnimacaoAtual].speedAnimation;*/
   this.speedAnimation = this.animation[this.atacando].animationPosition[this.sentidoMovimento].speedAnimation;
-  
 }
 
 Player.prototype.animationController = function(){
-  /*if(this.typeAnimation == 0){
-    if(this.vx !== 0 || this.vy !== 0){
-      this.frameTimeAnimation = this.frameTimeAnimation - this.speedAnimation*dt;
-      if(this.frameTimeAnimation < 0){
-        this.frameTimeAnimation = 12;
-        this.animationState = this.animationState + 1;
-      }
-    }
-    else{
-      this.frameTimeAnimation = 12;
-      this.animationState = 0;
-    }
-  }
-  else{
-    this.frameTimeAnimation = this.frameTimeAnimation - this.speedAnimation*dt;
-    if(this.frameTimeAnimation < 0){
-      this.frameTimeAnimation = 12;
-      this.animationState = this.animationState + 1;
-    }
-  }*/
 
   this.pose = this.pose + this.speedAnimation * dt;
   if(this.atacando === 0){
@@ -272,9 +193,6 @@ Player.prototype.animationController = function(){
       this.pose = 0;      
     }
   }
-  /*else{
-    
-  }*/
 
   if(this.cooldownAtaque < 0){
     this.atacando = 0;
@@ -287,11 +205,6 @@ Player.prototype.animationController = function(){
   }
   
   this.cooldownAtaque = this.cooldownAtaque - 2 * dt;
-}
-
-
-Player.prototype.teste = function(){
-  console.log(this.animation[this.atacando].animationPosition[this.sentidoMovimento]);
 }
 
 Player.prototype.desenhar = function(ctx){
