@@ -573,6 +573,7 @@
      * Estado = 0                                               *
      ************************************************************/
     function mapeamentoTecladoNoEstadoJogando(keyCode){
+      //keyCode.preventDefault();                         //Evento padrao do navegador
       switch (keyCode) {
         /**
          *  Fullscreen
@@ -722,6 +723,7 @@
 
     addEventListener("keydown", function (e) {
       //console.log(e.keyCode);
+      e.preventDefault();                         //Evento padrao do navegador
       if (estado == 0) {                              // Mapeamento do teclado -- estado "Jogando"
         mapeamentoTecladoNoEstadoJogando(e.keyCode);  // Redireciona para a função para deixar o código mais legível
       }
@@ -772,6 +774,7 @@
      * Mapeamento de teclas SOLTAS 
      */
     addEventListener("keyup", function (e) {
+      e.preventDefault();                         //Evento padrao do navegador
       if (player != null) {
         switch (e.keyCode) {
           case 37:
