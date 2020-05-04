@@ -360,3 +360,17 @@ Sprite.prototype.colidiuCom3 = function (alvo) {
   
   return true;
 };
+
+/** 
+ * Colisão usando hitbox como referencia
+*/
+
+Sprite.prototype.atacar = function (alvo) {
+  if(alvo.x + alvo.w/2 < this.hitBox.x - this.hitBox.w/2){ return false; }
+  if(alvo.x - alvo.w/2 > this.hitBox.x + this.hitBox.w/2){ return false; }
+
+  if(alvo.y + alvo.h/2 < this.hitBox.y - this.hitBox.h/2){ return false; }
+  if(alvo.y - alvo.h/2 > this.hitBox.y + this.hitBox.h/2){ return false; }  
+  
+  return true;
+};

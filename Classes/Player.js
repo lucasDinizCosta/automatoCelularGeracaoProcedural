@@ -20,8 +20,11 @@ function Player(params) {
     room: -1,
     tesourosColetados: 0,
     playerVel: 180, // 100
+    hp: 500,
+    hitpoint: 30,
     cooldownTeleporte: 1,
     cooldownAtaque: 1,                  //Tempo do personagem travado até terminar o ataque            
+    cooldownImune: 1,
 
     // Mapa das teclas pressionadas
     teclas: {
@@ -34,13 +37,13 @@ function Player(params) {
       space: false
     },
 
+    // Ataque
+    tiro: [],
+
     // AnimationStates
     sentidoMovimento: 0,          //0 => direita, 1 => baixo, 2 => esquerda, 3 => cima
     atacando: 0,                  //0 => Não, 1 => Sim
-    estadoAnimacaoAtual: 3,
-    poseAtual: 0,
     animation: [],
-    numAnimacoes: 8,
     nomeImagem: "player"
   }
 
@@ -70,7 +73,28 @@ Player.prototype.moverCompleto = function(dt){
     this.controlePorTeclas();
     this.mover(dt);
   }
+  this.moverTiros(dt);
   this.animationController();
+  this.removerTiros();
+}
+
+Player.prototype.moverTiros = function(dt){
+  for(let i = 0; i < this.tiro.length; i++){
+    // Movimentação
+    this.tiro[i].x = this.tiro[i].x + this.tiro[i].vx * dt;
+    this.tiro[i].y = this.tiro[i].y + this.tiro[i].vy * dt;
+
+    // Tempo de vida
+    this.tiro[i].cooldown = this.tiro[i].cooldown - dt;
+  }
+}
+
+Player.prototype.removerTiros = function(){
+  for(let i = 0; i < this.tiro.length; i++){
+    if(this.tiro[i].cooldown < 0){
+      this.tiro.splice(i, 1);
+    }
+  }
 }
 
 Player.prototype.criarAnimacoes = function(){
@@ -150,10 +174,45 @@ Player.prototype.controlePorTeclas = function(){
   if(this.teclas.left){this.vx = - this.playerVel; this.sentidoMovimento = 1;}
 
   // Teclas com ações a mais
-  if(this.teclas.ctrl){this.atacando = 1; this.cooldownAtaque = 1;} //else{ this.atacando = 0;}
+  if(this.teclas.ctrl){
+    this.atacando = 1; 
+    this.cooldownAtaque = 1;
+    let projetil = new Sprite({
+      x: this.hitBox.x,
+      y: this.hitBox.y,
+      w: this.hitBox.w,
+      h: this.hitBox.h,
+      cooldown: 0.5
+    });
+    this.tiro.push(projetil);
+    switch(this.sentidoMovimento){
+      case 0:
+        projetil.vy = -5;
+        break;
+      case 1:
+        projetil.vx = -5;
+        break;
+      case 2:
+        projetil.vy = 5;
+        break;
+      case 3:
+        projetil.vx = 5;
+        break;
+    }
+  } //else{ this.atacando = 0;}
   if(this.teclas.shift){this.playerVel = 250;  /* 180*/} else {this.playerVel = 180}
   //if(this.teclas.space){this.vx = -playerVel; this.sentidoMovimento = 2;}
-
+  if(this.teclas.espaco && this.cooldown <= 0) {
+    var tiro = new Sprite({
+        x: this.x, y: this.y,
+        a: this.a - 0.1 + 0.2 * Math.random(),
+        vm: 240, color: "green", w: 4, h: 4,
+        props: { tipo: "tiro" }
+    });
+    this.scene.adicionar(tiro);
+    this.cooldown = 0.1;
+    assetsMng.play("shot");
+}
 
   // Condição de parada
   if(this.teclas.right === this.teclas.left) { this.vx = 0; }
@@ -257,6 +316,18 @@ Player.prototype.desenhar = function(ctx){
     this.desenharCaixaColisao(ctx);
     this.desenharCentro(ctx);
     this.desenharCentroHitBox(ctx);
+  }
+
+  // TESTE === DESENHA OS TIROS DE ATAQEU
+  for(let i = 0; i < this.tiro.length; i++){
+    ctx.fillStyle = "gold";
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 1;
+    ctx.save();
+    ctx.translate(this.tiro[i].x, this.tiro[i].y);
+    ctx.fillRect(- this.tiro[i].w/2, - this.tiro[i].h/2, this.tiro[i].w, this.tiro[i].h);
+    ctx.strokeRect(- this.tiro[i].w/2, - this.tiro[i].h/2, this.tiro[i].w, this.tiro[i].h);
+    ctx.restore();
   }
 }
 
@@ -410,5 +481,16 @@ Player.prototype.mover = function (dt) {
   else{   // Debug mode => Colision is not detected
     this.x += (this.vx) * dt;
     this.y += (this.vy) * dt;
+  }
+}
+
+Player.prototype.atacarModoPlayer = function(alvo){
+  if(this.atacar(alvo)){
+    for(let i = 0; i < this.tiro.length; i++){
+      if(this.tiro[i].colidiuCom3(alvo)){
+        alvo.hp = alvo.hp - this.hitpoint; 
+        this.tiro[i].cooldown = -1;             // Para ser removido
+      }
+    }
   }
 }

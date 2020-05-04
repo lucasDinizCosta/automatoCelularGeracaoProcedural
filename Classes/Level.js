@@ -704,6 +704,7 @@ Level.prototype.mover = function(dt) {
   this.colisaoFireZones(this.player);
   this.colisaoInimigos(this.player);
   this.colisaoTesouros(this.player);
+  this.validaAtaquePlayerInimigo(this.player);
   for(let i = 0; i < this.rooms.length; i++){
     this.rooms[i].move(dt);
   }
@@ -759,9 +760,22 @@ Level.prototype.colisaoInimigos = function(player){
   }
 }
 
+Level.prototype.validaAtaquePlayerInimigo = function(player){
+  //let auxRoom = this.rooms[player.room - 1];          // Checar somente a sala onde o player se encontra
+  let inimigos = this.rooms[player.room - 1].enemies;
+  if(player.atacando === 1 && player.cooldownAtaque > 0){
+    for(let i = 0; i < inimigos.length; i++){
+      if(player.atacarModoPlayer(inimigos[i])){
+        console.log("Ataque Player no inimigo");
+        inimigos[i].hp -= 30;
+      }
+    }
+  }
+}
+
 Level.prototype.colisaoTesouros = function(player){
- let auxRoom = this.rooms[player.room - 1];          // Checar somente a sala onde o player se encontra
- if(auxRoom.collisionTreasures(player)){      
-   console.log("Colidiu com tesouros");
- }
+  let auxRoom = this.rooms[player.room - 1];          // Checar somente a sala onde o player se encontra
+  if(auxRoom.collisionTreasures(player)){      
+    console.log("Colidiu com tesouros");
+  }
 }
