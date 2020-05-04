@@ -21,7 +21,7 @@ function Player(params) {
     tesourosColetados: 0,
     playerVel: 180, // 100
     hp: 500,
-    hitpoint: 30,
+    hitpoint: 50,
     cooldownTeleporte: 1,
     cooldownAtaque: 1,                  //Tempo do personagem travado até terminar o ataque            
     cooldownImune: 1,

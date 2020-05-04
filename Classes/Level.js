@@ -708,6 +708,7 @@ Level.prototype.mover = function(dt) {
   for(let i = 0; i < this.rooms.length; i++){
     this.rooms[i].move(dt);
   }
+  this.removerInimigos();
 };
 
 Level.prototype.desenhar = function(ctx) {
@@ -725,9 +726,22 @@ Level.prototype.desenhar = function(ctx) {
   }
 };
 
-/************
- * Colisões *
- ************/
+Level.prototype.removerInimigos = function(){
+  // Otimização: Inimigos atacados pelo player sempre estão na mesma sala
+
+  for(let i = 0; i < this.rooms.length; i++){
+    let inimigos = this.rooms[i].enemies;
+    for(let j = 0; j < inimigos.length; j++){
+      if(inimigos[j].hp <= 0){
+        inimigos.splice(j, 1);
+      }
+    }
+  }
+}
+
+/**********************
+ * Colisões e ataques *
+ **********************/
 
 Level.prototype.colisaoTeleportes = function(player){
   let auxRoom = this.rooms[player.room - 1];          // Checar somente a sala onde o player se encontra

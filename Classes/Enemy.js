@@ -3,7 +3,7 @@ function Enemy() {
     Sprite.call(this, {s: 22, w: 22, h: 10, nomeImagem: "slime", sizeImagem: 22});            
     this.roomNumber = -1;
     this.maxHp = 200;
-    this.hp = 170;
+    this.hp = 200;
     this.animation = [];
     this.qtdAnimacoes = {types: 2, lines: [0, 1], qtd: [9, 3]/* atacking: 9, normal: 3*/};
     this.speedAnimation = 11.49;//1.2;
