@@ -1,6 +1,7 @@
 
 function Enemy() {
     Sprite.call(this, {s: 22, w: 22, h: 10, nomeImagem: "slime", sizeImagem: 22});            
+    this.alvo = null;
     this.roomNumber = -1;
     this.maxHp = 200;
     this.hp = 200;
@@ -27,6 +28,9 @@ Enemy.prototype.constructor = Enemy;
 
 Enemy.prototype.mover = function (dt) {
     this.pose = this.pose + this.speedAnimation * dt;
+    this.x += this.vx*dt;
+    this.y += this.vy*dt;
+
 }
 
 Enemy.prototype.criarAnimacoes = function(){
@@ -103,4 +107,24 @@ Enemy.prototype.desenharHP = function(){
     ctx.fillStyle = `hsl(${120*this.hp/this.maxHp}, 100%, 50%)`;
     ctx.fillRect(this.x - this.w/2, this.y - this.h * 2.5, this.w*(Math.max(0,this.hp)/this.maxHp), 4);         // Quantidade de HP
     ctx.strokeRect(this.x - this.w/2, this.y - this.h * 2.5, this.w, 4);       // Borda
+}
+
+Enemy.prototype.persegue = function(alvo){
+    if(this.alvo=== null){
+        const dx = Math.floor(alvo.x) - Math.floor(this.x);
+        const dy = Math.floor(alvo.y) - Math.floor(this.y);
+        const d = Math.sqrt(dx*dx+dy*dy);
+        const k = 5;
+        if(Math.abs(d)<k*16){
+            this.alvo = alvo;
+            this.persegue();
+            return;
+        }
+
+    } else {
+        const dx = Math.floor(this.alvo.x) - Math.floor(this.x);
+        const dy = Math.floor(this.alvo.y) - Math.floor(this.y);
+        this.vx = 20*Math.sign(dx);
+        this.vy = 20*Math.sign(dy);
+    }
 }
