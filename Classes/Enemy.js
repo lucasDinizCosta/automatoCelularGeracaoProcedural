@@ -15,7 +15,10 @@ function Enemy() {
         widthImagem: 22,
         heightImagem: 22
     };
+    this.cooldownAtaque = 1;                  //Tempo travado até terminar o ataque            
+    this.cooldownImune= 1;
     this.criarAnimacoes();
+
 }
 
 // Heranca

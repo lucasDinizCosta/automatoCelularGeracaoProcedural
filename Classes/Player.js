@@ -9,6 +9,8 @@ function Player(params) {
       y: 0,
       w: 16,
       h: 16,
+      wDefault: 16,
+      hDefault: 16
     }
   });            
 
@@ -220,10 +222,12 @@ Player.prototype.controlePorTeclas = function(){
 }
 
 Player.prototype.tratarAnimacao = function(){
+  this.hitBox.h = this.hitBox.hDefault;
   switch (this.sentidoMovimento) {  //Movimento
     case 0:     //Cima
       this.hitBox.x = this.x;
       this.hitBox.y = this.y - this.h/2;
+      this.hitBox.h = this.hitBox.wDefault;
       
       break;
     case 1:     //Esquerda
@@ -313,25 +317,28 @@ Player.prototype.desenhar = function(ctx){
   }
   else if(debugMode == 2){
     this.desenharCell(ctx);         //Debug mode Grid    
-    this.desenharCaixaColisao(ctx);
+    this.desenharHurtBox(ctx);
     this.desenharCentro(ctx);
+    this.desenharHitBox(ctx);
     this.desenharCentroHitBox(ctx);
-  }
-
-  // TESTE === DESENHA OS TIROS DE ATAQEU
-  for(let i = 0; i < this.tiro.length; i++){
-    ctx.fillStyle = "gold";
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 1;
-    ctx.save();
-    ctx.translate(this.tiro[i].x, this.tiro[i].y);
-    ctx.fillRect(- this.tiro[i].w/2, - this.tiro[i].h/2, this.tiro[i].w, this.tiro[i].h);
-    ctx.strokeRect(- this.tiro[i].w/2, - this.tiro[i].h/2, this.tiro[i].w, this.tiro[i].h);
-    ctx.restore();
+  
+    // TESTE === DESENHA OS TIROS DE ATAQUE
+    for(let i = 0; i < this.tiro.length; i++){
+      ctx.fillStyle = "gold";
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 1;
+      ctx.save();
+      ctx.translate(this.tiro[i].x, this.tiro[i].y);
+      ctx.fillRect(- this.tiro[i].w/2, - this.tiro[i].h/2, this.tiro[i].w, this.tiro[i].h);
+      ctx.strokeRect(- this.tiro[i].w/2, - this.tiro[i].h/2, this.tiro[i].w, this.tiro[i].h);
+      ctx.restore();
+    }
+    
   }
 }
 
-Player.prototype.desenharCaixaColisao = function(ctx){
+// caixaColisap = HurtBox
+Player.prototype.desenharHurtBox = function(ctx){
   // hurt box => danifica o personagem
   ctx.fillStyle = "red";
   ctx.strokeStyle = "black";
@@ -341,7 +348,9 @@ Player.prototype.desenharCaixaColisao = function(ctx){
   ctx.fillRect(- this.w/2, - this.h/2, this.w, this.h);
   ctx.strokeRect(- this.w/2, - this.h/2, this.w, this.h);
   ctx.restore();
-  
+}
+
+Player.prototype.desenharHitBox = function(ctx){
   if(this.atacando){
     // hurt box => danifica o personagem
     ctx.fillStyle = "blue";
@@ -349,27 +358,9 @@ Player.prototype.desenharCaixaColisao = function(ctx){
     ctx.lineWidth = 1;
     ctx.save();
     ctx.translate(this.hitBox.x, this.hitBox.y);
-    //ctx.fillRect(this.w/2, this.h/2, -this.w, this.h);
-    //ctx.strokeRect(this.w/2, this.h/2, -this.w, this.h);
     ctx.fillRect(-this.hitBox.w/2, -this.hitBox.h/2, this.hitBox.w, this.hitBox.h);
     ctx.strokeRect(-this.hitBox.w/2, -this.hitBox.h/2, this.hitBox.w, this.hitBox.h);
     ctx.restore();
-    /*switch (this.sentidoMovimento) {  //Movimento
-      case 0:     //Direita
-        this.estadoAnimacaoAtual = 3;
-        break;
-      case 1:     //Baixo
-        this.estadoAnimacaoAtual = 2;
-        break;
-      case 2:     //Esquerda
-        this.estadoAnimacaoAtual = 1;
-        break;
-      case 3:     //Cima
-        this.estadoAnimacaoAtual = 0;
-        break;
-      default:
-        break;
-    }*/
   }
 }
 /**
@@ -488,7 +479,26 @@ Player.prototype.atacarModoPlayer = function(alvo){
   if(this.atacar(alvo)){
     for(let i = 0; i < this.tiro.length; i++){
       if(this.tiro[i].colidiuCom3(alvo)){
-        alvo.hp = alvo.hp - this.hitpoint; 
+        alvo.hp = alvo.hp - this.hitpoint;
+
+        /*let taxaRecuo = 15;
+        // Recuo do inimigo
+        switch (this.sentidoMovimento) {  //Movimento
+          case 0:     //Cima
+            alvo.y = alvo.y - taxaRecuo; 
+            break;
+          case 1:     //Esquerda
+            alvo.x = alvo.x - taxaRecuo;
+            break;
+          case 2:     //Baixo
+            alvo.y = alvo.y + taxaRecuo;
+            break;
+          case 3:    //Direita 
+            alvo.x = alvo.x + taxaRecuo;
+            break;
+          default:
+            break;
+        }*/
         this.tiro[i].cooldown = -1;             // Para ser removido
       }
     }

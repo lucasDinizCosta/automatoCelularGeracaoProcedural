@@ -115,6 +115,8 @@
         y: 0,
         w: 27,
         h: 11,
+        wDefault: 27,
+        hDefault: 11
       }
     });  
 
@@ -589,63 +591,15 @@
           break;
         case 37:       // Left Arrow
           player.teclas.left = true;
-          /*if(debugMode === 0){
-            if(player.up === false && player.down === false && player.right === false){
-              player.vx = -playerVel;
-              player.left = true;
-              player.sentidoMovimento = 2;
-            }
-          }
-          else{
-            player.vx = -playerVel;
-            player.left = true;
-            player.sentidoMovimento = 2;
-          }*/
           break;
         case 39:      // Right Arrow
           player.teclas.right = true;
-          /*if(debugMode === 0){
-            if(player.up === false && player.down === false && player.left === false){
-              player.vx = +playerVel;
-              player.right = true;
-              player.sentidoMovimento = 0;
-            }
-          }
-          else{
-            player.vx = +playerVel;
-            player.right = true;
-            player.sentidoMovimento = 0;
-          }*/
           break;
         case 38:            // Up Arrow
           player.teclas.up = true;
-          /*if(debugMode === 0){
-            if(player.left === false && player.down === false && player.right === false){
-              player.vy = -playerVel;
-              player.up = true;  
-              player.sentidoMovimento = 3;
-            }
-          }
-          else{,
-            player.vy = -playerVel;
-            player.up = true;
-            player.sentidoMovimento = 3;
-          }*/
           break;
         case 40:            // Down Arrow
           player.teclas.down = true;
-          /*if(debugMode === 0){
-            if(player.left === false && player.up === false && player.right === false){
-              player.vy = +playerVel;
-              player.down = true;
-              player.sentidoMovimento = 1;
-            }
-          } 
-          else{
-            player.vy = +playerVel;
-            player.down = true;
-            player.sentidoMovimento = 1;
-          }*/
           break;
         case 32:  //Espaco  -- Ativa teleporte
           player.teclas.space = true;          
