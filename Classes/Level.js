@@ -698,7 +698,7 @@ Level.prototype.copiaSalasComReferencia = function(rooms){
   }
 }
 
-Level.prototype.mover = function(dt) {
+Level.prototype.movimento = function(dt) {
   this.player.moverCompleto(dt);
   this.colisaoTeleportes(this.player);
   this.colisaoFireZones(this.player);
@@ -713,11 +713,11 @@ Level.prototype.mover = function(dt) {
 
 Level.prototype.desenhar = function(ctx) {
   this.mapa.desenhar(ctx);
+  this.teleporteInicioLevel.desenhar(ctx);
+  this.teleporteFinalLevel.desenhar(ctx);
   for(let i = 0; i < this.rooms.length; i++){
     this.rooms[i].draw(ctx);
   }
-  this.teleporteInicioLevel.desenhar(ctx);
-  this.teleporteFinalLevel.desenhar(ctx);
   this.player.desenhar(ctx);
   if(debugMode == 1){
     for(let i = 0; i < this.rooms.length; i++){

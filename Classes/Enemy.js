@@ -6,8 +6,8 @@ function Enemy() {
     this.maxHp = 200;
     this.hp = 200;
     this.animation = [];
-    this.qtdAnimacoes = {types: 2, lines: [0, 1], qtd: [9, 3]/* atacking: 9, normal: 3*/};
-    this.speedAnimation = 11.49;//1.2;
+    this.qtdAnimacoes = {types: 2, lines: [0, 1], qtd: [9, 3] /* atacking: 9, normal: 3*/};
+    this.speedAnimation = 11.49; //1.2;
     this.type = 0;
     this.pose = 0;
     this.matrizImagem = {
@@ -17,19 +17,19 @@ function Enemy() {
         heightImagem: 22
     };
     this.cooldownAtaque = 1;                  //Tempo travado até terminar o ataque            
-    this.cooldownImune= 1;
+    this.cooldownImune = 1;
     this.criarAnimacoes();
-
 }
 
 // Heranca
 Enemy.prototype = new Sprite();              // Define que o Enemy é um Sprite
 Enemy.prototype.constructor = Enemy;
 
-Enemy.prototype.mover = function (dt) {
+Enemy.prototype.movimento = function (dt) {
     this.pose = this.pose + this.speedAnimation * dt;
-    this.x += this.vx*dt;
-    this.y += this.vy*dt;
+    this.mover(dt);
+    /*this.x += this.vx*dt;
+    this.y += this.vy*dt;*/
 
 }
 
@@ -56,8 +56,8 @@ Enemy.prototype.criarAnimacoes = function(){
         }
     }
 
-    this.pose = seedGen.getRandomIntMethod_1(0,50);             // Sorteia uma posição inicial para que os 
-                                                                // inimigos não fiquem sincronizados
+    this.pose = seedGen.getRandomIntMethod_1(0, 50);             // Sorteia uma posição inicial para que os 
+                                                                 // inimigos não fiquem sincronizados
 }
 
 Enemy.prototype.desenhar = function(ctx){
@@ -78,7 +78,7 @@ Enemy.prototype.desenhar = function(ctx){
     ctx.translate(this.x, this.y);
     ctx.beginPath();
     ctx.ellipse(elipse.x, elipse.y, elipse.radiusX, elipse.radiusY, elipse.rotation, elipse.startAngle, 
-    elipse.endAngle, elipse.anticlockwise); //ctx.ellipse(-this.s/2 + 7, -this.s/4 + 6, this.s - 2, this.s/2 - 2, 0, 0, 2 * Math.PI, false);
+    elipse.endAngle, elipse.anticlockwise);
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
@@ -110,7 +110,7 @@ Enemy.prototype.desenharHP = function(){
 }
 
 Enemy.prototype.persegue = function(alvo){
-    if(this.alvo=== null){
+    if(this.alvo === null){
         const dx = Math.floor(alvo.x) - Math.floor(this.x);
         const dy = Math.floor(alvo.y) - Math.floor(this.y);
         const d = Math.sqrt(dx*dx+dy*dy);

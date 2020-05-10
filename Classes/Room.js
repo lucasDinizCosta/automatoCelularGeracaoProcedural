@@ -222,7 +222,7 @@ Room.prototype.move = function(dt){
 
     for(let i = 0; i < this.enemies.length; i++){
         this.enemies[i].persegue(player);         
-        this.enemies[i].mover(dt);         
+        this.enemies[i].movimento(dt);         
     }    
 } 
 

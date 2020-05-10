@@ -20,33 +20,10 @@
   <script src="Classes/AssetsManager.js"></script>
   <script src="Classes/CellularAutomata.js"></script>
   <script src="Classes/SeedGenerator.js"></script>
-
   <link rel="stylesheet" href="CSS/default.css">
- <!-- <style>
-    body {
-      padding: 20px;
-      margin: 0;
-    }
-
-    canvas {
-      vertical-align: top;
-    }
-  </style>
-
-  <style>
-    body {
-      background-color: lightblue;
-      color: black;
-    }
-  </style>
--->
 </head>
 
 <body>
-  <!-- <h1 align="center"><u>Trabalho de conclusão de curso de ciências exatas:</u> (2019)</h1> 
-  <h2>&emsp;&emsp;Tema: Aplicação de autômatos celulares na geração procedural de mapas.</h2>
-  -->
-
   <canvas id="canvas" width="600px" height="350px"> 
     Seu browser não suporta canvas!
   </canvas>
@@ -271,7 +248,7 @@
             /*if(audioLibrary.isPlaying("BGM")==false){
               audioLibrary.play("BGM");
             }*/
-            levelAtual.mover(dt);
+            levelAtual.movimento(dt);
             controleTempo();
             ctx.save();
             ctx.scale(escala, escala);
