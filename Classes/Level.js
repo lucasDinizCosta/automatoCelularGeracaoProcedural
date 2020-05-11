@@ -9,6 +9,7 @@ function Level(w, h, s) {
   this.teleporteInicioLevel = new Teleporter(0);         //(Inicio) mapa
   this.teleporteFinalLevel  = new Teleporter(1);        //(Final) mapa
   this.player = undefined;
+  this.filaDesenho = [];
 };
 
 /**
@@ -709,16 +710,52 @@ Level.prototype.movimento = function(dt) {
     this.rooms[i].move(dt);
   }
   this.removerInimigos();
+  this.criarFilaDesenho();
 };
+
+Level.prototype.criarFilaDesenho = function(){
+  this.filaDesenho = [];
+  // Desenhos que não seguirão a ordem de prioridade no eixo y
+  for(let i = 0; i < this.rooms.length; i++){       
+    let auxRoom = this.rooms[i];
+    for(let j = 0; j < auxRoom.fireZones.length; j++){
+      this.filaDesenho.push(auxRoom.fireZones[j]);
+    }
+    this.filaDesenho.push(auxRoom.teleporterInitial);
+    this.filaDesenho.push(auxRoom.teleporterFinal);
+  }
+  this.filaDesenho.push(this.teleporteInicioLevel);
+  this.filaDesenho.push(this.teleporteFinalLevel);
+
+  let indiceInicioOrdenacao = this.filaDesenho.length - 1;
+
+  // Desenhos que seguirão a ordem de prioridade no eixo y
+  this.filaDesenho.push(this.player);
+  for(let i = 0; i < this.rooms.length; i++){
+    let auxRoom = this.rooms[i];
+    for(let j = 0; j < auxRoom.enemies.length; j++){
+      this.filaDesenho.push(auxRoom.enemies[j]);
+    }
+    for(let j = 0; j < auxRoom.treasures.length; j++){
+      this.filaDesenho.push(auxRoom.treasures[j]);
+    }
+  }
+
+  let ordenacao = new Ordenacao();
+  ordenacao.quickSort({
+    lista: this.filaDesenho,
+    inicio: indiceInicioOrdenacao, 
+    fim: this.filaDesenho.length - 1, 
+    criterio: 1,    // Eixo Y
+    ordem: 0        // Crescente
+  });
+}
 
 Level.prototype.desenhar = function(ctx) {
   this.mapa.desenhar(ctx);
-  this.teleporteInicioLevel.desenhar(ctx);
-  this.teleporteFinalLevel.desenhar(ctx);
-  for(let i = 0; i < this.rooms.length; i++){
-    this.rooms[i].draw(ctx);
+  for(let i = 0; i < this.filaDesenho.length; i++){
+    this.filaDesenho[i].desenhar(ctx);
   }
-  this.player.desenhar(ctx);
   if(debugMode == 1){
     for(let i = 0; i < this.rooms.length; i++){
       this.rooms[i].drawTeleportersLine(ctx);
