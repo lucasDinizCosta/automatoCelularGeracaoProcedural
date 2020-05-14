@@ -185,20 +185,89 @@
     var teasuresCollected = 0;    
 
     // Tempo
-    var tempoRectExt = new Sprite();
-    var tempoRectInt = new Sprite();
-    tempoRectExt.w = 127;
-    tempoRectExt.h = 15;
-    tempoRectExt.colorBG = "black";
-    tempoRectExt.colorBorder = "white";
-    tempoRectExt.x = 95;
-    tempoRectExt.y = 7;
-    tempoRectInt.w = 127;
-    tempoRectInt.h = 15;
-    tempoRectInt.x = 96;
-    tempoRectInt.y = 8;
-    tempoRectInt.colorBG = "rgb(170, 120, 0)";
-    tempoRectInt.borderSize = 0;
+    var barraTempo = {
+      externa: new Sprite(),
+      interna: new Sprite(),
+      desenhar: function(ctx){
+        this.externa.desenharTempo(ctx);
+        this.interna.desenharTempo(ctx);
+      },
+      init: function(){
+        this.externa.w = 127;
+        this.externa.h = 15;
+        this.externa.colorBG = "black";
+        this.externa.colorBorder = "white";
+        this.externa.x = 95;
+        this.externa.y = 7;
+        this.interna.w = 127;
+        this.interna.h = 15;
+        this.interna.x = 96;
+        this.interna.y = 8;
+        this.interna.colorBG = "rgb(170, 120, 0)";
+        this.interna.borderSize = 0;
+      }
+    };
+
+    barraTempo.init();
+
+    // Energia === Player
+    var barraEnergia = {
+      externa: new Sprite(),
+      interna: new Sprite(),
+      desenhar: function(ctx){
+        this.externa.desenharTempo(ctx);
+        this.interna.desenharTempo(ctx);
+      },
+      init: function(){
+        this.externa.w = 127;
+        this.externa.h = 15;
+        this.externa.colorBG = "black";
+        this.externa.colorBorder = "white";
+        this.externa.x = 95;
+        this.externa.y = 7;
+        this.interna.w = 127;
+        this.interna.h = 15;
+        this.interna.x = 96;
+        this.interna.y = 8;
+        this.interna.colorBG = "rgb(170, 120, 0)";
+        this.interna.borderSize = 0;
+      }
+    };
+
+    barraEnergia.init();
+
+    // HUD
+    var hud = {
+      tempo: { x: 0, y: 0, text: "Tempo: "},
+      energia: { x: 0, y: 0, text: "Energia: "},
+      vidas: { x: 0, y: 0, text: "Vidas: "},
+      tesouros:{ x: 0, y: 0, text: "Tesouros: "},
+      level:{ x: 0, y: 0, text: "Level: "},
+      debugText: [],
+      init: function(){
+        this.debugText.push("Mode 1 - Ligação dos Teleportes");// Centro do personagem e celula marcada
+        this.debugText.push("Mode 2 - Caixa de Colisão");      // Box collision
+        this.debugText.push("Mode 3 - Distancia - Teleportes");// Dados das celulas -- DistTeleportes
+        this.debugText.push("Mode 4 - Distancia - Firezones"); // Dados das celulas -- DistFirezones
+        this.debugText.push("Mode 5 - Distancia - Inimigos");  // Dados das celulas -- DistInimigos
+        this.debugText.push("Mode 6 - Distancia - Tesouros");  // Dados das celulas -- DistTesouros
+        this.updateElementos();
+      },
+      updateElementos: function(){
+        this.tempo.x = converteTelaCheia(40, tela.widthOld, tela.width);
+        this.tempo.y = converteTelaCheia(20, tela.heightOld, tela.height);
+        this.energia.x = converteTelaCheia(215, tela.widthOld, tela.width);
+        this.energia.y = converteTelaCheia(20, tela.heightOld, tela.height);
+        this.vidas.x = converteTelaCheia(350, tela.widthOld, tela.width);
+        this.vidas.y = converteTelaCheia(20, tela.heightOld, tela.height);
+        this.tesouros.x = converteTelaCheia(450, tela.widthOld, tela.width);
+        this.tesouros.y = converteTelaCheia(20, tela.heightOld, tela.height);
+        this.level.x = converteTelaCheia(545, tela.widthOld, tela.width);
+        this.level.y = converteTelaCheia(20, tela.heightOld, tela.height);
+      }
+    }
+    
+    hud.init();
 
     // Main Menu campos
     var fontMainMenu = "30px Arial Black";
@@ -292,7 +361,6 @@
               ctx.strokeText("Quit", tela.width / 2, tela.height / 2 - 10);
               ctx.fillText("Quit", tela.width / 2, tela.height / 2 - 10);
             }
-
             break;
           case 2:     // Game Over
             limparTela();
@@ -317,14 +385,14 @@
             limparTela();
             break;
           case 4:       // Passou de fase
-            tempoRectInt.w = 127;
+            barraTempo.interna.w = 127;
             /*treasuresCount = 0;
             teasuresCollected = 0;*/
             player.levelNumber = player.levelNumber + 1;
             loadLevel(0);       // Load new level
             break;
           case 5:     // Recarregar fase
-            tempoRectInt.w = 127;
+            barraTempo.interna.w = 127;
             /*treasuresCount = 0;
             teasuresCollected = 0;*/
             player.vidas--;
@@ -346,10 +414,10 @@
     // A cada 1 segundo ele executa uma diminuição na barra de tempo
     function controleTempo(){
       if(debugMode == 0){
-        tempoRectInt.w = tempoRectInt.w - levelAtual.taxaDiminuicaoTempo;  
+        barraTempo.interna.w = barraTempo.interna.w - levelAtual.taxaDiminuicaoTempo;  
         levelAtual.updateTempo()
-        if(tempoRectInt.w <= 0){
-          tempoRectInt.w = 0;
+        if(barraTempo.interna.w <= 0){
+          barraTempo.interna.w = 0;
           estado = 5;
           limparTela();
         }
@@ -357,53 +425,20 @@
     }
 
     function desenharHUD(){
-      tempoRectExt.x = converteTelaCheia(77, tela.widthOld, tela.width);
-      tempoRectExt.y = converteTelaCheia(13.5, tela.heightOld, tela.height);
-      
-      tempoRectInt.x = converteTelaCheia(77, tela.widthOld, tela.width);
-      tempoRectInt.y = converteTelaCheia(13.5, tela.heightOld, tela.height);
-      
-      tempoRectExt.desenharTempo(ctx);
-      tempoRectInt.desenharTempo(ctx);
-
+      barraTempo.desenhar(ctx);
+      barraEnergia.desenhar(ctx);
       ctx.font = "15px Arial Black";
       ctx.fillStyle = "white";
       ctx.textAlign = alignMainMenu;
       ctx.lineWidth = 2;
       ctx.strokeStyle = "black";
-      ctx.strokeText("Tempo: ", converteTelaCheia(55, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
-      ctx.fillText("Tempo: ", converteTelaCheia(55, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
-      ctx.strokeText("Vidas: " + player.vidas, converteTelaCheia(300, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
-      ctx.fillText("Vidas: " + player.vidas, converteTelaCheia(300, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
-      ctx.strokeText("Tesouros: " + player.tesourosColetados, converteTelaCheia(430, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
-      ctx.fillText("Tesouros: " + player.tesourosColetados, converteTelaCheia(430, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
-      ctx.strokeText("Level: " + player.levelNumber, converteTelaCheia(545, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
-      ctx.fillText("Level: " + player.levelNumber, converteTelaCheia(545, tela.widthOld, tela.width), converteTelaCheia(20, tela.heightOld, tela.height));
-
+      escreveTexto(ctx, hud.tempo.text, hud.tempo.x, hud.tempo.y);
+      escreveTexto(ctx, hud.energia.text, hud.energia.x, hud.energia.y);
+      escreveTexto(ctx, hud.vidas.text + player.vidas, hud.vidas.x, hud.vidas.y);
+      escreveTexto(ctx, hud.tesouros.text + player.tesourosColetados, hud.tesouros.x, hud.tesouros.y);
+      escreveTexto(ctx, hud.level.text + player.levelNumber, hud.level.x, hud.level.y);
       if(debugMode >= 1){       
-        let typeMode = "";
-        switch(debugMode){
-          case 1: // Centro do personagem e celula marcada
-            typeMode = "Mode 1 - Ligação dos Teleportes";
-            break;
-          case 2: // Box collision
-            typeMode = "Mode 2 - Caixa de Colisão";
-            break;
-          case 3: // Dados das celulas -- DistTeleportes
-            typeMode = "Mode 3 - Distancia - Teleportes";
-            break;
-          case 4: // Dados das celulas -- DistFirezones
-            typeMode = "Mode 4 - Distancia - Firezones";
-            break;
-          case 5: // Dados das celulas -- DistInimigos
-            typeMode = "Mode 5 - Distancia - Inimigos";
-            break;
-          case 6: // Dados das celulas -- DistTesouros
-            typeMode = "Mode 6 - Distancia - Tesouros";
-            break;
-          default:
-            break;
-        }
+        let typeMode = hud.debugText[debugMode - 1];
 
         // Desenha padrão dados celulas
         ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
@@ -448,24 +483,14 @@
         // Escritos
         ctx.strokeStyle = "black";
         ctx.fillStyle = "yellow";
-        ctx.strokeText("Debug mode ativado!!!", converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(321, tela.heightOld, tela.height));
-        ctx.fillText("Debug mode ativado!!!", converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(321, tela.heightOld, tela.height));
-        ctx.strokeText(typeMode, converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(332, tela.heightOld, tela.height));
-        ctx.fillText(typeMode, converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(332, tela.heightOld, tela.height));
-        ctx.strokeText("FPS: " + ((1/dt).toFixed(4)), converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(343, tela.heightOld, tela.height));
-        ctx.fillText("FPS: "   + ((1/dt).toFixed(4)), converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(343, tela.heightOld, tela.height));
-
-        ctx.strokeText("Teleporte Inicial Level: [" + (levelAtual.teleporteInicioLevel.gy) + "][" + (levelAtual.teleporteInicioLevel.gx) + "]", converteTelaCheia(tela.widthOld/2, tela.widthOld, tela.width), converteTelaCheia(321, tela.heightOld, tela.height));
-        ctx.fillText("Teleporte Inicial Level: [" + (levelAtual.teleporteInicioLevel.gy) + "][" + (levelAtual.teleporteInicioLevel.gx) + "]", converteTelaCheia(tela.widthOld/2, tela.widthOld, tela.width), converteTelaCheia(321, tela.heightOld, tela.height));
-        ctx.strokeText("Teleporte Inicial Level: [" + (levelAtual.teleporteFinalLevel.gy) + "][" + (levelAtual.teleporteFinalLevel.gx) + "]", converteTelaCheia(tela.widthOld/2, tela.widthOld, tela.width), converteTelaCheia(343, tela.heightOld, tela.height));
-        ctx.fillText("Teleporte Inicial Level: [" + (levelAtual.teleporteFinalLevel.gy) + "][" + (levelAtual.teleporteFinalLevel.gx) + "]", converteTelaCheia(tela.widthOld/2, tela.widthOld, tela.width), converteTelaCheia(343, tela.heightOld, tela.height));
-
-        ctx.strokeText("Escala mapa: " + escala.toFixed(4), converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(321, tela.heightOld, tela.height));
-        ctx.fillText("Escala mapa: " + escala.toFixed(4), converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(321, tela.heightOld, tela.height));
-        ctx.strokeText("Grade Player: [" + (player.gy) + "][" + (player.gx) + "]", converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(332, tela.heightOld, tela.height));
-        ctx.fillText("Grade Player: [" + (player.gy) + "][" + (player.gx) + "]", converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(332, tela.heightOld, tela.height));
-        ctx.strokeText("Seed: " + seedValueURL, converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(343, tela.heightOld, tela.height));
-        ctx.fillText("Seed: " + seedValueURL, converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(343, tela.heightOld, tela.height));
+        escreveTexto(ctx, "Debug mode ativado!!!", converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(321, tela.heightOld, tela.height));
+        escreveTexto(ctx, typeMode, converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(332, tela.heightOld, tela.height));
+        escreveTexto(ctx, "FPS: " + ((1/dt).toFixed(4)), converteTelaCheia(110, tela.widthOld, tela.width), converteTelaCheia(343, tela.heightOld, tela.height));
+        escreveTexto(ctx, "Teleporte Inicial Level: [" + (levelAtual.teleporteInicioLevel.gy) + "][" + (levelAtual.teleporteInicioLevel.gx) + "]", converteTelaCheia(tela.widthOld/2, tela.widthOld, tela.width), converteTelaCheia(321, tela.heightOld, tela.height));
+        escreveTexto(ctx, "Teleporte Final Level: [" + (levelAtual.teleporteFinalLevel.gy) + "][" + (levelAtual.teleporteFinalLevel.gx) + "]", converteTelaCheia(tela.widthOld/2, tela.widthOld, tela.width), converteTelaCheia(343, tela.heightOld, tela.height));
+        escreveTexto(ctx, "Escala mapa: " + escala.toFixed(4), converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(321, tela.heightOld, tela.height));
+        escreveTexto(ctx, "Grade Player: [" + (player.gy) + "][" + (player.gx) + "]", converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(332, tela.heightOld, tela.height));
+        escreveTexto(ctx, "Seed: " + seedValueURL, converteTelaCheia(500, tela.widthOld, tela.width), converteTelaCheia(343, tela.heightOld, tela.height));
       }
     }
     
@@ -484,15 +509,36 @@
     function onResize(){
       tela.width = window.innerWidth;
       tela.height = window.innerHeight;
+      updateTamanhoElementos();
     }
 
     window.addEventListener('resize', onResize, false);         // Ouve os eventos de resize
+
+    // Atualiza o tamanho dos elementos quando a interface é redimensionada
+    function updateTamanhoElementos(){
+      // Update barra de tempo
+      barraTempo.externa.x = converteTelaCheia(67, tela.widthOld, tela.width);
+      barraTempo.externa.y = converteTelaCheia(13.5, tela.heightOld, tela.height);
+      barraTempo.interna.x = converteTelaCheia(67, tela.widthOld, tela.width);
+      barraTempo.interna.y = converteTelaCheia(13.5, tela.heightOld, tela.height);
+
+      // Update barra de energia do player
+      barraEnergia.externa.x = converteTelaCheia(242, tela.widthOld, tela.width);
+      barraEnergia.externa.y = converteTelaCheia(13.5, tela.heightOld, tela.height);
+      barraEnergia.interna.x = converteTelaCheia(242, tela.widthOld, tela.width);
+      barraEnergia.interna.y = converteTelaCheia(13.5, tela.heightOld, tela.height);
+
+      // HUD
+      hud.updateElementos();
+    }
+
+    updateTamanhoElementos();
 
     function limparDados() {
       levelAtual = new Level(widthMap, heightMap, sizeMap);
       levelAtual.clonarLevel(levels[0]);
       levelAtual.posicionarPlayer(player);
-      levelAtual.setTaxaDiminuicaoTempo(dt, tempoRectInt);        // Atualiza o decaimento da barra
+      levelAtual.setTaxaDiminuicaoTempo(dt, barraTempo.interna);        // Atualiza o decaimento da barra
       player.restart();
     }
 
@@ -511,7 +557,7 @@
           else {
             levelAtual.clonarLevel(levels[player.levelNumber - 1]);
             levelAtual.posicionarPlayer(player);
-            levelAtual.setTaxaDiminuicaoTempo(dt, tempoRectInt);        // Atualiza o decaimento da barra
+            levelAtual.setTaxaDiminuicaoTempo(dt, barraTempo.interna);        // Atualiza o decaimento da barra
             player.restart();
             estado = 0;
           }
@@ -519,7 +565,7 @@
         case 1:   //Reload
           levelAtual.clonarLevel(levels[player.levelNumber - 1]);
           levelAtual.posicionarPlayer(player);
-          levelAtual.setTaxaDiminuicaoTempo(dt, tempoRectInt);        // Atualiza o decaimento da barra
+          levelAtual.setTaxaDiminuicaoTempo(dt, barraTempo.interna);        // Atualiza o decaimento da barra
           player.restart();
           estado = 0;
           break;
