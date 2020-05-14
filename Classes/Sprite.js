@@ -296,11 +296,20 @@ Sprite.prototype.desenharTempo = function (ctx) {
 Sprite.prototype.desenharBarraEnergiaHUD = function (ctx, player) {
   ctx.fillStyle = "black";
   ctx.strokeStyle = "black";
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 2;
   ctx.fillRect(this.x, this.y, this.w, this.h);         // Fundo
   ctx.fillStyle = `hsl(${120*player.hp/player.maxHp}, 100%, 50%)`;
-  ctx.fillRect(this.x, this.y, this.w*(Math.max(0, player.hp)/player.maxHp), this.h);         // Quantidade de HP
+  ctx.fillRect(this.x, this.y, this.w * (Math.max(0, player.hp)/player.maxHp), this.h);         // Quantidade de HP
   ctx.strokeRect(this.x, this.y, this.w, this.h);       // Borda
+
+  // Texto com o número no meio da barra
+  ctx.font = "13px Arial Black";
+  ctx.fillStyle = "yellow";
+  ctx.textAlign = alignMainMenu;
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "black";
+  ctx.strokeText(player.hp, this.x + this.w/2, this.y + this.h/2 + 4);
+  ctx.fillText(player.hp, this.x + this.w/2, this.y + this.h/2 + 4);
 };
 
 Sprite.prototype.desenharCell = function(ctx){
