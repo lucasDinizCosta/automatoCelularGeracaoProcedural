@@ -293,14 +293,14 @@ Sprite.prototype.desenharTempo = function (ctx) {
   ctx.strokeRect(this.x, this.y, this.w, this.h);
 };
 
-Sprite.prototype.desenharBarraEnergiaHUD = function (ctx) {
+Sprite.prototype.desenharBarraEnergiaHUD = function (ctx, player) {
   ctx.fillStyle = "black";
   ctx.strokeStyle = "black";
   ctx.lineWidth = 1;
-  ctx.fillRect(this.x - this.w/2, this.y - this.h * 2.5, this.w, 4);         // Fundo
-  ctx.fillStyle = `hsl(${120*this.hp/this.maxHp}, 100%, 50%)`;
-  ctx.fillRect(this.x - this.w/2, this.y - this.h * 2.5, this.w*(Math.max(0,this.hp)/this.maxHp), 4);         // Quantidade de HP
-  ctx.strokeRect(this.x - this.w/2, this.y - this.h * 2.5, this.w, 4);       // Borda
+  ctx.fillRect(this.x, this.y, this.w, this.h);         // Fundo
+  ctx.fillStyle = `hsl(${120*player.hp/player.maxHp}, 100%, 50%)`;
+  ctx.fillRect(this.x, this.y, this.w*(Math.max(0, player.hp)/player.maxHp), this.h);         // Quantidade de HP
+  ctx.strokeRect(this.x, this.y, this.w, this.h);       // Borda
 };
 
 Sprite.prototype.desenharCell = function(ctx){

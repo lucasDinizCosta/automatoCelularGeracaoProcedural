@@ -212,25 +212,17 @@
 
     // Energia === Player
     var barraEnergia = {
-      externa: new Sprite(),
-      interna: new Sprite(),
+      sprite: new Sprite(),
       desenhar: function(ctx){
-        this.externa.desenharTempo(ctx);
-        this.interna.desenharTempo(ctx);
+        this.sprite.desenharBarraEnergiaHUD(ctx, player);
       },
       init: function(){
-        this.externa.w = 127;
-        this.externa.h = 15;
-        this.externa.colorBG = "black";
-        this.externa.colorBorder = "white";
-        this.externa.x = 95;
-        this.externa.y = 7;
-        this.interna.w = 127;
-        this.interna.h = 15;
-        this.interna.x = 96;
-        this.interna.y = 8;
-        this.interna.colorBG = "rgb(170, 120, 0)";
-        this.interna.borderSize = 0;
+        this.sprite.w = 127;
+        this.sprite.h = 15;
+        this.sprite.colorBG = "black";
+        this.sprite.colorBorder = "white";
+        this.sprite.x = 95;
+        this.sprite.y = 7;
       }
     };
 
@@ -523,10 +515,8 @@
       barraTempo.interna.y = converteTelaCheia(13.5, tela.heightOld, tela.height);
 
       // Update barra de energia do player
-      barraEnergia.externa.x = converteTelaCheia(242, tela.widthOld, tela.width);
-      barraEnergia.externa.y = converteTelaCheia(13.5, tela.heightOld, tela.height);
-      barraEnergia.interna.x = converteTelaCheia(242, tela.widthOld, tela.width);
-      barraEnergia.interna.y = converteTelaCheia(13.5, tela.heightOld, tela.height);
+      barraEnergia.sprite.x = converteTelaCheia(242, tela.widthOld, tela.width);
+      barraEnergia.sprite.y = converteTelaCheia(13.5, tela.heightOld, tela.height);
 
       // HUD
       hud.updateElementos();
