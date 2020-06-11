@@ -235,7 +235,7 @@
       vidas: { x: 0, y: 0, text: "Vidas: "},
       tesouros: { x: 0, y: 0, text: "Tesouros: "},
       bussola: { 
-        centerX: 0, centerY: 0, raio: 40, color: "black", stroke: "grey",
+        centerX: 0, centerY: 0, raio: 40, color: "rgba(10, 10, 10, 0.6)", stroke: "rgba(105, 105, 105, 0.4)",//"grey",
         sAngle: 0, eAngle: Math.PI * 2, counterclockwise: false,
         salaPlayer: null,
         desenhar: function(ctx){
@@ -252,60 +252,11 @@
           ctx.stroke();
           ctx.restore();
           
-          // centro
-          ctx.save();
-          ctx.beginPath();
-          ctx.fillStyle = "green";
-          ctx.arc(this.centerX, this.centerY, 1, this.sAngle, this.eAngle, 
-          this.counterclockwise);
-          ctx.closePath();
-          ctx.fill();
-          ctx.restore();
-
           this.salaPlayer = levelAtual.getPlayerRoom();
           let tesouros = this.salaPlayer.treasures;
           let inimigos = this.salaPlayer.enemies;
           let teleporterInitial = this.salaPlayer.teleporterInitial;
           let teleporterFinal = this.salaPlayer.teleporterFinal;
-
-          let vetorUnitario = {
-            x: teleporterInitial.x - player.x,
-            y: teleporterInitial.y - player.y,
-            modulo: 0
-          };
-          vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
-          vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
-          vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
-          
-          ctx.save();
-          ctx.strokeStyle = "green";                              // linha de acabamento preta pra facilitar a visualização
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(this.centerX, this.centerY);
-          ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
-          ctx.closePath();
-          ctx.stroke()
-          ctx.restore();
-
-          vetorUnitario = {
-            x: teleporterFinal.x - player.x,
-            y: teleporterFinal.y - player.y,
-            modulo: 0
-          };
-          vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
-          vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
-          vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
-          
-          ctx.save();
-          ctx.strokeStyle = "green";                              // linha de acabamento preta pra facilitar a visualização
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(this.centerX, this.centerY);
-          ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
-          ctx.closePath();
-          ctx.stroke()
-          ctx.restore();
-
 
           for(let i = 0; i < tesouros.length; i++){
             let vetorUnitario = {
@@ -349,6 +300,58 @@
             ctx.stroke()
             ctx.restore();
           }
+
+          let vetorUnitario = {
+            x: teleporterInitial.x - player.x,
+            y: teleporterInitial.y - player.y,
+            modulo: 0
+          };
+          vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
+          vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
+          vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
+          
+          ctx.save();
+          ctx.strokeStyle = "green";                              // linha de acabamento preta pra facilitar a visualização
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(this.centerX, this.centerY);
+          ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
+          ctx.closePath();
+          ctx.stroke()
+          ctx.restore();
+
+          vetorUnitario = {
+            x: teleporterFinal.x - player.x,
+            y: teleporterFinal.y - player.y,
+            modulo: 0
+          };
+          vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
+          vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
+          vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
+          
+          ctx.save();
+          ctx.strokeStyle = "green";                              // linha de acabamento preta pra facilitar a visualização
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(this.centerX, this.centerY);
+          ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
+          ctx.closePath();
+          ctx.stroke()
+          ctx.restore();
+
+          // centro
+          ctx.save();
+          ctx.beginPath();
+          ctx.lineWidth = 1;
+          ctx.fillStyle = "yellow";
+          //ctx.strokeStyle = "rgb(105,105,105)";
+          ctx.arc(this.centerX, this.centerY, 2, this.sAngle, this.eAngle, 
+          this.counterclockwise);
+          ctx.closePath();
+          ctx.fill();
+          //ctx.stroke();
+          ctx.restore();
+
         },
       },
       level:{ x: 0, y: 0, text: "Level: "},
