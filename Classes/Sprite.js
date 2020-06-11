@@ -301,7 +301,7 @@ Sprite.prototype.desenharBarraEnergiaHUD = function (ctx, player) {
   ctx.fillStyle = `hsl(${120*player.hp/player.maxHp}, 100%, 50%)`;
   ctx.fillRect(this.x, this.y, this.w * (Math.max(0, player.hp)/player.maxHp), this.h);         // Quantidade de HP
   ctx.strokeRect(this.x, this.y, this.w, this.h);       // Borda
-
+  
   // Texto com o número no meio da barra
   ctx.font = "13px Arial Black";
   ctx.fillStyle = "yellow";

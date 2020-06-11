@@ -6,7 +6,7 @@ function Enemy() {
     this.maxHp = 200;
     this.hp = 200;
     this.animation = [];
-    this.qtdAnimacoes = {types: 2, lines: [0, 1], qtd: [9, 3] /* atacking: 9, normal: 3*/};
+    this.qtdAnimacoes = {types: 2, lines: [1, 0], qtd: [3, 9] /* atacking: 9, normal: 3*/};
     this.speedAnimation = 11.49; //1.2;
     this.type = 0;
     this.pose = 0;
@@ -19,6 +19,12 @@ function Enemy() {
     this.cooldownAtaque = 1;                  //Tempo travado até terminar o ataque            
     this.cooldownImune = 1;
     this.criarAnimacoes();
+
+    // Ataque
+    this.tiro = [];
+     
+    
+    this.sentidoMovimento = -1;
 }
 
 // Heranca
@@ -28,9 +34,6 @@ Enemy.prototype.constructor = Enemy;
 Enemy.prototype.movimento = function (dt) {
     this.pose = this.pose + this.speedAnimation * dt;
     this.mover(dt);
-    /*this.x += this.vx*dt;
-    this.y += this.vy*dt;*/
-
 }
 
 Enemy.prototype.criarAnimacoes = function(){

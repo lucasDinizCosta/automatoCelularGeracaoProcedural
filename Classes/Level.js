@@ -713,6 +713,10 @@ Level.prototype.movimento = function(dt) {
   this.criarFilaDesenho();
 };
 
+Level.prototype.getPlayerRoom = function(){
+  return (this.rooms[this.player.room - 1]);
+}
+
 Level.prototype.criarFilaDesenho = function(){
   this.filaDesenho = [];
   // Desenhos que não seguirão a ordem de prioridade no eixo y

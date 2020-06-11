@@ -233,7 +233,90 @@
       tempo: { x: 0, y: 0, text: "Tempo: "},
       energia: { x: 0, y: 0, text: "Energia: "},
       vidas: { x: 0, y: 0, text: "Vidas: "},
-      tesouros:{ x: 0, y: 0, text: "Tesouros: "},
+      tesouros: { x: 0, y: 0, text: "Tesouros: "},
+      bussola: { 
+        centerX: 0, centerY: 0, raio: 40, color: "black", stroke: "grey",
+        sAngle: 0, eAngle: Math.PI * 2, counterclockwise: false,
+        salaPlayer: null,
+        desenhar: function(ctx){
+          ctx.linewidth = 1;
+          ctx.fillStyle = this.color;     //"rgba(10, 10, 10, 0.4)";
+          ctx.strokeStyle = this.stroke;  //"rgba(10, 10, 10, 0.4)";
+          //  Circulo de fora
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(this.centerX, this.centerY, this.raio, this.sAngle, this.eAngle, 
+          this.counterclockwise);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          ctx.restore();
+          
+          // centro
+          ctx.save();
+          ctx.beginPath();
+          ctx.fillStyle = "green";
+          ctx.arc(this.centerX, this.centerY, 1, this.sAngle, this.eAngle, 
+          this.counterclockwise);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+
+          this.salaPlayer = levelAtual.getPlayerRoom();
+          let tesouros = this.salaPlayer.treasures;
+          let inimigos = this.salaPlayer.enemies;
+
+          for(let i = 0; i < tesouros.length; i++){
+            // Ligação entre os teleportes
+            let vetorUnitario = {
+              x: tesouros[i].x - player.x,
+              y: tesouros[i].y - player.y,
+              modulo: 0
+            };
+            vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
+            vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
+            vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
+            
+            ctx.save();
+            ctx.strokeStyle = "yellow";                              // linha de acabamento preta pra facilitar a visualização
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(this.centerX, this.centerY);
+            ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
+            ctx.closePath();
+            ctx.stroke()
+            ctx.restore();
+          }
+
+          for(let i = 0; i < inimigos.length; i++){
+            // Ligação entre os teleportes
+            let vetorUnitario = {
+              x: inimigos[i].x - player.x,
+              y: inimigos[i].y - player.y,
+              modulo: 0
+            };
+            vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
+            vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
+            vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
+            
+            ctx.save();
+            ctx.strokeStyle = "red";                              // linha de acabamento preta pra facilitar a visualização
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(this.centerX, this.centerY);
+            ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
+            ctx.closePath();
+            ctx.stroke()
+            ctx.restore();
+          }
+
+
+          
+
+
+          
+        },
+      },
       level:{ x: 0, y: 0, text: "Level: "},
       debugText: [],
       init: function(){
@@ -256,6 +339,9 @@
         this.tesouros.y = converteTelaCheia(20, tela.heightOld, tela.height);
         this.level.x = converteTelaCheia(545, tela.widthOld, tela.width);
         this.level.y = converteTelaCheia(20, tela.heightOld, tela.height);
+        this.bussola.centerX = converteTelaCheia(545, tela.widthOld, tela.width);
+        this.bussola.centerY = converteTelaCheia(250, tela.heightOld, tela.height);
+        this.bussola.raio = converteTelaCheia(20, tela.heightOld, tela.height);
       }
     }
     
@@ -419,6 +505,8 @@
     function desenharHUD(){
       barraTempo.desenhar(ctx);
       barraEnergia.desenhar(ctx);
+      hud.bussola.desenhar(ctx);
+
       ctx.font = "15px Arial Black";
       ctx.fillStyle = "white";
       ctx.textAlign = alignMainMenu;
@@ -429,6 +517,9 @@
       escreveTexto(ctx, hud.vidas.text + player.vidas, hud.vidas.x, hud.vidas.y);
       escreveTexto(ctx, hud.tesouros.text + player.tesourosColetados, hud.tesouros.x, hud.tesouros.y);
       escreveTexto(ctx, hud.level.text + player.levelNumber, hud.level.x, hud.level.y);
+      
+      
+
       if(debugMode >= 1){       
         let typeMode = hud.debugText[debugMode - 1];
 

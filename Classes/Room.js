@@ -221,9 +221,9 @@ Room.prototype.move = function(dt){
             this.treasures[i].mover(dt);       
         }
     
-        for(let i = 0; i < this.enemies.length; i++){     
+        /*for(let i = 0; i < this.enemies.length; i++){     
             this.enemies[i].movimento(dt);         
-        }   
+        } */  
     }
     else{
         for(let i = 0; i < this.fireZones.length; i++){
