@@ -265,9 +265,49 @@
           this.salaPlayer = levelAtual.getPlayerRoom();
           let tesouros = this.salaPlayer.treasures;
           let inimigos = this.salaPlayer.enemies;
+          let teleporterInitial = this.salaPlayer.teleporterInitial;
+          let teleporterFinal = this.salaPlayer.teleporterFinal;
+
+          let vetorUnitario = {
+            x: teleporterInitial.x - player.x,
+            y: teleporterInitial.y - player.y,
+            modulo: 0
+          };
+          vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
+          vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
+          vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
+          
+          ctx.save();
+          ctx.strokeStyle = "green";                              // linha de acabamento preta pra facilitar a visualização
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(this.centerX, this.centerY);
+          ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
+          ctx.closePath();
+          ctx.stroke()
+          ctx.restore();
+
+          vetorUnitario = {
+            x: teleporterFinal.x - player.x,
+            y: teleporterFinal.y - player.y,
+            modulo: 0
+          };
+          vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
+          vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
+          vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
+          
+          ctx.save();
+          ctx.strokeStyle = "green";                              // linha de acabamento preta pra facilitar a visualização
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(this.centerX, this.centerY);
+          ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
+          ctx.closePath();
+          ctx.stroke()
+          ctx.restore();
+
 
           for(let i = 0; i < tesouros.length; i++){
-            // Ligação entre os teleportes
             let vetorUnitario = {
               x: tesouros[i].x - player.x,
               y: tesouros[i].y - player.y,
@@ -309,12 +349,6 @@
             ctx.stroke()
             ctx.restore();
           }
-
-
-          
-
-
-          
         },
       },
       level:{ x: 0, y: 0, text: "Level: "},
