@@ -108,7 +108,7 @@ Room.prototype.getCellsByDist = function(value, option){
     return listCells;
 }
 
-// Retorma somente celulas que não tem nenhum outro elemento
+// Retorna somente celulas que não tem nenhum outro elemento
 // Procura LISTA de celulas da sala que possui distancia DENTRO DO INTERVALO DA MAIOR DISTANCIA
 Room.prototype.getEmptyCellsByPercentageBetweenMaxDist = function(params){
     let listCells = [];
@@ -167,7 +167,6 @@ Room.prototype.getEmptyCellsByPercentageBetweenMaxDist = function(params){
 
     return listCells;
 }
-
 
 /**
  * Retorna a maior distancia na matriz dentre os atributos determinados
@@ -311,6 +310,24 @@ Room.prototype.collisionTreasures = function(player){
     }
     return false;
 }
+
+/***********************
+ * Ataque dos inimigos *
+ **********************/
+
+ Room.prototype.atackEnemiesPlayer = function(player){
+
+    for(let i = 0; i < this.enemies.length; i++){
+        let auxEnemy = this.enemies[i];
+        auxEnemy.atackPlayer(player);
+    }
+
+ }
+
+
+/***********************
+ * Métodos de cópia    *
+ ***********************/
 
 // Copia os dados da sala toda mas o vetor de blocos salva a linha e coluna apenas
 Room.prototype.copy = function(room){

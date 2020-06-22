@@ -131,3 +131,13 @@ Enemy.prototype.persegue = function(alvo){
         this.vy = 20*Math.sign(dy);
     }
 }
+
+Enemy.prototype.atackPlayer = function(player){
+    if(this.atacar(player)){
+        //Ativar a animação de ataque e disparar o cooldown
+        //Subtrair hp do player só no final da animação
+        console.log("Ativar ataque");
+
+
+    }
+}

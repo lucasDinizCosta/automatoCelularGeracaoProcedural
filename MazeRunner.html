@@ -239,7 +239,7 @@
       bussola: { 
         centerX: 0, centerY: 0, raio: 40, color: "rgba(10, 10, 10, 0.6)", stroke: "rgba(105, 105, 105, 0.4)",//"grey",
         sAngle: 0, eAngle: Math.PI * 2, counterclockwise: false,
-        salaPlayer: null,
+        salaPlayer: null, tesouros: null, inimigos: null, teleporteInitial: null, teleporteFinal: null,
         desenhar: function(ctx){
           ctx.linewidth = 1;
           ctx.fillStyle = this.color;     //"rgba(10, 10, 10, 0.4)";
@@ -254,16 +254,10 @@
           ctx.stroke();
           ctx.restore();
           
-          this.salaPlayer = levelAtual.getPlayerRoom();
-          let tesouros = this.salaPlayer.treasures;
-          let inimigos = this.salaPlayer.enemies;
-          let teleporterInitial = this.salaPlayer.teleporterInitial;
-          let teleporterFinal = this.salaPlayer.teleporterFinal;
-
-          for(let i = 0; i < tesouros.length; i++){
+          for(let i = 0; i < this.tesouros.length; i++){
             let vetorUnitario = {
-              x: tesouros[i].x - player.x,
-              y: tesouros[i].y - player.y,
+              x: this.tesouros[i].x - player.x,
+              y: this.tesouros[i].y - player.y,
               modulo: 0
             };
             vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
@@ -281,11 +275,11 @@
             ctx.restore();
           }
 
-          for(let i = 0; i < inimigos.length; i++){
+          for(let i = 0; i < this.inimigos.length; i++){
             // Ligação entre os teleportes
             let vetorUnitario = {
-              x: inimigos[i].x - player.x,
-              y: inimigos[i].y - player.y,
+              x: this.inimigos[i].x - player.x,
+              y: this.inimigos[i].y - player.y,
               modulo: 0
             };
             vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
@@ -304,8 +298,8 @@
           }
 
           let vetorUnitario = {
-            x: teleporterInitial.x - player.x,
-            y: teleporterInitial.y - player.y,
+            x: this.teleporteInitial.x - player.x,
+            y: this.teleporteInitial.y - player.y,
             modulo: 0
           };
           vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
@@ -323,8 +317,8 @@
           ctx.restore();
 
           vetorUnitario = {
-            x: teleporterFinal.x - player.x,
-            y: teleporterFinal.y - player.y,
+            x: this.teleporteFinal.x - player.x,
+            y: this.teleporteFinal.y - player.y,
             modulo: 0
           };
           vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
@@ -353,9 +347,17 @@
           ctx.fill();
           //ctx.stroke();
           ctx.restore();
+        },
 
+        update: function(){
+          this.salaPlayer = levelAtual.getPlayerRoom();
+          this.tesouros = this.salaPlayer.treasures;
+          this.inimigos = this.salaPlayer.enemies;
+          this.teleporteInitial = this.salaPlayer.teleporterInitial;
+          this.teleporteFinal = this.salaPlayer.teleporterFinal;
         },
       },
+
       level:{ x: 0, y: 0, text: "Level: "},
       debugText: [],
       init: function(){
@@ -370,7 +372,7 @@
       updateElementos: function(){
         this.tempo.x = converteTelaCheia(40, tela.widthOld, tela.width);
         this.tempo.y = converteTelaCheia(20, tela.heightOld, tela.height);
-        this.energia.x = converteTelaCheia(215, tela.widthOld, tela.width);
+        this.energia.x = converteTelaCheia(200, tela.widthOld, tela.width);
         this.energia.y = converteTelaCheia(20, tela.heightOld, tela.height);
         this.vidas.x = converteTelaCheia(350, tela.widthOld, tela.width);
         this.vidas.y = converteTelaCheia(20, tela.heightOld, tela.height);
@@ -645,11 +647,12 @@
       barraTempo.interna.y = converteTelaCheia(13.5, tela.heightOld, tela.height);
 
       // Update barra de energia do player
-      barraEnergia.sprite.x = converteTelaCheia(242, tela.widthOld, tela.width);
+      barraEnergia.sprite.x = converteTelaCheia(225, tela.widthOld, tela.width);
       barraEnergia.sprite.y = converteTelaCheia(13.5, tela.heightOld, tela.height);
 
       // HUD
       hud.updateElementos();
+      //hud.bussola.update();
     }
 
     updateTamanhoElementos();
@@ -660,6 +663,7 @@
       levelAtual.posicionarPlayer(player);
       levelAtual.setTaxaDiminuicaoTempo(dt, barraTempo.interna);        // Atualiza o decaimento da barra
       player.restart();
+      hud.bussola.update();
     }
 
     function limparTela() {
@@ -679,6 +683,7 @@
             levelAtual.posicionarPlayer(player);
             levelAtual.setTaxaDiminuicaoTempo(dt, barraTempo.interna);        // Atualiza o decaimento da barra
             player.restart();
+            hud.bussola.update();
             estado = 0;
           }
           break;
@@ -687,6 +692,7 @@
           levelAtual.posicionarPlayer(player);
           levelAtual.setTaxaDiminuicaoTempo(dt, barraTempo.interna);        // Atualiza o decaimento da barra
           player.restart();
+          hud.bussola.update();
           estado = 0;
           break;
       }

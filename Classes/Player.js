@@ -205,17 +205,6 @@ Player.prototype.controlePorTeclas = function(){
   } //else{ this.atacando = 0;}
   if(this.teclas.shift){this.playerVel = 250;  /* 180*/} else {this.playerVel = 180}
   //if(this.teclas.space){this.vx = -playerVel; this.sentidoMovimento = 2;}
-  if(this.teclas.espaco && this.cooldown <= 0) {
-    var tiro = new Sprite({
-        x: this.x, y: this.y,
-        a: this.a - 0.1 + 0.2 * Math.random(),
-        vm: 240, color: "green", w: 4, h: 4,
-        props: { tipo: "tiro" }
-    });
-    this.scene.adicionar(tiro);
-    this.cooldown = 0.1;
-    assetsMng.play("shot");
-}
 
   // Condição de parada
   if(this.teclas.right === this.teclas.left) { this.vx = 0; }
@@ -292,17 +281,10 @@ Player.prototype.desenhar = function(ctx){
   ctx.translate(this.x, this.y);
   ctx.beginPath();
   ctx.ellipse(elipse.x, elipse.y, elipse.radiusX, elipse.radiusY, elipse.rotation, elipse.startAngle, 
-    elipse.endAngle, elipse.anticlockwise); //ctx.ellipse(-this.s/2 + 7, -this.s/4 + 6, this.s - 2, this.s/2 - 2, 0, 0, 2 * Math.PI, false);
+    elipse.endAngle, elipse.anticlockwise);
   ctx.closePath();
   ctx.fill();
   ctx.stroke();
-  //ctx, key, sx, sy, w, h, dx, dy, dw, dh
-  /*assetsMng.drawClipSize({ctx: ctx, key: this.nomeImagem, 
-    sx: (this.sizeImagem * (this.animationState % this.qtdAnimacoes)),
-    sy: (this.sizeImagem * this.pose), w: this.sizeImagem, h: this.sizeImagem, 
-    dx: (- this.sizeImagem/2 ), dy: (5 - this.sizeImagem),  dw: this.sizeImagem, dh: this.sizeImagem
-  });*/
-  
   assetsMng.drawClipSize({ctx: ctx, key: this.nomeImagem, 
     sx: (auxAnimation.animationFrame[(Math.floor(this.pose) % auxAnimation.qtdAnimacoes)].sx),
     sy: (auxAnimation.animationFrame[(Math.floor(this.pose) % auxAnimation.qtdAnimacoes)].sy),

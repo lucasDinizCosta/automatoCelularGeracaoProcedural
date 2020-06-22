@@ -9,6 +9,7 @@ function Level(w, h, s) {
   this.teleporteInicioLevel = new Teleporter(0);         //(Inicio) mapa
   this.teleporteFinalLevel  = new Teleporter(1);        //(Final) mapa
   this.player = undefined;
+  this.hud = hud;
   this.filaDesenho = [];
 };
 
@@ -709,6 +710,7 @@ Level.prototype.movimento = function(dt) {
   for(let i = 0; i < this.rooms.length; i++){
     this.rooms[i].move(dt);
   }
+  this.rooms[this.player.room - 1].atackEnemiesPlayer(this.player);      // Ataque somente na sala do player
   this.removerInimigos();
   this.criarFilaDesenho();
 };
@@ -790,9 +792,11 @@ Level.prototype.colisaoTeleportes = function(player){
     if(player.cooldownTeleporte < 0){
       if(auxRoom.teleporterInitial.colidiuCom2(player)){
         auxRoom.teleporterInitial.teleportar(player);
+        //this.hud.bussola.update();
       }
       else if(auxRoom.teleporterFinal.colidiuCom2(player)){
         auxRoom.teleporterFinal.teleportar(player);
+        //this.hud.bussola.update();
       }
       player.cooldownTeleporte = 1;
     }

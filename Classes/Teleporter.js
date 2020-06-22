@@ -52,9 +52,10 @@ Teleporter.prototype.teleportar = function(player){
     player.gx = this.proximoTeleporte.gx;
     player.gy = this.proximoTeleporte.gy;
     player.room = this.proximoTeleporte.roomNumber;
+    hud.bussola.update();
   }
   else{
-    console.log("prximoTeleporte eh undefined !!!");
+    console.log("proximoTeleporte eh undefined !!!");
   }
 }
 
