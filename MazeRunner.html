@@ -177,7 +177,7 @@
     });          
 
     levels[0].setTempo(20);                // 20 segundos
-    levels[0].tesouros = 3;
+    //levels[0].tesouros = 3;
 
     var tempoGameOver = 2;
 
@@ -237,7 +237,7 @@
       vidas: { x: 0, y: 0, text: "Vidas: "},
       tesouros: { x: 0, y: 0, text: "Tesouros: "},
       bussola: { 
-        centerX: 0, centerY: 0, raio: 40, color: "rgba(10, 10, 10, 0.6)", stroke: "rgba(105, 105, 105, 0.4)",//"grey",
+        centerX: 0, centerY: 0, raio: 40, color: "rgba(10, 10, 10, 0.6)", stroke: "rgba(105, 105, 105, 0.4)",
         sAngle: 0, eAngle: Math.PI * 2, counterclockwise: false,
         salaPlayer: null, tesouros: null, inimigos: null, teleporteInitial: null, teleporteFinal: null,
         mapMode: 0, mapModeText: [],
@@ -763,7 +763,6 @@
 
       // HUD
       hud.updateElementos();
-      //hud.bussola.update();
     }
 
     updateTamanhoElementos();

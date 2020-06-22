@@ -27,7 +27,8 @@ function Player(params) {
     hitpoint: 50,
     cooldownTeleporte: 1,
     cooldownAtaque: 1,                  //Tempo do personagem travado até terminar o ataque            
-    cooldownImune: 1,
+    cooldownImune: 0,
+    imune: false,                   
 
     // Mapa das teclas pressionadas
     teclas: {
@@ -72,6 +73,7 @@ Player.prototype.setRoom = function(){
 
 Player.prototype.moverCompleto = function(dt){
   this.cooldownTeleporte = this.cooldownTeleporte - dt;         // Cooldown de teleporte pra não teleportar direto
+  this.cooldownImune = this.cooldownImune - dt;         
   this.tratarAnimacao();
   if(this.cooldownAtaque < 0){
     this.controlePorTeclas();
@@ -83,6 +85,11 @@ Player.prototype.moverCompleto = function(dt){
   if(this.hp <= 0){
     this.vivo = false;
   }
+}
+
+Player.prototype.ativarInvencibilidade = function(){
+  this.cooldownImune = 2;
+  this.imune = true;
 }
 
 Player.prototype.moverTiros = function(dt){
@@ -207,8 +214,7 @@ Player.prototype.controlePorTeclas = function(){
         break;
     }
   } //else{ this.atacando = 0;}
-  if(this.teclas.shift){this.playerVel = 250;  /* 180*/} else {this.playerVel = 180}
-  //if(this.teclas.space){this.vx = -playerVel; this.sentidoMovimento = 2;}
+  if(this.teclas.shift){this.playerVel = 250;} else {this.playerVel = 180}
 
   // Condição de parada
   if(this.teclas.right === this.teclas.left) { this.vx = 0; }
@@ -289,6 +295,13 @@ Player.prototype.desenhar = function(ctx){
   ctx.closePath();
   ctx.fill();
   ctx.stroke();
+  if(this.cooldownImune > 0){
+    ctx.globalAlpha = 0.4;
+    this.imune = true;
+  }
+  else{
+    this.imune = false;
+  }
   assetsMng.drawClipSize({ctx: ctx, key: this.nomeImagem, 
     sx: (auxAnimation.animationFrame[(Math.floor(this.pose) % auxAnimation.qtdAnimacoes)].sx),
     sy: (auxAnimation.animationFrame[(Math.floor(this.pose) % auxAnimation.qtdAnimacoes)].sy),

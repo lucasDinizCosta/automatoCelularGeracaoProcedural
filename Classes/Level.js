@@ -707,7 +707,9 @@ Level.prototype.movimento = function(dt) {
   //this.colisaoInimigos(this.player);
   this.colisaoTesouros(this.player);
   this.validaAtaquePlayerInimigo(this.player);
-  this.rooms[this.player.room - 1].atackEnemiesPlayer(this.player);      // Ataque somente na sala do player
+  if(!this.player.imune){
+    this.rooms[this.player.room - 1].atackEnemiesPlayer(this.player);      // Ataque somente na sala do player
+  }
   for(let i = 0; i < this.rooms.length; i++){
     this.rooms[i].move(dt);
   }

@@ -141,6 +141,7 @@ Enemy.prototype.atackPlayer = function(player){
         if(this.colidiuCom3(player)){
             if(player.hp > 0){
                 player.hp = player.hp - this.hitpoint;
+                player.ativarInvencibilidade();
             }
             else{
                 player.hp = 0;
