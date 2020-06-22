@@ -6,6 +6,7 @@ function Enemy() {
     this.maxHp = 200;
     this.hp = 200;
     this.animation = [];
+    this.hitpoint = 20;
     this.qtdAnimacoes = {types: 2, lines: [1, 0], qtd: [3, 9] /* atacking: 9, normal: 3*/};
     this.speedAnimation = 11.49; //1.2;
     this.type = 0;
@@ -18,13 +19,8 @@ function Enemy() {
     };
     this.cooldownAtaque = 1;                  //Tempo travado até terminar o ataque            
     this.cooldownImune = 1;
+    this.status = 0;                        // 0 => Normal, 1 => Ataque
     this.criarAnimacoes();
-
-    // Ataque
-    this.tiro = [];
-     
-    
-    this.sentidoMovimento = -1;
 }
 
 // Heranca
@@ -34,6 +30,7 @@ Enemy.prototype.constructor = Enemy;
 Enemy.prototype.movimento = function (dt) {
     this.pose = this.pose + this.speedAnimation * dt;
     this.mover(dt);
+    this.cooldownAtaque = this.cooldownAtaque - 2*dt;
 }
 
 Enemy.prototype.criarAnimacoes = function(){
@@ -108,7 +105,7 @@ Enemy.prototype.desenharHP = function(){
     ctx.lineWidth = 1;
     ctx.fillRect(this.x - this.w/2, this.y - this.h * 2.5, this.w, 4);         // Fundo
     ctx.fillStyle = `hsl(${120*this.hp/this.maxHp}, 100%, 50%)`;
-    ctx.fillRect(this.x - this.w/2, this.y - this.h * 2.5, this.w*(Math.max(0,this.hp)/this.maxHp), 4);         // Quantidade de HP
+    ctx.fillRect(this.x - this.w/2, this.y - this.h * 2.5, this.w * (Math.max(0,this.hp)/this.maxHp), 4);         // Quantidade de HP
     ctx.strokeRect(this.x - this.w/2, this.y - this.h * 2.5, this.w, 4);       // Borda
 }
 
@@ -116,9 +113,9 @@ Enemy.prototype.persegue = function(alvo){
     if(this.alvo === null){
         const dx = Math.floor(alvo.x) - Math.floor(this.x);
         const dy = Math.floor(alvo.y) - Math.floor(this.y);
-        const d = Math.sqrt(dx*dx+dy*dy);
+        const d = Math.sqrt(dx * dx + dy * dy);
         const k = 5;
-        if(Math.abs(d)<k*16){
+        if(Math.abs(d) < k * 16){
             this.alvo = alvo;
             this.persegue();
             return;
@@ -127,17 +124,24 @@ Enemy.prototype.persegue = function(alvo){
     } else {
         const dx = Math.floor(this.alvo.x) - Math.floor(this.x);
         const dy = Math.floor(this.alvo.y) - Math.floor(this.y);
-        this.vx = 20*Math.sign(dx);
-        this.vy = 20*Math.sign(dy);
+        this.vx = 20 * Math.sign(dx);
+        this.vy = 20 * Math.sign(dy);
     }
 }
 
 Enemy.prototype.atackPlayer = function(player){
-    if(this.atacar(player)){
+    if(this.colidiuCom3(player) && this.type === 0){
         //Ativar a animação de ataque e disparar o cooldown
         //Subtrair hp do player só no final da animação
-        console.log("Ativar ataque");
-
-
+        //console.log("Ativar ataque");
+        this.type = 1;
+        this.cooldownAtaque = 1;
+        
+    }
+    if(this.cooldownAtaque < 0 && this.type === 1){
+        this.type = 0;
+        if(this.colidiuCom3(player)){
+            player.hp = player.hp - this.hitpoint;
+        }
     }
 }
