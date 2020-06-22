@@ -240,6 +240,7 @@
         centerX: 0, centerY: 0, raio: 40, color: "rgba(10, 10, 10, 0.6)", stroke: "rgba(105, 105, 105, 0.4)",//"grey",
         sAngle: 0, eAngle: Math.PI * 2, counterclockwise: false,
         salaPlayer: null, tesouros: null, inimigos: null, teleporteInitial: null, teleporteFinal: null,
+        mapMode: 0, mapModeText: [],
         desenhar: function(ctx){
           ctx.linewidth = 1;
           ctx.fillStyle = this.color;     //"rgba(10, 10, 10, 0.4)";
@@ -253,100 +254,203 @@
           ctx.fill();
           ctx.stroke();
           ctx.restore();
-          
-          for(let i = 0; i < this.tesouros.length; i++){
-            let vetorUnitario = {
-              x: this.tesouros[i].x - player.x,
-              y: this.tesouros[i].y - player.y,
-              modulo: 0
-            };
-            vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
-            vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
-            vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
-            
-            ctx.save();
-            ctx.strokeStyle = "yellow";                              // linha de acabamento preta pra facilitar a visualização
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(this.centerX, this.centerY);
-            ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
-            ctx.closePath();
-            ctx.stroke()
-            ctx.restore();
+
+          switch(this.mapMode){
+            case 0:{ // Todos
+              for(let i = 0; i < this.tesouros.length; i++){
+                let vetorUnitario = {
+                  x: this.tesouros[i].x - player.x,
+                  y: this.tesouros[i].y - player.y,
+                  modulo: 0
+                };
+                vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
+                vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
+                vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
+                
+                ctx.save();
+                ctx.strokeStyle = "yellow";                              // linha de acabamento preta pra facilitar a visualização
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(this.centerX, this.centerY);
+                ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
+                ctx.closePath();
+                ctx.stroke()
+                ctx.restore();
+              }
+
+              for(let i = 0; i < this.inimigos.length; i++){
+                // Ligação entre os teleportes
+                let vetorUnitario = {
+                  x: this.inimigos[i].x - player.x,
+                  y: this.inimigos[i].y - player.y,
+                  modulo: 0
+                };
+                vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
+                vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
+                vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
+                
+                ctx.save();
+                ctx.strokeStyle = "red";                              // linha de acabamento preta pra facilitar a visualização
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(this.centerX, this.centerY);
+                ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
+                ctx.closePath();
+                ctx.stroke()
+                ctx.restore();
+              }
+
+              let vetorUnitario = {
+                x: this.teleporteInitial.x - player.x,
+                y: this.teleporteInitial.y - player.y,
+                modulo: 0
+              };
+              vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
+              vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
+              vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
+              
+              ctx.save();
+              ctx.strokeStyle = "green";                              // linha de acabamento preta pra facilitar a visualização
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(this.centerX, this.centerY);
+              ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
+              ctx.closePath();
+              ctx.stroke()
+              ctx.restore();
+
+              vetorUnitario = {
+                x: this.teleporteFinal.x - player.x,
+                y: this.teleporteFinal.y - player.y,
+                modulo: 0
+              };
+              vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
+              vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
+              vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
+              
+              ctx.save();
+              ctx.strokeStyle = "green";                              // linha de acabamento preta pra facilitar a visualização
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(this.centerX, this.centerY);
+              ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
+              ctx.closePath();
+              ctx.stroke()
+              ctx.restore();
+
+              }
+              break;
+            case 1:{   //Teleportes
+              let vetorUnitario = {
+                x: this.teleporteInitial.x - player.x,
+                y: this.teleporteInitial.y - player.y,
+                modulo: 0
+              };
+              vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
+              vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
+              vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
+              
+              ctx.save();
+              ctx.strokeStyle = "green";                              // linha de acabamento preta pra facilitar a visualização
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(this.centerX, this.centerY);
+              ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
+              ctx.closePath();
+              ctx.stroke()
+              ctx.restore();
+
+              vetorUnitario = {
+                x: this.teleporteFinal.x - player.x,
+                y: this.teleporteFinal.y - player.y,
+                modulo: 0
+              };
+              vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
+              vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
+              vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
+              
+              ctx.save();
+              ctx.strokeStyle = "green";                              // linha de acabamento preta pra facilitar a visualização
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(this.centerX, this.centerY);
+              ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
+              ctx.closePath();
+              ctx.stroke()
+              ctx.restore();
+
+              }
+              break;
+
+            case 2:{  // Inimigos
+              for(let i = 0; i < this.inimigos.length; i++){
+                // Ligação entre os teleportes
+                let vetorUnitario = {
+                  x: this.inimigos[i].x - player.x,
+                  y: this.inimigos[i].y - player.y,
+                  modulo: 0
+                };
+                vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
+                vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
+                vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
+                
+                ctx.save();
+                ctx.strokeStyle = "red";                              // linha de acabamento preta pra facilitar a visualização
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(this.centerX, this.centerY);
+                ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
+                ctx.closePath();
+                ctx.stroke()
+                ctx.restore();
+              }
+              }
+              break;
+            case 3:{
+              for(let i = 0; i < this.tesouros.length; i++){
+                let vetorUnitario = {
+                  x: this.tesouros[i].x - player.x,
+                  y: this.tesouros[i].y - player.y,
+                  modulo: 0
+                };
+                vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
+                vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
+                vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
+                
+                ctx.save();
+                ctx.strokeStyle = "yellow";                              // linha de acabamento preta pra facilitar a visualização
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(this.centerX, this.centerY);
+                ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
+                ctx.closePath();
+                ctx.stroke()
+                ctx.restore();
+              }
+              }
+              break;
           }
-
-          for(let i = 0; i < this.inimigos.length; i++){
-            // Ligação entre os teleportes
-            let vetorUnitario = {
-              x: this.inimigos[i].x - player.x,
-              y: this.inimigos[i].y - player.y,
-              modulo: 0
-            };
-            vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
-            vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
-            vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
-            
-            ctx.save();
-            ctx.strokeStyle = "red";                              // linha de acabamento preta pra facilitar a visualização
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(this.centerX, this.centerY);
-            ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
-            ctx.closePath();
-            ctx.stroke()
-            ctx.restore();
-          }
-
-          let vetorUnitario = {
-            x: this.teleporteInitial.x - player.x,
-            y: this.teleporteInitial.y - player.y,
-            modulo: 0
-          };
-          vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
-          vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
-          vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
           
-          ctx.save();
-          ctx.strokeStyle = "green";                              // linha de acabamento preta pra facilitar a visualização
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(this.centerX, this.centerY);
-          ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
-          ctx.closePath();
-          ctx.stroke()
-          ctx.restore();
-
-          vetorUnitario = {
-            x: this.teleporteFinal.x - player.x,
-            y: this.teleporteFinal.y - player.y,
-            modulo: 0
-          };
-          vetorUnitario.modulo = Math.sqrt(vetorUnitario.x * vetorUnitario.x + vetorUnitario.y * vetorUnitario.y);
-          vetorUnitario.x = vetorUnitario.x / vetorUnitario.modulo;
-          vetorUnitario.y = vetorUnitario.y / vetorUnitario.modulo;
           
-          ctx.save();
-          ctx.strokeStyle = "green";                              // linha de acabamento preta pra facilitar a visualização
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(this.centerX, this.centerY);
-          ctx.lineTo(this.centerX + vetorUnitario.x * (this.raio/2), this.centerY + vetorUnitario.y * (this.raio/2));
-          ctx.closePath();
-          ctx.stroke()
-          ctx.restore();
 
           // centro
           ctx.save();
           ctx.beginPath();
           ctx.lineWidth = 1;
           ctx.fillStyle = "yellow";
-          //ctx.strokeStyle = "rgb(105,105,105)";
           ctx.arc(this.centerX, this.centerY, 2, this.sAngle, this.eAngle, 
           this.counterclockwise);
           ctx.closePath();
           ctx.fill();
-          //ctx.stroke();
           ctx.restore();
+
+          // Titulo
+          ctx.fillStyle = wordsColor;
+          ctx.textAlign = alignMainMenu;
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = "black";
+          escreveTexto(ctx, (this.mapMode + 1) + " - " + this.mapModeText[this.mapMode], this.centerX, 
+          this.centerY + this.raio + (this.raio / 2));
         },
 
         update: function(){
@@ -356,6 +460,13 @@
           this.teleporteInitial = this.salaPlayer.teleporterInitial;
           this.teleporteFinal = this.salaPlayer.teleporterFinal;
         },
+
+        init: function(){
+          this.mapModeText.push("Todos");  
+          this.mapModeText.push("Teleportes");
+          this.mapModeText.push("Inimigos");  
+          this.mapModeText.push("Tesouros");  
+        }
       },
 
       level:{ x: 0, y: 0, text: "Level: "},
@@ -368,6 +479,7 @@
         this.debugText.push("Mode 5 - Distancia - Inimigos");  // Dados das celulas -- DistInimigos
         this.debugText.push("Mode 6 - Distancia - Tesouros");  // Dados das celulas -- DistTesouros
         this.updateElementos();
+        this.bussola.init();
       },
       updateElementos: function(){
         this.tempo.x = converteTelaCheia(40, tela.widthOld, tela.width);
@@ -764,6 +876,12 @@
           break;
         case 16:            // Left SHIFT -- Correr
           player.teclas.shift = true;
+          break;
+        case 77:            // M
+          hud.bussola.mapMode = hud.bussola.mapMode + 1;
+          if(hud.bussola.mapMode > 3){
+            hud.bussola.mapMode = 0;
+          }
           break;
         case 27:      //Pressionar o Esq === RETORNA AO MENU PRINCIPAL
           stateMainMenu = 0;
