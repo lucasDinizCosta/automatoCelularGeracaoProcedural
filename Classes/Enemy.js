@@ -18,8 +18,9 @@ function Enemy() {
         heightImagem: 22
     };
     this.cooldownAtaque = 1;                  //Tempo travado até terminar o ataque            
-    this.cooldownImune = 1;
-    this.status = 0;                        // 0 => Normal, 1 => Ataque
+    this.cooldownImune = 0;
+    this.imune = false;
+    //this.status = 0;                        // 0 => Normal, 1 => Ataque
     this.criarAnimacoes();
 }
 
@@ -29,10 +30,29 @@ Enemy.prototype.constructor = Enemy;
 
 Enemy.prototype.movimento = function (dt) {
     this.pose = this.pose + this.speedAnimation * dt;
+    this.controleInvencibilidade();
     this.mover(dt);
     if(this.type === 1){
         this.cooldownAtaque = this.cooldownAtaque - 2*dt;
     }
+
+    
+}
+
+Enemy.prototype.controleInvencibilidade = function(){
+    this.cooldownImune = this.cooldownImune - dt;
+    if(this.cooldownImune < 0){
+        this.imune = false;
+    }
+    else{
+        //this.cooldownAtaque = 0;
+        //this.type = 0;
+    }
+}
+
+Enemy.prototype.ativarInvencibilidade = function(){
+    this.cooldownImune = 1.2;
+    this.imune = true;
 }
 
 Enemy.prototype.criarAnimacoes = function(){
@@ -84,6 +104,13 @@ Enemy.prototype.desenhar = function(ctx){
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
+    if(this.cooldownImune > 0){
+        ctx.globalAlpha = 0.4;
+        this.imune = true;
+    }
+    else{
+        this.imune = false;
+    }
     assetsMng.drawClip({ctx: ctx, key: this.nomeImagem, 
         sx: this.animation[this.type].animationFrame[Math.floor(this.pose) % this.animation[this.type].qtdFrames].sx,
         sy: this.animation[this.type].animationFrame[Math.floor(this.pose) % this.animation[this.type].qtdFrames].sy,

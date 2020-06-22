@@ -481,9 +481,13 @@ Player.prototype.atacarModoPlayer = function(alvo){
   if(this.atacar(alvo)){
     for(let i = 0; i < this.tiro.length; i++){
       if(this.tiro[i].colidiuCom3(alvo)){
-        alvo.hp = alvo.hp - this.hitpoint;
+        if(!alvo.imune){
+          alvo.hp = alvo.hp - this.hitpoint;
+          alvo.ativarInvencibilidade();
 
-        /*let taxaRecuo = 15;
+        }
+        /*
+        let taxaRecuo = 15;
         // Recuo do inimigo
         switch (this.sentidoMovimento) {  //Movimento
           case 0:     //Cima
@@ -500,7 +504,8 @@ Player.prototype.atacarModoPlayer = function(alvo){
             break;
           default:
             break;
-        }*/
+          }
+        */
         this.tiro[i].cooldown = -1;             // Para ser removido
       }
     }
