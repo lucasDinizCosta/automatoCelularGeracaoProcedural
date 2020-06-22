@@ -135,7 +135,6 @@ Enemy.prototype.atackPlayer = function(player){
     if(this.colidiuCom3(player) && this.type === 0){    // Detecta o player e não ta atacando
         this.type = 1;
         this.cooldownAtaque = 1;
-        
     }
     if(this.cooldownAtaque < 0 && this.type === 1){
         this.type = 0;

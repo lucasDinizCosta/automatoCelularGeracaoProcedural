@@ -704,13 +704,13 @@ Level.prototype.movimento = function(dt) {
   this.player.moverCompleto(dt);
   this.colisaoTeleportes(this.player);
   this.colisaoFireZones(this.player);
-  this.colisaoInimigos(this.player);
+  //this.colisaoInimigos(this.player);
   this.colisaoTesouros(this.player);
   this.validaAtaquePlayerInimigo(this.player);
+  this.rooms[this.player.room - 1].atackEnemiesPlayer(this.player);      // Ataque somente na sala do player
   for(let i = 0; i < this.rooms.length; i++){
     this.rooms[i].move(dt);
   }
-  this.rooms[this.player.room - 1].atackEnemiesPlayer(this.player);      // Ataque somente na sala do player
   this.removerInimigos();
   this.criarFilaDesenho();
 };
