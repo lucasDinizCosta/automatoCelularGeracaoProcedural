@@ -30,7 +30,9 @@ Enemy.prototype.constructor = Enemy;
 Enemy.prototype.movimento = function (dt) {
     this.pose = this.pose + this.speedAnimation * dt;
     this.mover(dt);
-    this.cooldownAtaque = this.cooldownAtaque - 2*dt;
+    if(this.type === 1){
+        this.cooldownAtaque = this.cooldownAtaque - 2*dt;
+    }
 }
 
 Enemy.prototype.criarAnimacoes = function(){
@@ -130,10 +132,7 @@ Enemy.prototype.persegue = function(alvo){
 }
 
 Enemy.prototype.atackPlayer = function(player){
-    if(this.colidiuCom3(player) && this.type === 0){
-        //Ativar a animação de ataque e disparar o cooldown
-        //Subtrair hp do player só no final da animação
-        //console.log("Ativar ataque");
+    if(this.colidiuCom3(player) && this.type === 0){    // Detecta o player e não ta atacando
         this.type = 1;
         this.cooldownAtaque = 1;
         
@@ -141,7 +140,12 @@ Enemy.prototype.atackPlayer = function(player){
     if(this.cooldownAtaque < 0 && this.type === 1){
         this.type = 0;
         if(this.colidiuCom3(player)){
-            player.hp = player.hp - this.hitpoint;
+            if(player.hp > 0){
+                player.hp = player.hp - this.hitpoint;
+            }
+            else{
+                player.hp = 0;
+            }
         }
     }
 }

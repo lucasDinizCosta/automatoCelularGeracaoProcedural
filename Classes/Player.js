@@ -62,6 +62,7 @@ Player.prototype.constructor = Player;
 Player.prototype.restart = function(){
   this.vivo = true;
   this.tesourosColetados = 0;
+  this.hp = 500;
   this.setRoom();
 }
 
@@ -79,6 +80,9 @@ Player.prototype.moverCompleto = function(dt){
   this.moverTiros(dt);
   this.animationController();
   this.removerTiros();
+  if(this.hp <= 0){
+    this.vivo = false;
+  }
 }
 
 Player.prototype.moverTiros = function(dt){
