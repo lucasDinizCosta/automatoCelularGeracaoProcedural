@@ -63,6 +63,8 @@ Player.prototype.constructor = Player;
 Player.prototype.restart = function(){
   this.vivo = true;
   this.tesourosColetados = 0;
+  this.cooldownImune = 0;
+  this.imune = false;
   this.hp = 500;
   this.setRoom();
 }
@@ -88,7 +90,7 @@ Player.prototype.moverCompleto = function(dt){
 }
 
 Player.prototype.ativarInvencibilidade = function(){
-  this.cooldownImune = 2;
+  this.cooldownImune = 1.2;
   this.imune = true;
 }
 

@@ -644,7 +644,7 @@
     // A cada 1 segundo ele executa uma diminuição na barra de tempo
     function controleTempo(){
       if(debugMode == 0){
-        if(!player.imune){
+        //if(!player.imune){
           barraTempo.interna.w = barraTempo.interna.w - levelAtual.taxaDiminuicaoTempo;  
           levelAtual.updateTempo();
           if(barraTempo.interna.w <= 0){
@@ -652,7 +652,7 @@
             estado = 5;
             limparTela();
           }
-        }
+        //}
       }
     }
 

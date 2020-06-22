@@ -6,7 +6,7 @@ function Enemy() {
     this.maxHp = 200;
     this.hp = 200;
     this.animation = [];
-    this.hitpoint = 20;
+    this.hitpoint = 40;
     this.qtdAnimacoes = {types: 2, lines: [1, 0], qtd: [3, 9] /* atacking: 9, normal: 3*/};
     this.speedAnimation = 11.49; //1.2;
     this.type = 0;
