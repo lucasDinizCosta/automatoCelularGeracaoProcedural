@@ -254,49 +254,67 @@ Map.prototype.desenharCentro = function (ctx, l, c) {
 }
 
 Map.prototype.desenharCell = function (ctx, l, c) {
-  ctx.fillStyle = "yellow";
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 2;
-  ctx.font = "10px Arial Black";
+  if(this.cell[l][c].tipo != 0){    // Não coloca as distancias nas cavernas
+    ctx.fillStyle = "yellow";
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    ctx.font = "10px Arial Black";
 
-  switch(debugMode){
-    case 1:                   // Tipos
-      this.escreveTexto(ctx, this.cell[l][c].tipo + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
-      break;
-    case 2:                   // Rooms
-      this.escreveTexto(ctx, this.cell[l][c].room + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
-      break;
-    case 5:                   // Teleportes
-      /*ctx.linewidth = 1;
-      ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
-      ctx.strokeStyle = "rgba(10, 10, 10, 0.4)";
-      ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
-      ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);*/
-      this.escreveTexto(ctx, this.cell[l][c].distTeleportes + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
-      break;
-    case 6:                   // Firezones
-      this.escreveTexto(ctx, this.cell[l][c].distFirezones + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
-      break;
-    case 7:                   // Inimigos
-      this.escreveTexto(ctx, this.cell[l][c].distInimigos + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
-      break;
-    case 8:                   // Tesouros
-      this.escreveTexto(ctx, this.cell[l][c].distTesouros + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
-      break;
-    case 9:                   // distInimigosTesouros
-      let aux = this.getDistInimigosTesouros(l, c);
-      ctx.save();
-      ctx.fillStyle = `hsl(${120 * aux/this.distComposto.inimigosTesouros.max}, 100%, 50%)`;
-      ctx.linewidth = 1;
-      ctx.globalAlpha = 0.4;
-      //ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
-      ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
-      //ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
-      ctx.restore();
-      ctx.fillStyle = "yellow";
-      ctx.strokeStyle = "black";
-      this.escreveTexto(ctx, this.getDistInimigosTesouros(l, c) + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
-      break;
+    switch(debugMode){
+      case 1:                   // Tipos
+        this.escreveTexto(ctx, this.cell[l][c].tipo + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+        break;
+      case 2:                   // Rooms
+        this.escreveTexto(ctx, this.cell[l][c].room + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+        break;
+    }
+  }
+  else{
+    ctx.fillStyle = "yellow";
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    ctx.font = "10px Arial Black";
+
+    switch(debugMode){
+      case 1:                   // Tipos
+        this.escreveTexto(ctx, this.cell[l][c].tipo + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+        break;
+      case 2:                   // Rooms
+        this.escreveTexto(ctx, this.cell[l][c].room + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+        break;
+      case 5:                   // Teleportes
+        /*ctx.linewidth = 1;
+        ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
+        ctx.strokeStyle = "rgba(10, 10, 10, 0.4)";
+        ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
+        ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);*/
+        this.escreveTexto(ctx, this.cell[l][c].distTeleportes + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+        break;
+      case 6:                   // Firezones
+        this.escreveTexto(ctx, this.cell[l][c].distFirezones + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+        break;
+      case 7:                   // Inimigos
+        this.escreveTexto(ctx, this.cell[l][c].distInimigos + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+        break;
+      case 8:                   // Tesouros
+        this.escreveTexto(ctx, this.cell[l][c].distTesouros + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+        break;
+      case 9:                   // distInimigosTesouros
+        let aux = this.getDistInimigosTesouros(l, c);
+        ctx.save();
+        ctx.fillStyle = `hsl(${120 * aux/this.distComposto.inimigosTesouros.max}, 100%, 50%)`;
+        ctx.linewidth = 1;
+        ctx.globalAlpha = 0.4;
+        //ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
+        ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
+        //ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
+        ctx.restore();
+        ctx.fillStyle = "yellow";
+        ctx.strokeStyle = "black";
+        this.escreveTexto(ctx, this.getDistInimigosTesouros(l, c) + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+        break;
+    }
+
   }
   
 
