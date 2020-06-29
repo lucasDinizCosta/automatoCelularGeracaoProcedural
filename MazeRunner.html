@@ -479,6 +479,7 @@
         this.debugText.push("Mode 6 - Distancia - Firezones"); // Dados das celulas -- DistFirezones
         this.debugText.push("Mode 7 - Distancia - Inimigos");  // Dados das celulas -- DistInimigos
         this.debugText.push("Mode 8 - Distancia - Tesouros");  // Dados das celulas -- DistTesouros
+        this.debugText.push("Mode 9 - Distancia - Tesouros + Inimigos");  // Dados das celulas -- DistTesouros
         this.updateElementos();
         this.bussola.init();
       },
@@ -898,15 +899,10 @@
          */
         case 80:      //Pressionar a letra P
           debugMode = debugMode + 1;
-          if(debugMode >= 8){
-            debugMode = 0;
-          }
-          switch(debugMode){
-            case 0: //Padrão do jogo
-              debugMode = 0;
-              escala = 1.8;
-              MAPA_AREA = 10;
-            break;
+          if(debugMode > 9){
+            debugMode = 0;  //Padrão do jogo
+            escala = 1.8;
+            MAPA_AREA = 10;
           }
           break;
         case 187:

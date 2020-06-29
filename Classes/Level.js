@@ -714,6 +714,7 @@ Level.prototype.movimento = function(dt) {
     this.rooms[i].move(dt);
   }
   this.removerInimigos();
+  this.mapa.camadaDistCompostas();
   this.criarFilaDesenho();
 };
 

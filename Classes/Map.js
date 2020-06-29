@@ -10,6 +10,13 @@ function Map(w, h, s) {
         distInimigos: 999, distTesouros: 999, linha: l, coluna: c};
     }
   }
+  
+  // Auxiliares
+  this.distComposto = {
+    inimigosTesouros: {
+      max: 0
+    },
+  };
 }
 
 //Map.prototype = new Map();
@@ -162,10 +169,42 @@ Map.prototype.visitCells = function (auxMatrix, mapx, y, x, tp, d = 1, indexArea
   }
 }
 
-// Teste função retonra distancia de composição entre os dois atributos
-Map.prototype.distInimigosTesouros = function(l, c){
+
+
+
+// Teste função retorna distancia de composição entre os dois atributos
+Map.prototype.getDistInimigosTesouros = function(l, c){
   return (3 * this.cell[l][c].distInimigos + 2 * this.cell[l][c].distTesouros);
 }
+
+// Teste função retorna distancia de composição entre os dois atributos -- MAX
+Map.prototype.distMaxInimigosTesouros = function(l, c){
+  for (let l = 0; l < this.h; l++) {
+    for (let c = 0; c < this.w; c++) {
+      if (this.cell[l][c].tipo === 0) {         // Não considera a parede e a rocha da caverna
+        let aux = this.getDistInimigosTesouros(l, c);
+        if(aux > this.distComposto.inimigosTesouros.max){
+          this.distComposto.inimigosTesouros.max = aux;
+        }
+      }
+    }
+  }
+}
+
+Map.prototype.camadaDistCompostas = function(){
+  if(this.distComposto.inimigosTesouros.max === 0){
+    this.distMaxInimigosTesouros();
+  }
+}
+
+
+
+/************************************************
+ *                                              *
+ *          Funções de Desenho                  *
+ *                                              *
+ ************************************************/
+
 
 Map.prototype.desenhar = function (ctx) {
   ctx.lineWidth = 2;
@@ -204,10 +243,9 @@ Map.prototype.desenharDebugMode = function(ctx){
       }
     }
   }
-  
 }
 
-Map.prototype.desenharCentro = function (ctx) {
+Map.prototype.desenharCentro = function (ctx, l, c) {
   ctx.fillStyle = "red";
   ctx.strokeStyle = "blue";
   ctx.lineWidth = 1;
@@ -216,33 +254,6 @@ Map.prototype.desenharCentro = function (ctx) {
 }
 
 Map.prototype.desenharCell = function (ctx, l, c) {
-  /*ctx.strokeStyle = "white";
-  ctx.lineWidth = 1;
-  ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
-  ctx.fillStyle = "yellow";
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 2;
-  ctx.font = "10px Arial Black";
-  this.escreveTexto(ctx, this.cell[l][c].tipo + "", c * this.s + this.s / 2 - 10, l * this.s + this.s / 2);
-  ctx.fillStyle = "green";
-  this.escreveTexto(ctx, this.cell[l][c].room + "", c * this.s + this.s / 2 + 10, l * this.s + this.s / 2);
-  ctx.fillStyle = "blue";
-
-  switch(debugMode){
-    case 5:                   // Teleportes
-      this.escreveTexto(ctx, this.cell[l][c].distTeleportes + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
-      break;
-    case 6:                   // Firezones
-      this.escreveTexto(ctx, this.cell[l][c].distFirezones + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
-      break;
-    case 7:                   // Inimigos
-      this.escreveTexto(ctx, this.cell[l][c].distInimigos + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
-      break;
-    case 8:                   // Tesouros
-      this.escreveTexto(ctx, this.cell[l][c].distTesouros + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
-      break;
-  }*/
-
   ctx.fillStyle = "yellow";
   ctx.strokeStyle = "black";
   ctx.lineWidth = 2;
@@ -272,7 +283,22 @@ Map.prototype.desenharCell = function (ctx, l, c) {
     case 8:                   // Tesouros
       this.escreveTexto(ctx, this.cell[l][c].distTesouros + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
       break;
+    case 9:                   // distInimigosTesouros
+      let aux = this.getDistInimigosTesouros(l, c);
+      ctx.save();
+      ctx.fillStyle = `hsl(${120 * aux/this.distComposto.inimigosTesouros.max}, 100%, 50%)`;
+      ctx.linewidth = 1;
+      ctx.globalAlpha = 0.4;
+      //ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
+      ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
+      //ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
+      ctx.restore();
+      ctx.fillStyle = "yellow";
+      ctx.strokeStyle = "black";
+      this.escreveTexto(ctx, this.getDistInimigosTesouros(l, c) + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+      break;
   }
+  
 
   ctx.strokeStyle = "white";
   ctx.lineWidth = 1;
