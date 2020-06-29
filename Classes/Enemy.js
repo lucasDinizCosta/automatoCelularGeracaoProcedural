@@ -33,10 +33,8 @@ Enemy.prototype.movimento = function (dt) {
     this.controleInvencibilidade();
     this.mover(dt);
     if(this.type === 1){
-        this.cooldownAtaque = this.cooldownAtaque - 2*dt;
-    }
-
-    
+        this.cooldownAtaque = this.cooldownAtaque - 2 * dt;
+    }  
 }
 
 Enemy.prototype.controleInvencibilidade = function(){
@@ -119,10 +117,10 @@ Enemy.prototype.desenhar = function(ctx){
     });
     ctx.restore();
     this.desenharHP();
-    if(debugMode == 1){
+    if(debugMode == 3){
         this.desenharCentro(ctx);
     }
-    else if(debugMode == 2){
+    else if(debugMode == 4){
         this.desenharCaixaColisao(ctx);
         this.desenharCentro(ctx);
     }

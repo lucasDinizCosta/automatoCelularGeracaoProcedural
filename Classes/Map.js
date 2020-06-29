@@ -189,7 +189,7 @@ Map.prototype.desenhar = function (ctx) {
           break;
       }
 
-      if (debugMode >= 3) {//if (debugMode === 3) {
+      if (debugMode >= 5 || (debugMode <= 2 && debugMode > 0)) {//if (debugMode === 3) {
         this.desenharCell(ctx, l, c);         //Debug mode Grid
       }
     }
@@ -205,7 +205,7 @@ Map.prototype.desenharCentro = function (ctx) {
 }
 
 Map.prototype.desenharCell = function (ctx, l, c) {
-  ctx.strokeStyle = "white";
+  /*ctx.strokeStyle = "white";
   ctx.lineWidth = 1;
   ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
   ctx.fillStyle = "yellow";
@@ -218,17 +218,51 @@ Map.prototype.desenharCell = function (ctx, l, c) {
   ctx.fillStyle = "blue";
 
   switch(debugMode){
-    case 3:                   // Teleportes
+    case 5:                   // Teleportes
       this.escreveTexto(ctx, this.cell[l][c].distTeleportes + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
       break;
-    case 4:                   // Firezones
+    case 6:                   // Firezones
       this.escreveTexto(ctx, this.cell[l][c].distFirezones + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
       break;
-    case 5:                   // Inimigos
+    case 7:                   // Inimigos
       this.escreveTexto(ctx, this.cell[l][c].distInimigos + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
       break;
-    case 6:                   // Tesouros
+    case 8:                   // Tesouros
       this.escreveTexto(ctx, this.cell[l][c].distTesouros + "", c * this.s + this.s / 2, l * this.s + this.s / 2 + 10);
+      break;
+  }*/
+
+  ctx.strokeStyle = "white";
+  ctx.lineWidth = 1;
+  ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
+  ctx.fillStyle = "yellow";
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 2;
+  ctx.font = "10px Arial Black";
+
+  switch(debugMode){
+    case 1:                   // Tipos
+      this.escreveTexto(ctx, this.cell[l][c].tipo + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+      break;
+    case 2:                   // Rooms
+      ctx.fillStyle = "green";
+      this.escreveTexto(ctx, this.cell[l][c].room + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+      break;
+    case 5:                   // Teleportes
+      ctx.fillStyle = "blue";
+      this.escreveTexto(ctx, this.cell[l][c].distTeleportes + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+      break;
+    case 6:                   // Firezones
+      ctx.fillStyle = "blue";
+      this.escreveTexto(ctx, this.cell[l][c].distFirezones + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+      break;
+    case 7:                   // Inimigos
+      ctx.fillStyle = "blue";
+      this.escreveTexto(ctx, this.cell[l][c].distInimigos + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+      break;
+    case 8:                   // Tesouros
+      ctx.fillStyle = "blue";
+      this.escreveTexto(ctx, this.cell[l][c].distTesouros + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
       break;
   }
 };

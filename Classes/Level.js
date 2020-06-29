@@ -764,7 +764,7 @@ Level.prototype.desenhar = function(ctx) {
   for(let i = 0; i < this.filaDesenho.length; i++){
     this.filaDesenho[i].desenhar(ctx);
   }
-  if(debugMode == 1){
+  if(debugMode === 3){
     for(let i = 0; i < this.rooms.length; i++){
       this.rooms[i].drawTeleportersLine(ctx);
     }

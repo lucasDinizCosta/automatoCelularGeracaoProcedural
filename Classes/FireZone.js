@@ -71,11 +71,11 @@ FireZone.prototype.desenhar = function (ctx) {
         dy: -12
     });
     ctx.restore();
-    if(debugMode == 1){
+    if(debugMode === 3){
         //this.desenharCell(ctx);         //Debug mode Grid
         this.desenharCentro(ctx);
     }
-    else if(debugMode == 2){
+    else if(debugMode === 4){
         //this.desenharCell(ctx);         //Debug mode Grid
         this.desenharCaixaColisao(ctx);
         this.desenharCentro(ctx);

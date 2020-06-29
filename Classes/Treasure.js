@@ -48,10 +48,10 @@ Treasure.prototype.desenhar = function(ctx){
     dy: -this.matrizImagem.heightImagem/2 - this.matrizImagem.heightImagem/2 + 3
   });
   ctx.restore();
-  if(debugMode == 1){
+  if(debugMode === 3){
     this.desenharCentro(ctx);
   }
-  else if(debugMode == 2){
+  else if(debugMode === 4){
     this.desenharCaixaColisao(ctx);
     this.desenharCentro(ctx);
   }

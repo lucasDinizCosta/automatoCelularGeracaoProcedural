@@ -471,12 +471,14 @@
       level:{ x: 0, y: 0, text: "Level: "},
       debugText: [],
       init: function(){
-        this.debugText.push("Mode 1 - Ligação dos Teleportes");// Centro do personagem e celula marcada
-        this.debugText.push("Mode 2 - Caixa de Colisão");      // Box collision
-        this.debugText.push("Mode 3 - Distancia - Teleportes");// Dados das celulas -- DistTeleportes
-        this.debugText.push("Mode 4 - Distancia - Firezones"); // Dados das celulas -- DistFirezones
-        this.debugText.push("Mode 5 - Distancia - Inimigos");  // Dados das celulas -- DistInimigos
-        this.debugText.push("Mode 6 - Distancia - Tesouros");  // Dados das celulas -- DistTesouros
+        this.debugText.push("Mode 1 - Tipo da celula");      
+        this.debugText.push("Mode 2 - Room da celula");      
+        this.debugText.push("Mode 3 - Ligação dos Teleportes");// Centro do personagem e celula marcada
+        this.debugText.push("Mode 4 - Caixa de Colisão");      // Box collision
+        this.debugText.push("Mode 5 - Distancia - Teleportes");// Dados das celulas -- DistTeleportes
+        this.debugText.push("Mode 6 - Distancia - Firezones"); // Dados das celulas -- DistFirezones
+        this.debugText.push("Mode 7 - Distancia - Inimigos");  // Dados das celulas -- DistInimigos
+        this.debugText.push("Mode 8 - Distancia - Tesouros");  // Dados das celulas -- DistTesouros
         this.updateElementos();
         this.bussola.init();
       },
@@ -678,7 +680,7 @@
         let typeMode = hud.debugText[debugMode - 1];
 
         // Desenha padrão dados celulas
-        ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+        /*ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
         ctx.strokeStyle = "rgba(238, 255, 0, 0.5)";
         let infoBox = {
           x: converteTelaCheia(530, tela.widthOld, tela.width),
@@ -709,6 +711,7 @@
         escreveTexto(ctx, "Tipo", infoBox.x + infoBox.width/2 + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y + converteTelaCheia(15, tela.heightOld, tela.height) + 12);
         escreveTexto(ctx, "Room", infoBox.x + infoBox.width/2 + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y + converteTelaCheia(30, tela.heightOld, tela.height) + 12);
         escreveTexto(ctx, "Distancia", infoBox.x + infoBox.width/2 + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y + converteTelaCheia(45, tela.heightOld, tela.height) + 12);
+        */
 
         // Desenha menu debaixo
         ctx.font = "13px Arial Black"; 
@@ -895,7 +898,7 @@
          */
         case 80:      //Pressionar a letra P
           debugMode = debugMode + 1;
-          if(debugMode > 6){
+          if(debugMode > 8){
             debugMode = 0;
           }
           switch(debugMode){
