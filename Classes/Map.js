@@ -189,11 +189,22 @@ Map.prototype.desenhar = function (ctx) {
           break;
       }
 
-      if (debugMode >= 5 || (debugMode <= 2 && debugMode > 0)) {//if (debugMode === 3) {
+      /*if (debugMode >= 5 || (debugMode <= 2 && debugMode > 0)) {//if (debugMode === 3) {
         this.desenharCell(ctx, l, c);         //Debug mode Grid
+      }*/
+    }
+  }
+}
+
+Map.prototype.desenharDebugMode = function(ctx){
+  if (debugMode >= 5 || (debugMode <= 2 && debugMode > 0)) {
+    for (var l = Math.max(0, player.gy - MAPA_AREA); l < Math.min(this.h, player.gy + MAPA_AREA); l++) {
+      for (var c = Math.max(0, player.gx - MAPA_AREA); c < Math.min(this.w, player.gx + MAPA_AREA); c++) {
+          this.desenharCell(ctx, l, c);         //Debug mode Grid
       }
     }
   }
+  
 }
 
 Map.prototype.desenharCentro = function (ctx) {
