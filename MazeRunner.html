@@ -85,7 +85,7 @@
     var widthMap = 120;   
     var heightMap = 120;  
     var sizeMap = 32;     
-    var MAPA_AREA = 20;  
+    var MAPA_AREA = 10;  //20
     var escala = 1.8;
     var K = 1;
     var debugMode = 0; 
@@ -898,14 +898,14 @@
          */
         case 80:      //Pressionar a letra P
           debugMode = debugMode + 1;
-          if(debugMode > 8){
+          if(debugMode >= 8){
             debugMode = 0;
           }
           switch(debugMode){
             case 0: //Padrão do jogo
               debugMode = 0;
               escala = 1.8;
-              MAPA_AREA = 20;
+              MAPA_AREA = 10;
             break;
           }
           break;
@@ -917,7 +917,7 @@
               MAPA_AREA = 20;
             else{
               if(escala > 0.3){
-                MAPA_AREA = 80;
+                MAPA_AREA = 100;
               }
               else{
                 if(escala >=  0.0){

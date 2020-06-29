@@ -162,14 +162,17 @@ Map.prototype.visitCells = function (auxMatrix, mapx, y, x, tp, d = 1, indexArea
   }
 }
 
+// Teste função retonra distancia de composição entre os dois atributos
+Map.prototype.distInimigosTesouros = function(l, c){
+  return (3 * this.cell[l][c].distInimigos + 2 * this.cell[l][c].distTesouros);
+}
+
 Map.prototype.desenhar = function (ctx) {
   ctx.lineWidth = 2;
   for (var l = Math.max(0, player.gy - MAPA_AREA); l < Math.min(this.h, player.gy + MAPA_AREA); l++) {
     for (var c = Math.max(0, player.gx - MAPA_AREA); c < Math.min(this.w, player.gx + MAPA_AREA); c++) {
       switch (this.cell[l][c].tipo) {
         case 0:   // Vazio     -- Chão
-
-          // ctx, key, x, y, w, h
           assetsMng.drawSize({ctx: ctx, key: "floor_sand", x: (c * this.s), 
           y: (l * this.s), w: this.s, h: this.s});
           break;
@@ -178,10 +181,7 @@ Map.prototype.desenhar = function (ctx) {
             y: (l * this.s), w: this.s, h: this.s});
           break;
         case 2:   // Caverna
-        
-          // ctx, key, sx, sy, w, h, dx, dy, dw, dh
-          assetsMng.drawClipSize(
-            {ctx: ctx, key: "rockBlock", sx: 0, sy: 0, w: 32, h: 32,
+          assetsMng.drawClipSize({ctx: ctx, key: "rockBlock", sx: 0, sy: 0, w: 32, h: 32,
             dx: (c * this.s), dy: (l * this.s), dw: this.s, dh: this.s});
           break;
         default:
@@ -243,9 +243,6 @@ Map.prototype.desenharCell = function (ctx, l, c) {
       break;
   }*/
 
-  ctx.strokeStyle = "white";
-  ctx.lineWidth = 1;
-  ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
   ctx.fillStyle = "yellow";
   ctx.strokeStyle = "black";
   ctx.lineWidth = 2;
@@ -256,26 +253,30 @@ Map.prototype.desenharCell = function (ctx, l, c) {
       this.escreveTexto(ctx, this.cell[l][c].tipo + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
       break;
     case 2:                   // Rooms
-      ctx.fillStyle = "green";
       this.escreveTexto(ctx, this.cell[l][c].room + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
       break;
     case 5:                   // Teleportes
-      ctx.fillStyle = "blue";
+      /*ctx.linewidth = 1;
+      ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
+      ctx.strokeStyle = "rgba(10, 10, 10, 0.4)";
+      ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
+      ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);*/
       this.escreveTexto(ctx, this.cell[l][c].distTeleportes + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
       break;
     case 6:                   // Firezones
-      ctx.fillStyle = "blue";
       this.escreveTexto(ctx, this.cell[l][c].distFirezones + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
       break;
     case 7:                   // Inimigos
-      ctx.fillStyle = "blue";
       this.escreveTexto(ctx, this.cell[l][c].distInimigos + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
       break;
     case 8:                   // Tesouros
-      ctx.fillStyle = "blue";
       this.escreveTexto(ctx, this.cell[l][c].distTesouros + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
       break;
   }
+
+  ctx.strokeStyle = "white";
+  ctx.lineWidth = 1;
+  ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
 };
 
 Map.prototype.escreveTexto = function (ctx, texto, x, y) {
