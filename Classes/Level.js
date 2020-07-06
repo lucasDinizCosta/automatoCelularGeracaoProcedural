@@ -716,7 +716,45 @@ Level.prototype.movimento = function(dt) {
   this.removerInimigos();
   this.mapa.camadaDistCompostas();
   this.criarFilaDesenho();
-};
+}
+
+Level.prototype.montarLevel = function(params){
+  //this.setMatrixMap(params.geraFase.map);       // Copia a matriz de tipos dentro do gerador
+  //this.copiaSalas(params.geraFase.rooms);       // Copia os dados em que os blocos da sala são apenas as posições linha e coluna da matriz
+
+  this.setTeleporters_2({
+    porcentagem: 80, opcaoTeleporteInicio: 1, opcaoTeleporteFinal: 1
+
+    /**********************************************************************
+     * Posiciona os teleportes com base na DISTANCIA entre eles           *
+     * opcaoTeleporteInicio:                                              *
+     *  0 => Posicionamento na SALA 1;  1 => Posicionamento Aleatório;    *
+     *                                                                    *
+     * opcaoTeleporteFinal:                                               *
+     *  0 => Final poder ficar na mesma sala do teleporte inicial;        *
+     *  1 => Final na sala diferente do teleporte inicial;                *
+     *********************************************************************/
+  });
+  this.atualizaGradeTeleportes(params.dt);
+  this.posicionarPlayer(params.player);
+  this.atualizaMatrizDistancias();       // Em relação aos teleportes inicial da fase e de cada sala
+  this.posicionarFireZones(25);          // Posiciona acima de 25 na distancia de firezones
+  this.posicionarTesouros({
+    porcentagemDistancia: 80, qtdTesouros: 0, porcentagemTesourosPorSala: 4
+
+    /*
+    * porcentagemTesourosPorSala != 0 ==> Posiciona de acordo com o tamanho da sala
+    */ 
+  });          
+
+  this.posicionarInimigos({
+    porcentagemDistancia: 80, qtdTesouros: 0, porcentagemInimigosPorSala: 4
+
+    /*
+    * porcentagemInimigosPorSala != 0 ==> Posiciona de acordo com o tamanho da sala
+    */ 
+  });          
+}
 
 Level.prototype.getPlayerRoom = function(){
   return (this.rooms[this.player.room - 1]);
