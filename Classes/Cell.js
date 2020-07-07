@@ -15,4 +15,7 @@ function Cell(params = {}) {
 
 Cell.prototype = new Cell();
 Cell.prototype.constructor = Cell;
-  
+
+Cell.prototype.distInimigoTeleporte = function(){
+    return (3 * this.distInimigos + 2 * this.distTeleportes);
+}

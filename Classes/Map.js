@@ -203,9 +203,8 @@ Map.prototype.camadaDistCompostas = function(){
     for (let l = 0; l < this.h; l++) {
       for (let c = 0; c < this.w; c++) {
         if (this.cell[l][c].tipo === 0) {         // Não considera a parede e a rocha da caverna
-          let aux = this.cell[l][c].distInimigos + this.cell[l][c].distTeleportes;
-          if(aux > this.distComposto.inimigosTeleportes.max){
-            this.distComposto.inimigosTeleportes.max = aux;
+          if(this.cell[l][c].distInimigoTeleporte() > this.distComposto.inimigosTeleportes.max){
+            this.distComposto.inimigosTeleportes.max = this.cell[l][c].distInimigoTeleporte();
           }
         }
       }
@@ -331,9 +330,8 @@ Map.prototype.desenharCell = function (ctx, l, c) {
         break;
       case 10:                   // distInimigosTeleportes
       {
-        let aux = this.cell[l][c].distInimigos + this.cell[l][c].distTeleportes;
         ctx.save();
-        ctx.fillStyle = `hsl(${280 * aux/this.distComposto.inimigosTeleportes.max}, 100%, 50%)`;
+        ctx.fillStyle = `hsl(${280 *  this.cell[l][c].distInimigoTeleporte()/this.distComposto.inimigosTeleportes.max}, 100%, 50%)`;
         ctx.linewidth = 1;
         ctx.globalAlpha = 0.3;
         //ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
@@ -342,7 +340,7 @@ Map.prototype.desenharCell = function (ctx, l, c) {
         ctx.restore();
         ctx.fillStyle = "yellow";
         ctx.strokeStyle = "black";
-        this.escreveTexto(ctx, aux + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+        this.escreveTexto(ctx, this.cell[l][c].distInimigoTeleporte(), c * this.s + this.s / 2, l * this.s + this.s / 2);
         break;
       }
     }

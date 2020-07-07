@@ -81,6 +81,27 @@ Level.prototype.clonarLevel= function(level){
   this.copiaSalasComReferencia(level.rooms);
 }
 
+// Copia as salas do método de geração de fase e atualiza a matriz do mapa
+// os blocos são compostos por posições de linha e coluna ao inves de referencia pra matriz
+Level.prototype.copiaSalas = function(rooms){
+  this.rooms = [];
+
+  for(let i = 0; i < rooms.length; i++){
+     this.rooms.push(new Room(0));
+     this.rooms[this.rooms.length - 1].copyByLevelGeneration(rooms[i], this.mapa);
+  }
+
+}
+
+Level.prototype.copiaSalasComReferencia = function(rooms){
+  this.rooms = [];
+  //console.log("COPIA SALAS COM REFERENCIA:");
+  for(let i = 0; i < rooms.length; i++){
+     this.rooms.push(new Room(0));
+     this.rooms[this.rooms.length - 1].copyWithReference(rooms[i], this.mapa);
+  }
+}
+
 /**
  * Utiliza o gerador de seed como referencia pra escolha numerica
  */
@@ -570,7 +591,7 @@ Level.prototype.posicionarInimigos = function(params){
 
     // Verifica a distancia composta
     for(let i = 0; i < listaCelulas.length; i++){       // preenche a lista de celulas disponiveis --- Dist Inimigos
-      if((listaCelulas[i].distInimigos + listaCelulas[i].distTeleportes)  >= minimalValueComposto){
+      if(listaCelulas[i].distInimigoTeleporte() >= minimalValueComposto){
         listaCelulasFinal.push(listaCelulas[i]);
       }
     }
@@ -603,7 +624,7 @@ Level.prototype.posicionarInimigos = function(params){
 
       // Verifica a distancia composta
       for(let i = 0; i < listaCelulas.length; i++){       // preenche a lista de celulas disponiveis --- Dist Inimigos
-        if((listaCelulas[i].distInimigos + listaCelulas[i].distTeleportes) >= minimalValueComposto){
+        if(listaCelulas[i].distInimigoTeleporte() >= minimalValueComposto){
           listaCelulasFinal.push(listaCelulas[i]);
         }
       }
@@ -611,29 +632,8 @@ Level.prototype.posicionarInimigos = function(params){
   }
 }
 
-
-// Copia as salas do método de geração de fase e atualiza a matriz do mapa
-// os blocos são compostos por posições de linha e coluna ao inves de referencia pra matriz
-Level.prototype.copiaSalas = function(rooms){
-  this.rooms = [];
-
-  for(let i = 0; i < rooms.length; i++){
-     this.rooms.push(new Room(0));
-     this.rooms[this.rooms.length - 1].copyByLevelGeneration(rooms[i], this.mapa);
-  }
-
-}
-
-Level.prototype.copiaSalasComReferencia = function(rooms){
-  this.rooms = [];
-  //console.log("COPIA SALAS COM REFERENCIA:");
-  for(let i = 0; i < rooms.length; i++){
-     this.rooms.push(new Room(0));
-     this.rooms[this.rooms.length - 1].copyWithReference(rooms[i], this.mapa);
-  }
-}
-
 Level.prototype.movimento = function(dt) {
+  this.mapa.camadaDistCompostas();
   this.player.moverCompleto(dt);
   this.colisaoTeleportes(this.player);
   this.colisaoFireZones(this.player);
@@ -647,7 +647,6 @@ Level.prototype.movimento = function(dt) {
     this.rooms[i].move(dt);
   }
   this.removerInimigos();
-  this.mapa.camadaDistCompostas();
   this.criarFilaDesenho();
 }
 
@@ -673,21 +672,21 @@ Level.prototype.montarLevel = function(params){
   this.atualizaMatrizDistancias();       // Em relação aos teleportes inicial da fase e de cada sala
   this.posicionarFireZones(25);          // Posiciona acima de 25 na distancia de firezones
   this.posicionarInimigos({
-    porcentagemDistancia: 80, qtdTesouros: 0, porcentagemInimigosPorSala: 4,
-    porcentagemDistanciaComp: 60,         // Distancia composta (Inimigo + teleporte)
+    porcentagemDistancia: 80,// qtdTesouros: 0, porcentagemInimigosPorSala: 4,
+    porcentagemDistanciaComp: 50,         // Distancia composta
 
     // porcentagemInimigosPorSala != 0 ==> Posiciona de acordo com o tamanho da sala 
   });
 
   
 
-  this.posicionarTesouros({
+  /*this.posicionarTesouros({
     porcentagemDistancia: 80, qtdTesouros: 0, porcentagemTesourosPorSala: 4
 
     
     // porcentagemTesourosPorSala != 0 ==> Posiciona de acordo com o tamanho da sala
     
-  });          
+  });   */       
 
   
   /**/
