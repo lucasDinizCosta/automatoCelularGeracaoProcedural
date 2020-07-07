@@ -206,6 +206,18 @@ Room.prototype.getMaxDist = function(option){
                 }
             }
             break;
+            
+       /*********************************************
+        *           DISTANCIAS COMPOSTAS            *
+        *********************************************/
+       case 4:                     // Inimigo + Teleportes
+            for(let i = 0; i < this.blocks.length; i++){
+                let bloco = this.blocks[i];
+                if((bloco.distInimigos + bloco.distTeleportes) >= value){
+                    value = bloco.distInimigos + bloco.distTeleportes;
+                }
+            }
+            break;
     }
     return value;
 }

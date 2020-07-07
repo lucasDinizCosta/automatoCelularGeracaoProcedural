@@ -6,14 +6,18 @@ function Map(w, h, s) {
   for (let l = 0; l < h; l++) {
     this.cell[l] = [];
     for (let c = 0; c < w; c++) {
-      this.cell[l][c] = { tipo: 0, room: -3, distTeleportes: 999, distFirezones: 999,  
-        distInimigos: 999, distTesouros: 999, linha: l, coluna: c};
+      //this.cell[l][c] = { tipo: 0, room: -3, distTeleportes: 999, distFirezones: 999,  
+      //  distInimigos: 999, distTesouros: 999, linha: l, coluna: c};
+      this.cell[l][c] = new Cell({linha: l, coluna: c});
     }
   }
   
   // Auxiliares
   this.distComposto = {
     inimigosTesouros: {
+      max: 0
+    },
+    inimigosTeleportes: {
       max: 0
     },
   };
@@ -194,6 +198,18 @@ Map.prototype.distMaxInimigosTesouros = function(l, c){
 Map.prototype.camadaDistCompostas = function(){
   if(this.distComposto.inimigosTesouros.max === 0){
     this.distMaxInimigosTesouros();
+    
+    // Inimigo + Teleporte
+    for (let l = 0; l < this.h; l++) {
+      for (let c = 0; c < this.w; c++) {
+        if (this.cell[l][c].tipo === 0) {         // Não considera a parede e a rocha da caverna
+          let aux = this.cell[l][c].distInimigos + this.cell[l][c].distTeleportes;
+          if(aux > this.distComposto.inimigosTeleportes.max){
+            this.distComposto.inimigosTeleportes.max = aux;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -313,6 +329,22 @@ Map.prototype.desenharCell = function (ctx, l, c) {
         ctx.strokeStyle = "black";
         this.escreveTexto(ctx, this.getDistInimigosTesouros(l, c) + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
         break;
+      case 10:                   // distInimigosTeleportes
+      {
+        let aux = this.cell[l][c].distInimigos + this.cell[l][c].distTeleportes;
+        ctx.save();
+        ctx.fillStyle = `hsl(${280 * aux/this.distComposto.inimigosTeleportes.max}, 100%, 50%)`;
+        ctx.linewidth = 1;
+        ctx.globalAlpha = 0.3;
+        //ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
+        ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
+        //ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
+        ctx.restore();
+        ctx.fillStyle = "yellow";
+        ctx.strokeStyle = "black";
+        this.escreveTexto(ctx, aux + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
+        break;
+      }
     }
 
   }

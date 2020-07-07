@@ -90,115 +90,13 @@ Level.prototype.getRandomInt = function(min, max){
 
 /**
  * -> Atribui os teleportes dentro das salas e insere nos blocos A REFERENCIA PARA O MAPA
- * -> Posiciona de forma ALEATÓRIA sem seguir a lógica de distancia dos teleportes
- */
-
-Level.prototype.setTeleporters = function(){
-  if(this.rooms.length > 1){          //Only will have teleporters if there are more than one room
-    let indAvaliableRoom;
-    let indFinishRoom;
-    let roomsAvaliable = [];            //Rooms avaliable to choose initial teleporter 
-    let roomsClosed = [];               //Rooms that the initial teleporter is connected
-    let sortPosition;
-    let blocks = [];
-
-    // Setting position of teleporters into the rooms
-
-    for(let i = 0; i < this.rooms.length; i++){                 //Setting teleports into the room
-        for(let j = 0; j < this.rooms[i].blocks.length; j++){
-          let aux = this.rooms[i].blocks[j];          // Referencia para a celula do mapa
-          blocks.push(aux);
-        }
-        sortPosition = this.getRandomInt(0 , (blocks.length - 1));
-        this.rooms[i].teleporterInitial.setPosition(blocks[sortPosition]);
-        blocks.splice(sortPosition, 1);
-        sortPosition = this.getRandomInt(0 , (blocks.length - 1));
-        this.rooms[i].teleporterFinal.setPosition(blocks[sortPosition]);
-        this.rooms[i].teleporterInitial.roomNumber = this.rooms[i].number;
-        this.rooms[i].teleporterFinal.roomNumber = this.rooms[i].number;
-        this.rooms[i].teleporterInitial.map = this.mapa;
-        this.rooms[i].teleporterFinal.map = this.mapa;
-        roomsAvaliable.push(this.rooms[i].number);
-        blocks = [];
-    }
-    //GX => COLUNA, GY => LINHA
-
-    //Connecting first rooms manually
-
-    indAvaliableRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));                 //Begin teleporter room
-    indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
-    while(indAvaliableRoom  ===  indFinishRoom){
-        indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
-    }
-    let currentRoom = this.rooms[roomsAvaliable[indFinishRoom] - 1].number;
-    
-    this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial.proximoTeleporte = this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal;
-    this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal.proximoTeleporte = this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial;
-
-    roomsClosed.push(roomsAvaliable[indAvaliableRoom]);           //roomsClosed.push(this.rooms[roomsAvaliable[indAvaliableRoom] - 1].number);
-    roomsAvaliable.splice(indAvaliableRoom, 1);
-
-    while(roomsAvaliable.length > 1){
-        for(let i = 0; i < this.rooms.length; i++){
-            if(roomsAvaliable[i] === currentRoom){                       //Room's number was found
-                indAvaliableRoom = i;
-                break;
-            }
-        }
-
-        indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
-        while(indAvaliableRoom  ===  indFinishRoom){
-            indFinishRoom = this.getRandomInt(0 , (roomsAvaliable.length - 1));
-            if(roomsAvaliable.length === 2){
-                if(indAvaliableRoom === 0){
-                    indFinishRoom = 1;
-                    break;
-                }
-                else{
-                  indFinishRoom = 0;
-                  break;
-                }
-            }
-        }
-        currentRoom = roomsAvaliable[indFinishRoom];//this.rooms[roomsAvaliable[indFinishRoom] - 1].number;
-
-        this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial.proximoTeleporte = this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal;
-        this.rooms[roomsAvaliable[indFinishRoom] - 1].teleporterFinal.proximoTeleporte = this.rooms[roomsAvaliable[indAvaliableRoom] - 1].teleporterInitial;
-
-        roomsClosed.push(this.rooms[roomsAvaliable[indAvaliableRoom] - 1].number);
-        roomsAvaliable.splice(indAvaliableRoom, 1);
-    }
-    //Connecting last room => to create a cycle on the rooms connections
-
-    this.rooms[roomsAvaliable[0] - 1].teleporterInitial.proximoTeleporte = this.rooms[roomsClosed[0] - 1].teleporterFinal;
-    this.rooms[roomsClosed[0] - 1].teleporterFinal.proximoTeleporte = this.rooms[roomsAvaliable[0] - 1].teleporterInitial;
-
-    roomsClosed.push(this.rooms[roomsAvaliable[0] - 1].number);
-    roomsAvaliable.splice(indAvaliableRoom, 1);
-
-    /*console.log("\nINITIAL\nA -> B:");
-    for(let i = 0; i < this.rooms.length; i++){
-        console.log("A( "+ this.rooms[i].teleporterInitial.roomNumber +" ) -> B( " + this.rooms[i].teleporterInitial.proximoTeleporte.roomNumber+ " )");
-    }
-    console.log("\nFINAL\nB -> A:");
-    for(let i = 0; i < this.rooms.length; i++){
-        console.log("B( "+ this.rooms[i].teleporterFinal.roomNumber +" ) -> A( " + this.rooms[i].teleporterFinal.proximoTeleporte.roomNumber  + " )");
-    }*/
-  }
-  else{
-    console.log("Level with only one room !!!");
-  }
-}
-
-/**
- * -> Atribui os teleportes dentro das salas e insere nos blocos A REFERENCIA PARA O MAPA
  * -> Posiciona de forma com base na DISTÂNCIA DOS TELEPORTES
  * 
  *  porcentagem: Intervalo de distância
  *  params:{porcentagem, opcaoTeleporteInicio, opcaoTeleporteFinal}
  */
 
-Level.prototype.setTeleporters_2 = function(params){
+Level.prototype.setTeleporters = function(params){
   if(this.rooms.length > 1){          //Only will have teleporters if there are more than one room
     let indAvaliableRoom;
     let indFinishRoom;
@@ -387,22 +285,6 @@ Level.prototype.atualizaGradeTeleportes = function(dt){
   }
 }
 
-Level.prototype.dadosSalas = function(){
-  for(let i = 0; i < this.rooms.length; i++){
-    console.log("Sala " + this.rooms[i].number + " : ");
-    console.log("teleporterInitial: ["+
-      (this.rooms[i].teleporterInitial.y - this.rooms[i].teleporterInitial.s/2)/this.rooms[i].teleporterInitial.map.s
-      +"]"+"["+
-      (this.rooms[i].teleporterInitial.x - this.rooms[i].teleporterInitial.s/2)/this.rooms[i].teleporterInitial.map.s
-      +"]");
-    console.log("teleporterFinal: ["+
-      (this.rooms[i].teleporterFinal.y - this.rooms[i].teleporterFinal.s/2)/this.rooms[i].teleporterFinal.map.s
-      +"]"+"["+
-      (this.rooms[i].teleporterFinal.x - this.rooms[i].teleporterFinal.s/2)/this.rooms[i].teleporterFinal.map.s
-      +"]");
-  }
-}
-
 /**
  * Posiciona o player e os teleportes de inicio e final de fase
  */
@@ -543,10 +425,6 @@ Level.prototype.posicionarFireZonesTeleportes = function(valor){
   }
 }
 
-/**
- * Tesouros
- */
-
 Level.prototype.posicionarTesouros = function(params){
 
   if(params.porcentagemTesourosPorSala != 0){     // Utiliza o tamanho da sala como referencia posicionar os elementos
@@ -608,13 +486,9 @@ Level.prototype.posicionarTesouros = function(params){
   }
 }
 
-/**
- * Inimigos
- */
+Level.prototype.posicionarInimigos = function(params){
 
- Level.prototype.posicionarInimigos = function(params){
-
-  if(params.porcentagemInimigosPorSala != 0){     // Utiliza o tamanho da sala como referencia posicionar os elementos
+  /*if(params.porcentagemInimigosPorSala != 0){     // Utiliza o tamanho da sala como referencia posicionar os elementos
     let terminouPosicionamento = false;
     let indiceSala = 0;
     while(!terminouPosicionamento){
@@ -671,19 +545,78 @@ Level.prototype.posicionarTesouros = function(params){
       }
     }
   }
+  */
+
+  
+  for(let indiceSala = 0; indiceSala < this.rooms.length; indiceSala++){
+    let auxRoom = this.rooms[indiceSala];
+    let maxDistInimigos = auxRoom.getMaxDist(2);
+    let maxDistComposto = auxRoom.getMaxDist(4);            // Valor referencial maximo nao vai mudar
+    let minimalValue = Math.floor((params.porcentagemDistancia * maxDistInimigos)/100);                 // Menor elemento no intervalo para o DistInimigos
+    let minimalValueComposto = Math.floor((params.porcentagemDistanciaComp * maxDistComposto)/100);                 // Menor elemento no intervalo para o DistInimigos
+    let listaCelulas = [];
+
+    // Verifica a distancia inimigos
+    for(let i = 0; i < auxRoom.blocks.length; i++){       // preenche a lista de celulas disponiveis --- Dist Inimigos
+      if(auxRoom.blocks[i].distTeleportes !== 0 && auxRoom.blocks[i].distFirezones !== 0 
+        && auxRoom.blocks[i].distTesouros !== 0){   // Descarta celulas com outros elementos
+        if(auxRoom.blocks[i].distInimigos >= minimalValue){
+          listaCelulas.push(auxRoom.blocks[i]);
+        }
+      }
+    }
+
+    let listaCelulasFinal = [];
+
+    // Verifica a distancia composta
+    for(let i = 0; i < listaCelulas.length; i++){       // preenche a lista de celulas disponiveis --- Dist Inimigos
+      if((listaCelulas[i].distInimigos + listaCelulas[i].distTeleportes)  >= minimalValueComposto){
+        listaCelulasFinal.push(listaCelulas[i]);
+      }
+    }
+
+    while(listaCelulasFinal.length > 0){
+      let celula = listaCelulasFinal[this.getRandomInt(0, listaCelulasFinal.length - 1)];
+      let auxEnemy = new Enemy();
+      auxEnemy.gx = celula.coluna;
+      auxEnemy.gy = celula.linha;
+      auxEnemy.x = celula.coluna * this.mapa.s + this.mapa.s/2;
+      auxEnemy.y = celula.linha * this.mapa.s + this.mapa.s/2;
+      auxEnemy.map = this.mapa;
+      auxRoom.enemies.push(auxEnemy);
+      this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 2);     // Recalcula
+      
+      // Repete o processo enquanto tiver celulas validas
+
+      listaCelulas = [];
+      listaCelulasFinal = [];
+
+      // Verifica a distancia inimigos
+      for(let i = 0; i < auxRoom.blocks.length; i++){       // preenche a lista de celulas disponiveis --- Dist Inimigos
+        if(auxRoom.blocks[i].distTeleportes !== 0 && auxRoom.blocks[i].distFirezones !== 0
+          && auxRoom.blocks[i].distTesouros !== 0){   // Descarta celulas com outros elementos
+          if(auxRoom.blocks[i].distInimigos >= minimalValue){
+            listaCelulas.push(auxRoom.blocks[i]);
+          }
+        }
+      }
+
+      // Verifica a distancia composta
+      for(let i = 0; i < listaCelulas.length; i++){       // preenche a lista de celulas disponiveis --- Dist Inimigos
+        if((listaCelulas[i].distInimigos + listaCelulas[i].distTeleportes) >= minimalValueComposto){
+          listaCelulasFinal.push(listaCelulas[i]);
+        }
+      }
+    }
+  }
 }
 
-/*Level.prototype.toggleLevel = function(l){
-  this = JSON.parse(JSON.stringify(l));  //Copia matriz
-
-}*/
 
 // Copia as salas do método de geração de fase e atualiza a matriz do mapa
 // os blocos são compostos por posições de linha e coluna ao inves de referencia pra matriz
 Level.prototype.copiaSalas = function(rooms){
   this.rooms = [];
-  //console.log("COPIA SALAS:");
-  //console.log(rooms);
+
   for(let i = 0; i < rooms.length; i++){
      this.rooms.push(new Room(0));
      this.rooms[this.rooms.length - 1].copyByLevelGeneration(rooms[i], this.mapa);
@@ -722,8 +655,8 @@ Level.prototype.montarLevel = function(params){
   //this.setMatrixMap(params.geraFase.map);       // Copia a matriz de tipos dentro do gerador
   //this.copiaSalas(params.geraFase.rooms);       // Copia os dados em que os blocos da sala são apenas as posições linha e coluna da matriz
 
-  this.setTeleporters_2({
-    porcentagem: 80, opcaoTeleporteInicio: 1, opcaoTeleporteFinal: 1
+  this.setTeleporters({
+    porcentagem: 95, opcaoTeleporteInicio: 1, opcaoTeleporteFinal: 1
 
     /**********************************************************************
      * Posiciona os teleportes com base na DISTANCIA entre eles           *
@@ -739,21 +672,25 @@ Level.prototype.montarLevel = function(params){
   this.posicionarPlayer(params.player);
   this.atualizaMatrizDistancias();       // Em relação aos teleportes inicial da fase e de cada sala
   this.posicionarFireZones(25);          // Posiciona acima de 25 na distancia de firezones
+  this.posicionarInimigos({
+    porcentagemDistancia: 80, qtdTesouros: 0, porcentagemInimigosPorSala: 4,
+    porcentagemDistanciaComp: 60,         // Distancia composta (Inimigo + teleporte)
+
+    // porcentagemInimigosPorSala != 0 ==> Posiciona de acordo com o tamanho da sala 
+  });
+
+  
+
   this.posicionarTesouros({
     porcentagemDistancia: 80, qtdTesouros: 0, porcentagemTesourosPorSala: 4
 
-    /*
-    * porcentagemTesourosPorSala != 0 ==> Posiciona de acordo com o tamanho da sala
-    */ 
+    
+    // porcentagemTesourosPorSala != 0 ==> Posiciona de acordo com o tamanho da sala
+    
   });          
 
-  this.posicionarInimigos({
-    porcentagemDistancia: 80, qtdTesouros: 0, porcentagemInimigosPorSala: 4
-
-    /*
-    * porcentagemInimigosPorSala != 0 ==> Posiciona de acordo com o tamanho da sala
-    */ 
-  });          
+  
+  /**/
 }
 
 Level.prototype.getPlayerRoom = function(){

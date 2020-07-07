@@ -16,6 +16,7 @@
   <script src="Classes/Enemy.js"></script>
   <script src="Classes/FireZone.js"></script>
   <script src="Classes/Ordenacao.js"></script>
+  <script src="Classes/Cell.js"></script>
   <!--
     <script src="Classes/ImageLibrary.js"></script>
     <script src="Classes/AudioLibrary.js"></script>
@@ -88,7 +89,7 @@
     var MAPA_AREA = 10;  //20
     var escala = 1.8;
     var K = 1;
-    var debugMode = 0; 
+    var debugMode = 10;    // 0
     var player = new Player({s: 27, w: 27, h: 11,
       hitBox: {
         x: 0,
@@ -141,7 +142,7 @@
     geraFase.fullstep(2);
     geraFase.countRooms();
     geraFase.filterRooms(25);
-    
+
     levels[0].setMatrixMap(geraFase.map);       // Copia a matriz de tipos dentro do gerador
     levels[0].copiaSalas(geraFase.rooms);       // Copia os dados em que os blocos da sala são apenas as posições linha e coluna da matriz
     levels[0].montarLevel({
@@ -452,6 +453,7 @@
         this.debugText.push("Mode 7 - Distancia - Inimigos");  // Dados das celulas -- DistInimigos
         this.debugText.push("Mode 8 - Distancia - Tesouros");  // Dados das celulas -- DistTesouros
         this.debugText.push("Mode 9 - Distancia - Tesouros + Inimigos");  // Dados das celulas -- DistTesouros
+        this.debugText.push("Mode 10 - Distancia - Inimigos + Teleportes");  // Dados das celulas -- DistInimigosTeleporte
         this.updateElementos();
         this.bussola.init();
       },
@@ -652,40 +654,6 @@
       if(debugMode >= 1){       
         let typeMode = hud.debugText[debugMode - 1];
 
-        // Desenha padrão dados celulas
-        /*ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
-        ctx.strokeStyle = "rgba(238, 255, 0, 0.5)";
-        let infoBox = {
-          x: converteTelaCheia(530, tela.widthOld, tela.width),
-          y: converteTelaCheia(250, tela.heightOld, tela.height),
-          width: converteTelaCheia(60, tela.widthOld, tela.width),
-          height: converteTelaCheia(60, tela.heightOld, tela.height)
-        } 
-
-        ctx.fillRect(infoBox.x, infoBox.y, infoBox.width, infoBox.height);
-        ctx.strokeRect(infoBox.x, infoBox.y, infoBox.width, infoBox.height);
-
-        ctx.strokeStyle = "rgba(238, 255, 0)";
-        ctx.fillStyle = "yellow";
-        ctx.fillRect(infoBox.x + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y +  converteTelaCheia(15, tela.heightOld, tela.height), 15, 15);
-        ctx.strokeRect(infoBox.x + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y +  converteTelaCheia(15, tela.heightOld, tela.height), 15, 15);
-        ctx.fillStyle = "green";
-        ctx.fillRect(infoBox.x + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y +  converteTelaCheia(30, tela.heightOld, tela.height), 15, 15);
-        ctx.strokeRect(infoBox.x + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y +  converteTelaCheia(30, tela.heightOld, tela.height), 15, 15);
-        ctx.fillStyle = "blue";
-        ctx.fillRect(infoBox.x + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y +  converteTelaCheia(45, tela.heightOld, tela.height), 15, 15);
-        ctx.strokeRect(infoBox.x + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y +  converteTelaCheia(45, tela.heightOld, tela.height), 15, 15);
-
-        ctx.lineWidth = 2;
-        ctx.fillStyle = "rgba(238, 255, 0)";
-        ctx.strokeStyle = "rgba(0, 0, 0)";
-        ctx.font = "11px Arial Black";
-        escreveTexto(ctx, "Celula", infoBox.x + infoBox.width/2, infoBox.y + 15);
-        escreveTexto(ctx, "Tipo", infoBox.x + infoBox.width/2 + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y + converteTelaCheia(15, tela.heightOld, tela.height) + 12);
-        escreveTexto(ctx, "Room", infoBox.x + infoBox.width/2 + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y + converteTelaCheia(30, tela.heightOld, tela.height) + 12);
-        escreveTexto(ctx, "Distancia", infoBox.x + infoBox.width/2 + converteTelaCheia(5, tela.widthOld, tela.width), infoBox.y + converteTelaCheia(45, tela.heightOld, tela.height) + 12);
-        */
-
         // Desenha menu debaixo
         ctx.font = "13px Arial Black"; 
         ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
@@ -871,7 +839,7 @@
          */
         case 80:      //Pressionar a letra P
           debugMode = debugMode + 1;
-          if(debugMode > 9){
+          if(debugMode > 10){
             debugMode = 0;  //Padrão do jogo
             escala = 1.8;
             MAPA_AREA = 10;
