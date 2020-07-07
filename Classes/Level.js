@@ -328,16 +328,16 @@ Level.prototype.atualizaMatrizDistancias = function(){
   for(let i = 0; i < this.rooms.length; i++){        // Começa a analisar a partir da próxima sala
     if(i == (this.teleporteInicioLevel.roomNumber - 1)){
       this.mapa.atualizaDist(this.teleporteInicioLevel.gy, this.teleporteInicioLevel.gx, 0, 1);                   // Firezones
-      this.mapa.atualizaDist(this.teleporteInicioLevel.gy, this.teleporteInicioLevel.gx, 0, 2);                   // Inimigos
-      this.mapa.atualizaDist(this.teleporteInicioLevel.gy, this.teleporteInicioLevel.gx, 0, 3);                   // Tesouros
+      //this.mapa.atualizaDist(this.teleporteInicioLevel.gy, this.teleporteInicioLevel.gx, 0, 2);                   // Inimigos
+      //this.mapa.atualizaDist(this.teleporteInicioLevel.gy, this.teleporteInicioLevel.gx, 0, 3);                   // Tesouros
       this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 1);     // Firezones
-      this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 2);     // Inimigos
-      this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 3);     // Tesouros
+      //this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 2);     // Inimigos
+      //this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 3);     // Tesouros
     }
     else{
       this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 1);     // Firezones
-      this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 2);     // Inimigos
-      this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 3);     // Tesouros
+      //this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 2);     // Inimigos
+      //this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 3);     // Tesouros
     }
   }
 }
@@ -672,8 +672,8 @@ Level.prototype.montarLevel = function(params){
   this.atualizaMatrizDistancias();       // Em relação aos teleportes inicial da fase e de cada sala
   this.posicionarFireZones(25);          // Posiciona acima de 25 na distancia de firezones
   this.posicionarInimigos({
-    porcentagemDistancia: 80,// qtdTesouros: 0, porcentagemInimigosPorSala: 4,
-    porcentagemDistanciaComp: 50,         // Distancia composta
+    porcentagemDistancia: 50,// qtdTesouros: 0, porcentagemInimigosPorSala: 4,
+    porcentagemDistanciaComp: 0,         // Distancia composta
 
     // porcentagemInimigosPorSala != 0 ==> Posiciona de acordo com o tamanho da sala 
   });
