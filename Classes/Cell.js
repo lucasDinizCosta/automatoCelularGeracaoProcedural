@@ -19,3 +19,14 @@ Cell.prototype.constructor = Cell;
 Cell.prototype.distInimigoTeleporte = function(){
     return (3 * this.distInimigos + 2 * this.distTeleportes);
 }
+
+Cell.prototype.clone = function(celula){
+    this.tipo = celula.tipo; 
+    this.room = celula.room;
+    this.distTeleportes = celula.distTeleportes; 
+    this.distFirezones = celula.distFirezones;
+    this.distInimigos = celula.distInimigos;
+    this.distTesouros = celula.distTesouros;
+    this.linha = celula.linha;
+    this.coluna = celula.coluna;
+}

@@ -8,6 +8,17 @@ function Room(number){
     this.fireZones = [];                                // Area para a recarga do tempo
     this.treasures = [];                                // Lista de tesouros
     this.enemies = [];                                  // Lista de inimigos
+
+    // Distancias
+    this.distancias = {
+        maxTeleportes: 0,
+        maxFirezones: 0,
+        maxTesouros: 0,
+        maxInimigos: 0,
+        compostas:{
+
+        },
+    }
 }
 
 //Room.prototype = new Room();
@@ -222,6 +233,15 @@ Room.prototype.getMaxDist = function(option){
     return value;
 }
 
+Room.prototype.maxCamadaDistancias = function(){
+    if(this.distancias.maxTeleportes === 0){
+      this.distancias.maxTeleportes = this.getMaxDist(0);
+      this.distancias.maxFirezones = this.getMaxDist(1);
+      this.distancias.maxInimigos = this.getMaxDist(2);
+      this.distancias.maxTesouros = this.getMaxDist(3);
+    }
+  }
+
 Room.prototype.move = function(dt){
     if(debugMode > 0){
         for(let i = 0; i < this.fireZones.length; i++){
@@ -252,7 +272,6 @@ Room.prototype.move = function(dt){
     }   
 } 
 
-// Desenha os teleportes e as conexões entre eles
 Room.prototype.draw = function(ctx){
     for(let i = 0; i < this.fireZones.length; i++){
         this.fireZones[i].desenhar(ctx);
@@ -267,6 +286,89 @@ Room.prototype.draw = function(ctx){
     for(let i = 0; i < this.enemies.length; i++){
         this.enemies[i].desenhar(ctx);
     }  
+
+}
+
+Room.prototype.desenharCamadas = function(params = {}){
+    params.ctx.fillStyle = "yellow";
+    params.ctx.strokeStyle = "black";
+    params.ctx.lineWidth = 2;
+    params.ctx.font = "10px Arial Black";
+
+    switch(debugMode){
+        case 5:                   // Teleportes
+            for(let i = 0; i < this.blocks.length; i++){
+                //this.escreveTexto(params.ctx, this.blocks[i].distTeleportes + "", this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
+                
+                params.ctx.save();
+                params.ctx.fillStyle = `hsl(${150 *  this.blocks[i].distTeleportes/this.distancias.maxTeleportes}, 100%, 50%)`;
+                /*if(this.blocks[i].distTeleportes < Math.floor((25 * this.distancias.maxTeleportes)/100)){
+                    params.ctx.fillStyle = "rgb(153, 255, 51)";
+                }
+                else{
+                    if(this.blocks[i].distTeleportes < Math.floor((50 * this.distancias.maxTeleportes)/100)){
+                        params.ctx.fillStyle = "rgb(253, 253, 127)";
+                    }
+                    else{
+                        if(this.blocks[i].distTeleportes < Math.floor((75 * this.distancias.maxTeleportes)/100)){
+                            params.ctx.fillStyle = "rgb(255, 153, 51)";
+                        }
+                        else{
+                            params.ctx.fillStyle = "rgb(153, 0, 0)";
+                        }
+                    }
+                }*/
+                params.ctx.linewidth = 1;
+                params.ctx.globalAlpha = 0.3;
+                //ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
+                params.ctx.fillRect(this.blocks[i].coluna * params.s, this.blocks[i].linha * params.s, params.s, params.s);
+                //ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
+                params.ctx.restore();
+                params.ctx.fillStyle = "yellow";
+                params.ctx.strokeStyle = "black";
+                this.escreveTexto(params.ctx, this.blocks[i].distTeleportes, 
+                 this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
+            }
+            break;
+        case 6:                   // Firezones
+            for(let i = 0; i < this.blocks.length; i++){
+                this.escreveTexto(params.ctx, this.blocks[i].distFirezones + "", this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
+            }
+            break;
+        case 7:                   // Inimigos
+            for(let i = 0; i < this.blocks.length; i++){
+                this.escreveTexto(params.ctx, this.blocks[i].distInimigos + "", this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
+            }
+            break;
+        case 8:                   // Tesouros
+            for(let i = 0; i <  this.blocks.length; i++){
+                this.escreveTexto(params.ctx, this.blocks[i].distTesouros + "", this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
+            }
+            break;
+        case 10:                   // distInimigosTeleportes
+        {
+            /*for(let i = 0; i < this.blocks.length; i++){
+                params.ctx.save();
+                params.ctx.fillStyle = `hsl(${120 *  this.blocks[i].distInimigoTeleporte()/this.distancias.inimigosTeleportes.max}, 100%, 50%)`;
+                params.ctx.linewidth = 1;
+                params.ctx.globalAlpha = 0.3;
+                //ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
+                params.ctx.fillRect(this.blocks[i].coluna * params.s, this.blocks[i].linha * params.s, params.s, params.s);
+                //ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
+                params.ctx.restore();
+                params.ctx.fillStyle = "yellow";
+                params.ctx.strokeStyle = "black";
+                this.escreveTexto(params.ctx, this.blocks[i].distInimigoTeleporte(), 
+                 this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
+            }*/
+            break;
+        }
+    }
+}
+
+Room.prototype.escreveTexto = function (ctx, texto, x, y) {
+    ctx.strokeText(texto, x, y);
+    ctx.fillText(texto, x, y);
 }
 
 Room.prototype.drawTeleportersLine = function(ctx){
@@ -347,10 +449,17 @@ Room.prototype.copy = function(room){
     this.teleporterInitial.copy(room.teleporterInitial);
     this.teleporterFinal.copy(room.teleporterFinal);
     for(let i = 0; i < room.blocks.length; i++){
-        let aux = [];
-        aux.push(room.blocks[i][0]);
-        aux.push(room.blocks[i][1]);
+        let aux = new Cell();
+        aux.clone(room.blocks[i]);
         this.blocks.push(aux);
+    }
+
+    this.distancias = {
+        maxTeleportes: room.distancias.maxTeleportes,
+        maxFirezones: room.distancias.maxFirezones,
+        maxTesouros: room.distancias.maxTesouros,
+        maxInimigos: room.distancias.maxInimigos,
+        compostas: room.distancias.compostas,
     }
 }
 
@@ -360,9 +469,16 @@ Room.prototype.copyByLevelGeneration = function(room, mapa){
     this.teleporterInitial.copy(room.teleporterInitial);
     this.teleporterFinal.copy(room.teleporterFinal);
     for(let i = 0; i < room.blocks.length; i++){
-        let aux = mapa.cell[room.blocks[i][0]][ room.blocks[i][1]];
+        let aux = mapa.cell[room.blocks[i][0]][ room.blocks[i][1]];         // BLOCKS[ID, LINHA/COLUNA]
         aux.room = room.number;
         this.blocks.push(aux);
+    }
+    this.distancias = {
+        maxTeleportes: room.distancias.maxTeleportes,
+        maxFirezones: room.distancias.maxFirezones,
+        maxTesouros: room.distancias.maxTesouros,
+        maxInimigos: room.distancias.maxInimigos,
+        compostas: room.distancias.compostas,
     }
     this.copyFireZones(room);
     this.copyTreasures(room);
@@ -374,10 +490,20 @@ Room.prototype.copyWithReference = function(room, mapa){
     this.number = room.number;
     this.teleporterInitial.copyTeleporte(room.teleporterInitial);
     this.teleporterFinal.copyTeleporte(room.teleporterFinal);
+    //console.log(room.blocks.length);
+
     for(let i = 0; i < room.blocks.length; i++){
-        let aux = mapa.getCell(room.blocks[i].linha, room.blocks[i].coluna);
-        aux.room = room.number;
+        let aux = new Cell();
+        //console.log(room.blocks[i]);
+        aux.clone(mapa.getCell(room.blocks[i].linha, room.blocks[i].coluna));
         this.blocks.push(aux);
+    }
+    this.distancias = {
+        maxTeleportes: room.distancias.maxTeleportes,
+        maxFirezones: room.distancias.maxFirezones,
+        maxTesouros: room.distancias.maxTesouros,
+        maxInimigos: room.distancias.maxInimigos,
+        compostas: room.distancias.compostas,
     }
     this.copyFireZones(room);
     this.copyTreasures(room);

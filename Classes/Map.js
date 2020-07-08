@@ -51,7 +51,7 @@ Map.prototype.getMatrixType = function(){
   return text;
 }
 
-Map.prototype.copyDataInto = function (matrix, L, C) {
+/*Map.prototype.copyDataInto = function (matrix, L, C) {
   //console.log(matrix);
   //if(!this.cell) this.cell = [];
   for (var l = 0; l < matrix.length - 1; l++) {
@@ -60,7 +60,7 @@ Map.prototype.copyDataInto = function (matrix, L, C) {
       this.cell[l + L][c + C].tipo = matrix[l][c];
     }
   }
-}
+}*/
 
 Map.prototype.initMap = function (L, C, v) {
   let mapx = [];
@@ -172,9 +172,6 @@ Map.prototype.visitCells = function (auxMatrix, mapx, y, x, tp, d = 1, indexArea
     this.visitCells(auxMatrix, mapx, y, x + 1, tp, d, indexArea);
   }
 }
-
-
-
 
 // Teste função retorna distancia de composição entre os dois atributos
 Map.prototype.getDistInimigosTesouros = function(l, c){
@@ -297,12 +294,7 @@ Map.prototype.desenharCell = function (ctx, l, c) {
       case 2:                   // Rooms
         this.escreveTexto(ctx, this.cell[l][c].room + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
         break;
-      case 5:                   // Teleportes
-        /*ctx.linewidth = 1;
-        ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
-        ctx.strokeStyle = "rgba(10, 10, 10, 0.4)";
-        ctx.fillRect(c * this.s, l * this.s, this.s, this.s);
-        ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);*/
+      /*case 5:                   // Teleportes
         this.escreveTexto(ctx, this.cell[l][c].distTeleportes + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
         break;
       case 6:                   // Firezones
@@ -313,7 +305,7 @@ Map.prototype.desenharCell = function (ctx, l, c) {
         break;
       case 8:                   // Tesouros
         this.escreveTexto(ctx, this.cell[l][c].distTesouros + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
-        break;
+        break;*/
       case 9:                   // distInimigosTesouros
         let aux = this.getDistInimigosTesouros(l, c);
         ctx.save();
@@ -328,7 +320,7 @@ Map.prototype.desenharCell = function (ctx, l, c) {
         ctx.strokeStyle = "black";
         this.escreveTexto(ctx, this.getDistInimigosTesouros(l, c) + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
         break;
-      case 10:                   // distInimigosTeleportes
+      /*case 10:                   // distInimigosTeleportes
       {
         ctx.save();
         ctx.fillStyle = `hsl(${280 *  this.cell[l][c].distInimigoTeleporte()/this.distComposto.inimigosTeleportes.max}, 100%, 50%)`;
@@ -342,12 +334,11 @@ Map.prototype.desenharCell = function (ctx, l, c) {
         ctx.strokeStyle = "black";
         this.escreveTexto(ctx, this.cell[l][c].distInimigoTeleporte(), c * this.s + this.s / 2, l * this.s + this.s / 2);
         break;
-      }
+      }*/
     }
 
   }
   
-
   ctx.strokeStyle = "white";
   ctx.lineWidth = 1;
   ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);

@@ -60,16 +60,19 @@ Level.prototype.clonarLevel= function(level){
   this.mapa.s = level.mapa.s;
   for (var l = 0; l < level.mapa.h; l++) {
     for (var c = 0; c < level.mapa.w; c++) {
-      this.mapa.cell[l][c].tipo = level.mapa.cell[l][c].tipo;
+      this.mapa.cell[l][c].clone(level.mapa.cell[l][c]);
+
+      /*this.mapa.cell[l][c].tipo = level.mapa.cell[l][c].tipo;
       this.mapa.cell[l][c].room = level.mapa.cell[l][c].room;
       this.mapa.cell[l][c].distTeleportes = level.mapa.cell[l][c].distTeleportes;
       this.mapa.cell[l][c].distFirezones = level.mapa.cell[l][c].distFirezones;
       this.mapa.cell[l][c].distInimigos = level.mapa.cell[l][c].distInimigos;
       this.mapa.cell[l][c].distTesouros = level.mapa.cell[l][c].distTesouros;
       this.mapa.cell[l][c].linha = level.mapa.cell[l][c].linha;
-      this.mapa.cell[l][c].coluna = level.mapa.cell[l][c].coluna;
+      this.mapa.cell[l][c].coluna = level.mapa.cell[l][c].coluna;*/
     }
   }
+
   this.tempoFase = level.tempoFase;
   this.tempoTotal = level.tempoTotal;
   this.taxaDiminuicaoTempo = level.taxaDiminuicaoTempo;
@@ -83,9 +86,10 @@ Level.prototype.clonarLevel= function(level){
 
 // Copia as salas do método de geração de fase e atualiza a matriz do mapa
 // os blocos são compostos por posições de linha e coluna ao inves de referencia pra matriz
+
+// USA O BLOCKS[ID, linha/coluna]
 Level.prototype.copiaSalas = function(rooms){
   this.rooms = [];
-
   for(let i = 0; i < rooms.length; i++){
      this.rooms.push(new Room(0));
      this.rooms[this.rooms.length - 1].copyByLevelGeneration(rooms[i], this.mapa);
@@ -581,6 +585,7 @@ Level.prototype.posicionarInimigos = function(params){
     let listaCelulas = [];
 
     console.log("maxDistInimigos: " + maxDistInimigos);
+    console.log("maxDistInimigos ATUAL: " + auxRoom.getMaxDist(2));
     console.log("maxDistComposto: " + maxDistComposto);
     console.log("minimalValue: " + minimalValue);
     console.log("minimalValueComposto: " + minimalValueComposto);
@@ -607,6 +612,7 @@ Level.prototype.posicionarInimigos = function(params){
     console.log("listaCelulas: " + listaCelulas.length + " --- listaCelulasFinal: " + listaCelulasFinal.length);
 
     while(listaCelulasFinal.length > 0){
+      console.log("maxDistInimigos ATUAL: " + auxRoom.getMaxDist(2));
       let celula = listaCelulasFinal[this.getRandomInt(0, listaCelulasFinal.length - 1)];
       let auxEnemy = new Enemy();
       auxEnemy.gx = celula.coluna;
@@ -616,7 +622,7 @@ Level.prototype.posicionarInimigos = function(params){
       auxEnemy.map = this.mapa;
       auxRoom.enemies.push(auxEnemy);
       this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 2);     // Recalcula
-
+      console.log("maxDistInimigos APOS POS INIMIGO: " + auxRoom.getMaxDist(2));
       // distancia maxima muito alta
       if(maxDistInimigos === 999){
         maxDistInimigos = auxRoom.getMaxDist(2);
@@ -653,7 +659,6 @@ Level.prototype.posicionarInimigos = function(params){
 }
 
 Level.prototype.movimento = function(dt) {
-  this.mapa.camadaDistCompostas();
   this.player.moverCompleto(dt);
   this.colisaoTeleportes(this.player);
   this.colisaoFireZones(this.player);
@@ -709,7 +714,12 @@ Level.prototype.montarLevel = function(params){
   }); 
 
   
-  /**/
+  /* Distancias maximas em cada sala */
+  for(let i = 0; i < this.rooms.length; i++){
+    this.rooms[i].maxCamadaDistancias();
+  }
+
+  this.mapa.camadaDistCompostas();
 }
 
 Level.prototype.getPlayerRoom = function(){
@@ -760,9 +770,19 @@ Level.prototype.desenhar = function(ctx) {
     this.filaDesenho[i].desenhar(ctx);
   }
   this.mapa.desenharDebugMode(ctx);
-  if(debugMode === 3){
+
+  if(debugMode > 3){
     for(let i = 0; i < this.rooms.length; i++){
-      this.rooms[i].drawTeleportersLine(ctx);
+      this.rooms[i].desenharCamadas({
+        ctx: ctx, s: this.mapa.s
+      });
+    }
+  }
+  else{
+    if(debugMode === 3){
+      for(let i = 0; i < this.rooms.length; i++){
+        this.rooms[i].drawTeleportersLine(ctx);
+      }
     }
   }
 };
