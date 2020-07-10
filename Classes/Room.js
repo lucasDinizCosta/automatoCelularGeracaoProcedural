@@ -16,6 +16,10 @@ function Room(number){
         maxTesouros: 0,
         maxInimigos: 0,
         compostas:{
+            inimigosTeleportes:{
+                max: 0,
+                //min: 0,
+            },
 
         },
     }
@@ -239,6 +243,9 @@ Room.prototype.maxCamadaDistancias = function(){
       this.distancias.maxFirezones = this.getMaxDist(1);
       this.distancias.maxInimigos = this.getMaxDist(2);
       this.distancias.maxTesouros = this.getMaxDist(3);
+
+      // Distancias compostas
+      this.distancias.compostas.inimigosTeleportes.max = this.getMaxDist(4);
     }
   }
 
@@ -347,9 +354,9 @@ Room.prototype.desenharCamadas = function(params = {}){
             break;
         case 10:                   // distInimigosTeleportes
         {
-            /*for(let i = 0; i < this.blocks.length; i++){
+            for(let i = 0; i < this.blocks.length; i++){
                 params.ctx.save();
-                params.ctx.fillStyle = `hsl(${120 *  this.blocks[i].distInimigoTeleporte()/this.distancias.inimigosTeleportes.max}, 100%, 50%)`;
+                params.ctx.fillStyle = `hsl(${150 *  this.blocks[i].distInimigoTeleporte()/this.distancias.compostas.inimigosTeleportes.max}, 100%, 50%)`;
                 params.ctx.linewidth = 1;
                 params.ctx.globalAlpha = 0.3;
                 //ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
@@ -360,7 +367,7 @@ Room.prototype.desenharCamadas = function(params = {}){
                 params.ctx.strokeStyle = "black";
                 this.escreveTexto(params.ctx, this.blocks[i].distInimigoTeleporte(), 
                  this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
-            }*/
+            }
             break;
         }
     }
@@ -459,7 +466,11 @@ Room.prototype.copy = function(room){
         maxFirezones: room.distancias.maxFirezones,
         maxTesouros: room.distancias.maxTesouros,
         maxInimigos: room.distancias.maxInimigos,
-        compostas: room.distancias.compostas,
+        compostas: {
+            inimigosTeleportes: {
+                max: room.distancias.compostas.inimigosTeleportes.max,
+            }
+        }
     }
 }
 
@@ -478,7 +489,11 @@ Room.prototype.copyByLevelGeneration = function(room, mapa){
         maxFirezones: room.distancias.maxFirezones,
         maxTesouros: room.distancias.maxTesouros,
         maxInimigos: room.distancias.maxInimigos,
-        compostas: room.distancias.compostas,
+        compostas: {
+            inimigosTeleportes: {
+                max: room.distancias.compostas.inimigosTeleportes.max,
+            }
+        }
     }
     this.copyFireZones(room);
     this.copyTreasures(room);
@@ -503,7 +518,11 @@ Room.prototype.copyWithReference = function(room, mapa){
         maxFirezones: room.distancias.maxFirezones,
         maxTesouros: room.distancias.maxTesouros,
         maxInimigos: room.distancias.maxInimigos,
-        compostas: room.distancias.compostas,
+        compostas: {
+            inimigosTeleportes: {
+                max: room.distancias.compostas.inimigosTeleportes.max,
+            }
+        }
     }
     this.copyFireZones(room);
     this.copyTreasures(room);
