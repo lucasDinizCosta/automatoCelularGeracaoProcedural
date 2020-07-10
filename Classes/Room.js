@@ -339,17 +339,50 @@ Room.prototype.desenharCamadas = function(params = {}){
             break;
         case 6:                   // Firezones
             for(let i = 0; i < this.blocks.length; i++){
-                this.escreveTexto(params.ctx, this.blocks[i].distFirezones + "", this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
+                params.ctx.save();
+                params.ctx.fillStyle = `hsl(${150 *  this.blocks[i].distFirezones/this.distancias.maxFirezones}, 100%, 50%)`;
+                params.ctx.linewidth = 1;
+                params.ctx.globalAlpha = 0.3;
+                //ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
+                params.ctx.fillRect(this.blocks[i].coluna * params.s, this.blocks[i].linha * params.s, params.s, params.s);
+                //ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
+                params.ctx.restore();
+                params.ctx.fillStyle = "yellow";
+                params.ctx.strokeStyle = "black";
+                this.escreveTexto(params.ctx, this.blocks[i].distFirezones, 
+                 this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
             }
             break;
         case 7:                   // Inimigos
             for(let i = 0; i < this.blocks.length; i++){
-                this.escreveTexto(params.ctx, this.blocks[i].distInimigos + "", this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
+                params.ctx.save();
+                params.ctx.fillStyle = `hsl(${150 *  this.blocks[i].distInimigos/this.distancias.maxInimigos}, 100%, 50%)`;
+                params.ctx.linewidth = 1;
+                params.ctx.globalAlpha = 0.3;
+                //ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
+                params.ctx.fillRect(this.blocks[i].coluna * params.s, this.blocks[i].linha * params.s, params.s, params.s);
+                //ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
+                params.ctx.restore();
+                params.ctx.fillStyle = "yellow";
+                params.ctx.strokeStyle = "black";
+                this.escreveTexto(params.ctx, this.blocks[i].distInimigos, 
+                 this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
             }
             break;
         case 8:                   // Tesouros
             for(let i = 0; i <  this.blocks.length; i++){
-                this.escreveTexto(params.ctx, this.blocks[i].distTesouros + "", this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
+                params.ctx.save();
+                params.ctx.fillStyle = `hsl(${150 *  this.blocks[i].distTesouros/this.distancias.maxTesouros}, 100%, 50%)`;
+                params.ctx.linewidth = 1;
+                params.ctx.globalAlpha = 0.3;
+                //ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
+                params.ctx.fillRect(this.blocks[i].coluna * params.s, this.blocks[i].linha * params.s, params.s, params.s);
+                //ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
+                params.ctx.restore();
+                params.ctx.fillStyle = "yellow";
+                params.ctx.strokeStyle = "black";
+                this.escreveTexto(params.ctx, this.blocks[i].distTesouros, 
+                 this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
             }
             break;
         case 10:                   // distInimigosTeleportes
