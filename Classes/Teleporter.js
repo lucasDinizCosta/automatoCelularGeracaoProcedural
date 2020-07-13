@@ -37,11 +37,24 @@ Teleporter.prototype.setPosition = function(celula){
   this.y = celula.linha * this.s  + this.s/2;
 }
 
-Teleporter.prototype.copyTeleporte = function(teleporter){
-  this.proximoTeleporte = teleporter.proximoTeleporte;
+Teleporter.prototype.copyTeleporte = function(teleporter, rooms){
+  //this.proximoTeleporte = teleporter.proximoTeleporte;
   this.type = teleporter.type;
   this.roomNumber = teleporter.roomNumber;
   this.copy(teleporter);                              //Copia os dados do sprite
+}
+
+Teleporter.prototype.copyConnection = function(teleporter, rooms){
+  // Copiando o proximo teleporte
+  if(teleporter.proximoTeleporte != undefined){
+    let aux = rooms[teleporter.proximoTeleporte.roomNumber - 1];
+    if(teleporter.proximoTeleporte.type === 2){     // inicio de sala
+      this.proximoTeleporte = aux.teleporterInitial;
+    }
+    else{                                           // Final de sala
+      this.proximoTeleporte = aux.teleporterFinal;
+    }
+  }
 }
 
 Teleporter.prototype.teleportar = function(player){

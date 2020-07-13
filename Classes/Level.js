@@ -61,15 +61,6 @@ Level.prototype.clonarLevel= function(level){
   for (var l = 0; l < level.mapa.h; l++) {
     for (var c = 0; c < level.mapa.w; c++) {
       this.mapa.cell[l][c].clone(level.mapa.cell[l][c]);
-
-      /*this.mapa.cell[l][c].tipo = level.mapa.cell[l][c].tipo;
-      this.mapa.cell[l][c].room = level.mapa.cell[l][c].room;
-      this.mapa.cell[l][c].distTeleportes = level.mapa.cell[l][c].distTeleportes;
-      this.mapa.cell[l][c].distFirezones = level.mapa.cell[l][c].distFirezones;
-      this.mapa.cell[l][c].distInimigos = level.mapa.cell[l][c].distInimigos;
-      this.mapa.cell[l][c].distTesouros = level.mapa.cell[l][c].distTesouros;
-      this.mapa.cell[l][c].linha = level.mapa.cell[l][c].linha;
-      this.mapa.cell[l][c].coluna = level.mapa.cell[l][c].coluna;*/
     }
   }
 
@@ -103,6 +94,13 @@ Level.prototype.copiaSalasComReferencia = function(rooms){
   for(let i = 0; i < rooms.length; i++){
      this.rooms.push(new Room(0));
      this.rooms[this.rooms.length - 1].copyWithReference(rooms[i], this.mapa);
+     // Passado o vetor de rooms para poder clonar o teleporte para a proxima sala
+  }
+
+  // Copia as referencias do proximo teleporte
+  for(let i = 0; i < this.rooms.length; i++){
+    this.rooms[i].teleporterInitial.copyConnection(rooms[i].teleporterInitial, this.rooms);
+    this.rooms[i].teleporterFinal.copyConnection(rooms[i].teleporterFinal, this.rooms);
   }
 }
 
@@ -144,7 +142,7 @@ Level.prototype.setTeleporters = function(params){
 
       // Posicionamento teleporte de inicio de sala
       this.rooms[i].teleporterInitial.setPosition(celulas[sortPosition]);
-      this.rooms[i].teleporterInitial.roomNumber = celulas[sortPosition].number;
+      this.rooms[i].teleporterInitial.roomNumber = celulas[sortPosition].room;
       this.rooms[i].teleporterInitial.gy = celulas[sortPosition].linha;
       this.rooms[i].teleporterInitial.gx = celulas[sortPosition].coluna;
       this.rooms[i].teleporterInitial.map = this.mapa;
@@ -159,7 +157,7 @@ Level.prototype.setTeleporters = function(params){
       sortPosition = this.getRandomInt(0 , (celulas.length - 1));
       
       this.rooms[i].teleporterFinal.setPosition(celulas[sortPosition]);
-      this.rooms[i].teleporterFinal.roomNumber = celulas[sortPosition].number;
+      this.rooms[i].teleporterFinal.roomNumber = celulas[sortPosition].room;
       this.rooms[i].teleporterFinal.gy = celulas[sortPosition].linha;
       this.rooms[i].teleporterFinal.gx = celulas[sortPosition].coluna;
       this.rooms[i].teleporterFinal.map = this.mapa;

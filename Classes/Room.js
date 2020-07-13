@@ -566,11 +566,9 @@ Room.prototype.copyWithReference = function(room, mapa){
     this.number = room.number;
     this.teleporterInitial.copyTeleporte(room.teleporterInitial);
     this.teleporterFinal.copyTeleporte(room.teleporterFinal);
-    //console.log(room.blocks.length);
 
     for(let i = 0; i < room.blocks.length; i++){
         let aux = new Cell();
-        //console.log(room.blocks[i]);
         aux.clone(mapa.getCell(room.blocks[i].linha, room.blocks[i].coluna));
         this.blocks.push(aux);
     }
