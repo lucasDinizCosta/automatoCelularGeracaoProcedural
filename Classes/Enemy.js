@@ -11,6 +11,7 @@ function Enemy() {
     this.speedAnimation = 11.49; //1.2;
     this.type = 0;
     this.pose = 0;
+    this.raioAtaque = 5;
     this.matrizImagem = {
         linha: 1,
         colunas: 9,
@@ -141,8 +142,7 @@ Enemy.prototype.persegue = function(alvo){
         const dx = Math.floor(alvo.x) - Math.floor(this.x);
         const dy = Math.floor(alvo.y) - Math.floor(this.y);
         const d = Math.sqrt(dx * dx + dy * dy);
-        const k = 5;
-        if(Math.abs(d) < k * 16){
+        if(Math.abs(d) < this.raioAtaque * (this.map.s/2)){       //(k * 16) ==> 16 tamanho do celula
             this.alvo = alvo;
             this.persegue();
             return;

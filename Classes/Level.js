@@ -119,7 +119,7 @@ Level.prototype.getRandomInt = function(min, max){
  *  params:{porcentagem, opcaoTeleporteInicio, opcaoTeleporteFinal}
  */
 
-Level.prototype.setTeleporters = function(params){
+Level.prototype.posicionarTeleportes = function(params){
   if(this.rooms.length > 1){          //Only will have teleporters if there are more than one room
     let indAvaliableRoom;
     let indFinishRoom;
@@ -490,67 +490,6 @@ Level.prototype.posicionarTesouros = function(params){
 }
 
 Level.prototype.posicionarInimigos = function(params){
-
-  /*if(params.porcentagemInimigosPorSala != 0){     // Utiliza o tamanho da sala como referencia posicionar os elementos
-    let terminouPosicionamento = false;
-    let indiceSala = 0;
-    while(!terminouPosicionamento){
-      let auxRoom = this.rooms[indiceSala];
-      let listaCelulas = auxRoom.getEmptyCellsByPercentageBetweenMaxDist({option: 2, porcentagem: params.porcentagemInimigosPorSala});            //auxRoom.getCellByDist(valor, 1);
-      let celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
-      let qtdInimigos = Math.ceil((params.porcentagemInimigosPorSala * auxRoom.blocks.length)/100);   // Número de tesouros varia conforme o tamanho da sala
-
-      for(let i = 0; i < qtdInimigos; i++){
-        let auxEnemy = new Enemy();
-        auxEnemy.gx = celula.coluna;
-        auxEnemy.gy = celula.linha;
-        auxEnemy.x = celula.coluna * this.mapa.s + this.mapa.s/2;
-        auxEnemy.y = celula.linha * this.mapa.s + this.mapa.s/2;
-        auxEnemy.map = this.mapa;
-        auxRoom.enemies.push(auxEnemy);
-        this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 2);     // Recalcula
-        listaCelulas = auxRoom.getEmptyCellsByPercentageBetweenMaxDist({option: 2, porcentagem: params.porcentagemDistancia});     // Nova lista de celulas disponiveis         //auxRoom.getCellByDist(valor, 1);
-        celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
-      }
-
-      indiceSala++;
-
-      if(indiceSala >= this.rooms.length){
-        terminouPosicionamento = true;
-      }
-    }
-  }
-  else{                             // Posiciona uma quantidade fixa de inimigos em cada sala
-    let terminouPosicionamento = false;
-    let indiceSala = 0;
-    while(!terminouPosicionamento){
-      let auxRoom = this.rooms[indiceSala];
-      let listaCelulas = auxRoom.getEmptyCellsByPercentageBetweenMaxDist({option: 2, porcentagem: params.porcentagemDistancia});            //auxRoom.getCellByDist(valor, 1);
-      let celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
-
-      for(let i = 0; i < params.qtdInimigos; i++){            // Quantidade de inimigos passadas pelo parametro
-        let auxEnemy = new Enemy();
-        auxEnemy.gx = celula.coluna;
-        auxEnemy.gy = celula.linha;
-        auxEnemy.x = celula.coluna * this.mapa.s + this.mapa.s/2;
-        auxEnemy.y = celula.linha * this.mapa.s + this.mapa.s/2;
-        auxEnemy.map = this.mapa;
-        auxRoom.enemies.push(auxEnemy);
-        this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 2);     // Recalcula
-        listaCelulas = auxRoom.getEmptyCellsByPercentageBetweenMaxDist({option: 2, porcentagem: params.porcentagemDistancia});     // Nova lista de celulas disponiveis         //auxRoom.getCellByDist(valor, 1);
-        celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
-      }
-
-      indiceSala++;
-
-      if(indiceSala >= this.rooms.length){
-        terminouPosicionamento = true;
-      }
-    }
-  }
-  */
-
-  
   for(let indiceSala = 0; indiceSala < this.rooms.length; indiceSala++){
     console.log("\n");
     console.log("indiceSala: " + indiceSala);
@@ -654,7 +593,7 @@ Level.prototype.movimento = function(dt) {
 }
 
 Level.prototype.montarLevel = function(params){
-  this.setTeleporters({
+  this.posicionarTeleportes({
     porcentagem: 100, opcaoTeleporteInicio: 1, opcaoTeleporteFinal: 1
 
     /**********************************************************************
