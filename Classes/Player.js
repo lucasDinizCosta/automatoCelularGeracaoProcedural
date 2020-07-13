@@ -511,3 +511,7 @@ Player.prototype.atacarModoPlayer = function(alvo){
     }
   }
 }
+
+Player.prototype.getRoom = function(){
+  return this.map.cell[this.gy][this.gx].room;
+}

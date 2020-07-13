@@ -48,12 +48,18 @@ Teleporter.prototype.copyConnection = function(teleporter, rooms){
   // Copiando o proximo teleporte
   if(teleporter.proximoTeleporte != undefined){
     let aux = rooms[teleporter.proximoTeleporte.roomNumber - 1];
-    if(teleporter.proximoTeleporte.type === 2){     // inicio de sala
+    if(this.type === 2){
+      this.proximoTeleporte = aux.teleporterFinal;
+    }
+    else{
+      this.proximoTeleporte = aux.teleporterInitial;
+    }
+    /*if(teleporter.proximoTeleporte.type === 2){     // inicio de sala
       this.proximoTeleporte = aux.teleporterInitial;
     }
     else{                                           // Final de sala
       this.proximoTeleporte = aux.teleporterFinal;
-    }
+    }*/
   }
 }
 

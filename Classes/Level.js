@@ -324,28 +324,6 @@ Level.prototype.posicionarPlayer = function(p){
   this.player = p;
 }
 
-/**********************************
- * Calcula a matriz de distancias *
- **********************************/
-
-Level.prototype.atualizaMatrizDistancias = function(){
-  for(let i = 0; i < this.rooms.length; i++){        // Começa a analisar a partir da próxima sala
-    if(i == (this.teleporteInicioLevel.roomNumber - 1)){
-      this.mapa.atualizaDist(this.teleporteInicioLevel.gy, this.teleporteInicioLevel.gx, 0, 1);                   // Firezones
-      //this.mapa.atualizaDist(this.teleporteInicioLevel.gy, this.teleporteInicioLevel.gx, 0, 2);                   // Inimigos
-      //this.mapa.atualizaDist(this.teleporteInicioLevel.gy, this.teleporteInicioLevel.gx, 0, 3);                   // Tesouros
-      this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 1);     // Firezones
-      //this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 2);     // Inimigos
-      //this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 3);     // Tesouros
-    }
-    else{
-      this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 1);     // Firezones
-      //this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 2);     // Inimigos
-      //this.mapa.atualizaDist(this.rooms[i].teleporterInitial.gy, this.rooms[i].teleporterInitial.gx, 0, 3);     // Tesouros
-    }
-  }
-}
-
 Level.prototype.posicionarFireZones = function(valor){
 
   //Posiciona nos teleportes das salas
@@ -676,9 +654,6 @@ Level.prototype.movimento = function(dt) {
 }
 
 Level.prototype.montarLevel = function(params){
-  //this.setMatrixMap(params.geraFase.map);       // Copia a matriz de tipos dentro do gerador
-  //this.copiaSalas(params.geraFase.rooms);       // Copia os dados em que os blocos da sala são apenas as posições linha e coluna da matriz
-
   this.setTeleporters({
     porcentagem: 100, opcaoTeleporteInicio: 1, opcaoTeleporteFinal: 1
 
@@ -694,7 +669,6 @@ Level.prototype.montarLevel = function(params){
   });
   this.atualizaGradeTeleportes(params.dt);
   this.posicionarPlayer(params.player);
-  this.atualizaMatrizDistancias();       // Em relação aos teleportes inicial da fase e de cada sala
   this.posicionarFireZones(25);          // Posiciona acima de 25 na distancia de firezones
   this.posicionarInimigos({
     porcentagemDistancia: 80,// qtdTesouros: 0, porcentagemInimigosPorSala: 4,
