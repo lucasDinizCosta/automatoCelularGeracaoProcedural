@@ -45,7 +45,7 @@ Teleporter.prototype.copyTeleporte = function(teleporter){
 }
 
 Teleporter.prototype.teleportar = function(player){
-  if(this.proximoTeleporte !== undefined){
+  if(this.proximoTeleporte != undefined){
     assetsMng.play("teleporte");
     player.x = this.proximoTeleporte.x;
     player.y = this.proximoTeleporte.y;

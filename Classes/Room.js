@@ -123,6 +123,8 @@ Room.prototype.getCellsByDist = function(value, option){
     return listCells;
 }
 
+
+
 // Retorna somente celulas que não tem nenhum outro elemento
 // Procura LISTA de celulas da sala que possui distancia DENTRO DO INTERVALO DA MAIOR DISTANCIA
 Room.prototype.getEmptyCellsByPercentageBetweenMaxDist = function(params){
@@ -235,6 +237,32 @@ Room.prototype.getMaxDist = function(option){
             break;
     }
     return value;
+}
+
+// Reseta a distancias da sala com o valor 999
+Room.prototype.resetDistancia = function(option){
+    switch(option){
+        case 0:             // Teleportes
+            for(let i = 0; i < this.blocks.length; i++){
+                this.blocks[i].distTeleportes = 999;
+            }
+            break;
+        case 1:             // Firezones
+            for(let i = 0; i < this.blocks.length; i++){
+                this.blocks[i].distFirezones = 999;
+            }
+            break;
+        case 2:             // Inimigos
+            for(let i = 0; i < this.blocks.length; i++){
+                this.blocks[i].distInimigos = 999;
+            }
+            break;
+        case 3:             // Tesouros
+            for(let i = 0; i < this.blocks.length; i++){
+                this.blocks[i].distTesouros = 999;
+            }
+            break;
+    }
 }
 
 Room.prototype.maxCamadaDistancias = function(){
