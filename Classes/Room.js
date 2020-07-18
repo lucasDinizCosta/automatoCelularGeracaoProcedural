@@ -11,13 +11,13 @@ function Room(number){
 
     // Distancias
     this.distancias = {
-        maxTeleportes: 0,
+        maxTeleportes: 999,
         maxFirezones: 0,
         maxTesouros: 0,
-        maxInimigos: 0,
+        maxInimigos: 999,
         compostas:{
             inimigosTeleportes:{
-                max: 0,
+                max: 999,
                 //min: 0,
             },
 
@@ -426,7 +426,7 @@ Room.prototype.desenharCamadas = function(params = {}){
                 params.ctx.restore();
                 params.ctx.fillStyle = "yellow";
                 params.ctx.strokeStyle = "black";
-                this.escreveTexto(params.ctx, this.blocks[i].distInimigoTeleporte(), 
+                this.escreveTexto(params.ctx, (this.blocks[i].distInimigoTeleporte(this.distancias.maxInimigos, this.distancias.maxTeleportes).toFixed(3)), 
                  this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
             }
             break;
