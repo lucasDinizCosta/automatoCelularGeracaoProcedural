@@ -266,7 +266,7 @@ Room.prototype.resetDistancia = function(option){
 }
 
 Room.prototype.maxCamadaDistancias = function(){
-    if(this.distancias.maxTeleportes === 0){
+   /*if(this.distancias.maxTeleportes === 0){
       this.distancias.maxTeleportes = this.getMaxDist(0);
       this.distancias.maxFirezones = this.getMaxDist(1);
       this.distancias.maxInimigos = this.getMaxDist(2);
@@ -274,7 +274,15 @@ Room.prototype.maxCamadaDistancias = function(){
 
       // Distancias compostas
       this.distancias.compostas.inimigosTeleportes.max = this.getMaxDist(4);
-    }
+    }*/
+
+    this.distancias.maxTeleportes = this.getMaxDist(0);
+    this.distancias.maxFirezones = this.getMaxDist(1);
+    this.distancias.maxInimigos = this.getMaxDist(2);
+    this.distancias.maxTesouros = this.getMaxDist(3);
+
+    // Distancias compostas
+    this.distancias.compostas.inimigosTeleportes.max = this.getMaxDist(4);
   }
 
 Room.prototype.move = function(dt){

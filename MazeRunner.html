@@ -89,7 +89,8 @@
     var MAPA_AREA = 10;  //20
     var escala = 1.8;
     var K = 1;
-    var debugMode = 7;    // 0
+    var debugModeBegin = 7;
+    var debugMode = debugModeBegin;    // 0
     var player = new Player({s: 27, w: 27, h: 11,
       hitBox: {
         x: 0,
@@ -840,7 +841,7 @@
         case 80:      //Pressionar a letra P
           debugMode = debugMode + 1;
           if(debugMode > 10){
-            debugMode = 0;  //Padrão do jogo
+            debugMode = debugModeBegin;  //Padrão do jogo
             escala = 1.8;
             MAPA_AREA = 10;
           }
