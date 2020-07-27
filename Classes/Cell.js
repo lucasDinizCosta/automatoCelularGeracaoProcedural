@@ -17,7 +17,7 @@ Cell.prototype = new Cell();
 Cell.prototype.constructor = Cell;
 
 Cell.prototype.distInimigoTeleporte = function(maxInimigo = 1, maxTeleporte = 1){
-    return ((this.distInimigos*0.5)/maxInimigo + (this.distTeleportes*0.5)/maxTeleporte);
+    return ((this.distInimigos * 0.5)/maxInimigo + (this.distTeleportes * 0.5)/maxTeleporte);
 }
 
 Cell.prototype.clone = function(celula){
