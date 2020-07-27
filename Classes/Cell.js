@@ -20,6 +20,11 @@ Cell.prototype.distInimigoTeleporte = function(maxInimigo = 1, maxTeleporte = 1)
     return ((this.distInimigos * 0.5)/maxInimigo + (this.distTeleportes * 0.5)/maxTeleporte);
 }
 
+Cell.prototype.distInimigo_Tesouro_Teleporte = function(maxInimigo = 1, maxTeleporte = 1, maxTesouro = 1){
+    return ((this.distInimigos * 0.5)/maxInimigo + (this.distTeleportes * 0.5)/maxTeleporte +
+    (this.distTesouros * 0.5)/maxTesouro);
+}
+
 Cell.prototype.clone = function(celula){
     this.tipo = celula.tipo; 
     this.room = celula.room;

@@ -431,7 +431,11 @@ Level.prototype.posicionarFireZonesTeleportes = function(valor){
 
 Level.prototype.posicionarTesouros = function(params){
 
-  if(params.porcentagemTesourosPorSala != 0){     // Utiliza o tamanho da sala como referencia posicionar os elementos
+  /**
+   * Metodo antigo de posicionamento
+   */
+
+  /*if(params.porcentagemTesourosPorSala != 0){     // Utiliza o tamanho da sala como referencia posicionar os elementos
     let terminouPosicionamento = false;
     let indiceSala = 0;
     while(!terminouPosicionamento){
@@ -487,6 +491,54 @@ Level.prototype.posicionarTesouros = function(params){
         terminouPosicionamento = true;
       }
     }
+  }*/
+
+  /*
+  * Metodo novo de posicionamento de inimigos
+  */
+
+  for(let indiceSala = 0; indiceSala < this.rooms.length; indiceSala++){
+    let auxRoom = this.rooms[indiceSala];
+    let listaCelulas = [...auxRoom.blocks.filter((b) => ((b.distTeleportes >= 5) 
+    && (b.distFirezones > 0) && (b.distInimigos > 0)))];        // Todos os blocks da sala com distTeleportes maior que 5
+    let listaCelulasFinal = [];
+    let numTesouros = Math.round(auxRoom.blocks.length/this.tamanhoSalasMinimo);    // /25
+    let distMaxTeleporte = auxRoom.getMaxDist(0);
+    let distMaxTesouros = auxRoom.getMaxDist(1);
+    let distMaxInimigos = auxRoom.getMaxDist(2);
+
+    do{
+      let maxDistComposto = auxRoom.getMaxDist(5);            // Valor referencial maximo nao vai mudar
+      let minimalValue = Math.round((params.porcentagemDistancia * distMaxTesouros)/100);                 // Menor elemento no intervalo para o DistInimigos
+      let minimalValueComposto = (params.porcentagemDistanciaComp)/100;
+      listaCelulasFinal = [];
+
+      
+      // Verifica a distancia composta
+      for(let i = 0; i < listaCelulas.length; i++){       // preenche a lista de celulas disponiveis --- Dist Inimigos
+        let auxDistanciaNormalizada = listaCelulas[i].distInimigo_Tesouro_Teleporte(distMaxInimigos, 
+          distMaxTeleporte, distMaxTesouros);
+        if((minimalValueComposto <= auxDistanciaNormalizada) //&& 
+        //(auxDistanciaNormalizada <= minimalValueComposto * 1.5)
+        && (listaCelulas[i].distTesouros >= 5)           // Evita inimigos muito próximos
+        ){
+          listaCelulasFinal.push(listaCelulas[i]);
+        }
+      }
+
+      if(listaCelulasFinal.length > 0){
+        let celula = listaCelulasFinal[this.getRandomInt(0, listaCelulasFinal.length - 1)];
+        let auxTreasure = new Treasure();
+        auxTreasure.gx = celula.coluna;
+        auxTreasure.gy = celula.linha;
+        auxTreasure.x = celula.coluna * this.mapa.s + this.mapa.s/2;
+        auxTreasure.y = celula.linha * this.mapa.s + this.mapa.s/2;
+        auxTreasure.map = this.mapa;
+        auxRoom.treasures.push(auxTreasure);
+        this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 3);     // Recalcula
+      }
+    }
+    while(numTesouros-- > 0 && listaCelulasFinal.length > 0);
   }
 }
 
@@ -516,7 +568,6 @@ Level.prototype.posicionarInimigos = function(params){
         if((minimalValueComposto <= auxDistanciaNormalizada) //&& 
         //(auxDistanciaNormalizada <= minimalValueComposto * 1.5)
         && (listaCelulas[i].distInimigos > 5)           // Evita inimigos muito próximos
-        //&& (listaCelulas[i].distFirezones != 0)
         ){
           listaCelulasFinal.push(listaCelulas[i]);
         }
@@ -577,15 +628,14 @@ Level.prototype.montarLevel = function(params){
     porcentagemDistanciaComp: 50,         
   });
 
-  
-
-  /*this.posicionarTesouros({
-    porcentagemDistancia: 80, qtdTesouros: 0, porcentagemTesourosPorSala: 4
-
+  this.posicionarTesouros({
+    //porcentagemDistancia: 90, qtdTesouros: 0, porcentagemTesourosPorSala: 5
+    porcentagemDistancia: 80,             
+    porcentagemDistanciaComp: 50,  
     
     // porcentagemTesourosPorSala != 0 ==> Posiciona de acordo com o tamanho da sala
     
-  });*/
+  });
 
   
   /* Distancias maximas em cada sala */

@@ -228,13 +228,23 @@ Room.prototype.getMaxDist = function(option){
         *           DISTANCIAS COMPOSTAS            *
         *********************************************/
 
-       case 4:                     // Inimigo + Teleportes
+        case 4:{                     // Inimigos + Teleportes
             for(let i = 0; i < this.blocks.length; i++){
                 if(this.blocks[i].distInimigoTeleporte() >= value){
                     value = this.blocks[i].distInimigoTeleporte();
                 }
             }
             break;
+        }
+
+        case 5:{                     // Inimigos + Teleportes + Tesouros
+            for(let i = 0; i < this.blocks.length; i++){
+                if(this.blocks[i].distInimigo_Tesouro_Teleporte() >= value){
+                    value = this.blocks[i].distInimigo_Tesouro_Teleporte();
+                }
+            }
+            break;
+        }
     }
     return value;
 }
