@@ -331,7 +331,7 @@ Level.prototype.posicionarFireZones = function(valor){
   this.posicionarFireZonesTeleportes(valor);
 
   //Posiciona na primeira distancia 35 e depois recalcula
-  let terminouPosicionamento = false;
+  /*let terminouPosicionamento = false;
   let indiceSala = 0;
   while(!terminouPosicionamento){
     let auxRoom = this.rooms[indiceSala];
@@ -355,6 +355,32 @@ Level.prototype.posicionarFireZones = function(valor){
     if(indiceSala >= this.rooms.length){
       terminouPosicionamento = true;
     }
+  }*/
+
+  for(let i = 0; i < this.rooms.length; i++){
+    let auxRoom = this.rooms[i];
+    let listaCelulas;
+    do{
+      listaCelulas = [];
+      for(let j = 0; j < auxRoom.blocks.length; j++){
+        if(auxRoom.blocks[j].distFirezones === valor){
+          listaCelulas.push(auxRoom.blocks[j]);
+        }
+      }
+      if(listaCelulas.length > 0){
+        let celula = listaCelulas[this.getRandomInt(0, listaCelulas.length - 1)];
+        let auxFireZone = new FireZone();
+        auxFireZone.gx = celula.coluna;
+        auxFireZone.gy = celula.linha;
+        auxFireZone.x = celula.coluna * this.mapa.s + auxFireZone.s/2;
+        auxFireZone.y = celula.linha * this.mapa.s + auxFireZone.s/2;
+        auxFireZone.map = this.mapa;
+        auxRoom.fireZones.push(auxFireZone);
+        this.mapa.atualizaDist(celula.linha, celula.coluna, 0, 1);     //Recalcula
+        celula = auxRoom.getCellByDist(valor, 1);  
+      }
+    }
+    while(listaCelulas.length != 0);
   }
 }
 
