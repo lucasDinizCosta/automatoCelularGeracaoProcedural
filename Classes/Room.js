@@ -20,7 +20,10 @@ function Room(number){
                 max: 999,
                 //min: 0,
             },
-
+            inimigo_Tesouro_Teleporte:{
+                max: 999,
+                //min: 0,
+            }, 
         },
     }
 }
@@ -293,6 +296,7 @@ Room.prototype.maxCamadaDistancias = function(){
 
     // Distancias compostas
     this.distancias.compostas.inimigosTeleportes.max = this.getMaxDist(4);
+    this.distancias.compostas.inimigo_Tesouro_Teleporte.max = this.getMaxDist(5);
   }
 
 Room.prototype.move = function(dt){
@@ -431,7 +435,7 @@ Room.prototype.desenharCamadas = function(params = {}){
                  this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
             }
             break;
-        case 10:                   // distInimigosTeleportes
+        case 9:                   // distInimigosTeleportes
         {
             for(let i = 0; i < this.blocks.length; i++){
                 params.ctx.save();
@@ -445,6 +449,24 @@ Room.prototype.desenharCamadas = function(params = {}){
                 params.ctx.fillStyle = "yellow";
                 params.ctx.strokeStyle = "black";
                 this.escreveTexto(params.ctx, (this.blocks[i].distInimigoTeleporte(this.distancias.maxInimigos, this.distancias.maxTeleportes).toFixed(3)), 
+                 this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
+            }
+            break;
+        }
+        case 10:                   // distInimigo_Tesouro_Teleporte
+        {
+            for(let i = 0; i < this.blocks.length; i++){
+                params.ctx.save();
+                params.ctx.fillStyle = `hsl(${150 *  this.blocks[i].distInimigo_Tesouro_Teleporte()/this.distancias.compostas.inimigo_Tesouro_Teleporte.max}, 100%, 50%)`;
+                params.ctx.linewidth = 1;
+                params.ctx.globalAlpha = 0.3;
+                //ctx.fillStyle = "rgba(10, 10, 10, 0.4)";
+                params.ctx.fillRect(this.blocks[i].coluna * params.s, this.blocks[i].linha * params.s, params.s, params.s);
+                //ctx.strokeRect(c * this.s, l * this.s, this.s, this.s);
+                params.ctx.restore();
+                params.ctx.fillStyle = "yellow";
+                params.ctx.strokeStyle = "black";
+                this.escreveTexto(params.ctx, (this.blocks[i].distInimigo_Tesouro_Teleporte(this.distancias.maxInimigos, this.distancias.maxTeleportes, this.distancias.maxTesouros).toFixed(3)), 
                  this.blocks[i].coluna * params.s + params.s / 2, this.blocks[i].linha * params.s + params.s / 2);
             }
             break;
@@ -548,6 +570,9 @@ Room.prototype.copy = function(room){
         compostas: {
             inimigosTeleportes: {
                 max: room.distancias.compostas.inimigosTeleportes.max,
+            },
+            inimigo_Tesouro_Teleporte: {
+                max: room.distancias.compostas.inimigo_Tesouro_Teleporte.max,
             }
         }
     }
@@ -571,6 +596,9 @@ Room.prototype.copyByLevelGeneration = function(room, mapa){
         compostas: {
             inimigosTeleportes: {
                 max: room.distancias.compostas.inimigosTeleportes.max,
+            },
+            inimigo_Tesouro_Teleporte: {
+                max: room.distancias.compostas.inimigo_Tesouro_Teleporte.max,
             }
         }
     }
@@ -598,6 +626,9 @@ Room.prototype.copyWithReference = function(room, mapa){
         compostas: {
             inimigosTeleportes: {
                 max: room.distancias.compostas.inimigosTeleportes.max,
+            },
+            inimigo_Tesouro_Teleporte: {
+                max: room.distancias.compostas.inimigo_Tesouro_Teleporte.max,
             }
         }
     }

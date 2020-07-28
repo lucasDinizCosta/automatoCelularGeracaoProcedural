@@ -90,6 +90,7 @@
     var escala = 1.8;
     var K = 1;
     var debugModeBegin = 5;
+    var debugModeEnd = 10;
     var debugMode = debugModeBegin;    // 0
     var player = new Player({s: 27, w: 27, h: 11,
       hitBox: {
@@ -453,8 +454,8 @@
         this.debugText.push("Mode 6 - Distancia - Firezones"); // Dados das celulas -- DistFirezones
         this.debugText.push("Mode 7 - Distancia - Inimigos");  // Dados das celulas -- DistInimigos
         this.debugText.push("Mode 8 - Distancia - Tesouros");  // Dados das celulas -- DistTesouros
-        this.debugText.push("Mode 9 - Distancia - Tesouros + Inimigos");  // Dados das celulas -- DistTesouros
-        this.debugText.push("Mode 10 - Distancia - Inimigos + Teleportes");  // Dados das celulas -- DistInimigosTeleporte
+        this.debugText.push("Mode 9 - Dist - Inimigos + Teleportes");  // Dados das celulas -- DistTesouros
+        this.debugText.push("Mode 10 - Dist - Inimigos + Telep.. + Fire..");  // Dados das celulas -- DistInimigosTeleporte
         this.updateElementos();
         this.bussola.init();
       },
@@ -840,7 +841,7 @@
          */
         case 80:      //Pressionar a letra P
           debugMode = debugMode + 1;
-          if(debugMode > 10){
+          if(debugMode > debugModeEnd){
             debugMode = debugModeBegin;  //Padrão do jogo
             escala = 1.8;
             MAPA_AREA = 10;

@@ -306,7 +306,7 @@ Map.prototype.desenharCell = function (ctx, l, c) {
       case 8:                   // Tesouros
         this.escreveTexto(ctx, this.cell[l][c].distTesouros + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
         break;*/
-      case 9:                   // distInimigosTesouros
+      /*case 9:                   // distInimigosTesouros
         let aux = this.getDistInimigosTesouros(l, c);
         ctx.save();
         ctx.fillStyle = `hsl(${120 * aux/this.distComposto.inimigosTesouros.max}, 100%, 50%)`;
@@ -320,7 +320,7 @@ Map.prototype.desenharCell = function (ctx, l, c) {
         ctx.strokeStyle = "black";
         this.escreveTexto(ctx, this.getDistInimigosTesouros(l, c) + "", c * this.s + this.s / 2, l * this.s + this.s / 2);
         break;
-      /*case 10:                   // distInimigosTeleportes
+      case 10:                   // distInimigosTeleportes
       {
         ctx.save();
         ctx.fillStyle = `hsl(${280 *  this.cell[l][c].distInimigoTeleporte()/this.distComposto.inimigosTeleportes.max}, 100%, 50%)`;
