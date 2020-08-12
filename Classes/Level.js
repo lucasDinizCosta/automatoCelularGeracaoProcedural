@@ -328,7 +328,7 @@ Level.prototype.posicionarPlayer = function(p){
 Level.prototype.posicionarFireZones = function(valor){
 
   //Posiciona nos teleportes das salas
-  this.posicionarFireZonesTeleportes(valor);
+  this.posicionarFireZonesTeleportes();
 
   //Posiciona na primeira distancia 35 e depois recalcula
   /*let terminouPosicionamento = false;
@@ -359,7 +359,7 @@ Level.prototype.posicionarFireZones = function(valor){
 
   for(let i = 0; i < this.rooms.length; i++){
     let auxRoom = this.rooms[i];
-    let listaCelulas;
+    let listaCelulas = [];
     do{
       listaCelulas = [];
       for(let j = 0; j < auxRoom.blocks.length; j++){
@@ -387,7 +387,7 @@ Level.prototype.posicionarFireZones = function(valor){
 /**
  * Posiciona as firezones nos teleportes
  */
-Level.prototype.posicionarFireZonesTeleportes = function(valor){
+Level.prototype.posicionarFireZonesTeleportes = function(){
 
   /**
    * Posiciona na primeira distancia 35 e depois recalcula

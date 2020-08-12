@@ -483,14 +483,14 @@ Room.prototype.drawTeleportersLine = function(ctx){
     // Ligação entre os teleportes
     ctx.save();
     ctx.strokeStyle = "black";                              // linha de acabamento preta pra facilitar a visualização
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 10;
     ctx.beginPath();
     ctx.moveTo(this.teleporterInitial.x, this.teleporterInitial.y);
     ctx.lineTo(this.teleporterInitial.proximoTeleporte.x, this.teleporterInitial.proximoTeleporte.y);
     ctx.closePath();
     ctx.stroke();
-    ctx.strokeStyle = "yellow";
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 8;
     ctx.beginPath();
     ctx.moveTo(this.teleporterInitial.x, this.teleporterInitial.y);
     ctx.lineTo(this.teleporterInitial.proximoTeleporte.x, this.teleporterInitial.proximoTeleporte.y);
