@@ -112,6 +112,28 @@ Level.prototype.getRandomInt = function(min, max){
   return seedGen.getRandomIntMethod_1(min, max); 
 }
 
+Level.prototype.caminhoColetaTesouros = function(){
+  /*
+  teleporteInicioLevel
+  teleportefinalLevel
+  */
+  let salas = [];
+  for(let i = 0; i < this.rooms.length; i++){
+    salas.push(false);
+  }
+  let salaInicial = this.rooms[this.teleporteInicioLevel.getCell().room - 1];
+  let indiceSala = salaInicial.room - 1;
+  while(!salas[indiceSala]){
+
+  }
+  //console.log(salaInicial);
+
+  for(let i = 0; i < this.rooms.length; i++){
+    //this.rooms[i].caminhoColetaTesouros();
+
+  }  
+}
+
 /**
  * -> Atribui os teleportes dentro das salas e insere nos blocos A REFERENCIA PARA O MAPA
  * -> Posiciona de forma com base na DISTÂNCIA DOS TELEPORTES
